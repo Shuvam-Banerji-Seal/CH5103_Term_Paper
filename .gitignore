@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Lean / Lake build cache (Mathlib is fetched by `lake exe cache get`)
+verification/lean_proofs/.lake/
+
+# LaTeX build products
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+build/
+
+# keep the verification logs (they are evidence)
+!verification/logs/*.log
+
+# geomeTRIC scratch output
+*.tmp
+qce.log
+*_optim.xyz
