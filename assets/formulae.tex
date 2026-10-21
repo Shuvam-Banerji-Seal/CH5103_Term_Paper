@@ -1,0 +1,202 @@
+% Key formulae and expressions from:
+%   G. Gryn'ova, M. L. Coote, C. Corminboeuf,
+%   "Theory and practice of uncommon molecular electronic configurations",
+%   WIREs Comput. Mol. Sci. 2015, 5, 440-459. doi:10.1002/wcms.1233
+%
+% Sections marked [paper] are transcribed from the paper (p. numbers are journal pages).
+% Sections marked [supplementary] are standard textbook results added for context;
+% they are NOT stated in the paper and should be cited from a textbook (e.g. Szabo & Ostlund,
+% Borden "Diradicals") if used.
+%
+% Compiles standalone (pdflatex formulae.tex); the body between \begin{document} and
+% \end{document} can be pasted into the term paper.
+
+\documentclass[11pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\newcommand{\pa}{\varphi_a}
+\newcommand{\pb}{\varphi_b}
+\newcommand{\note}[1]{\par\noindent\textcolor{gray}{\small\emph{#1}}\par}
+
+\begin{document}
+\section*{Key formulae --- Gryn'ova, Coote \& Corminboeuf (2015)}
+
+%--------------------------------------------------------------------
+\subsection*{1. Pauli antisymmetry [paper, p.\,441]}
+For any two electrons $i,j$ the total wavefunction must satisfy
+\begin{equation}
+  \Psi(\ldots,i,\ldots,j,\ldots) = -\,\Psi(\ldots,j,\ldots,i,\ldots).
+\end{equation}
+\note{The paper's argument: only the many-electron system has sharp stationary states; assigning
+electrons to individual orbitals/quantum numbers is an approximation.}
+
+%--------------------------------------------------------------------
+\subsection*{2. Two electrons in two orbitals (Figure 1) [paper, p.\,441]}
+Active space: electrons 1, 2; spatial orbitals $\pa,\pb$; spin functions $\alpha,\beta$.
+Figure~1 determinants: i $=\pa^2$, ii $=\pb^2$, iii $=\pa^\alpha\pb^\beta$, iv $=\pa^\beta\pb^\alpha$,
+v $=\pa^\alpha\pb^\alpha$ ($M_S=+1$), vi $=\pa^\beta\pb^\beta$ ($M_S=-1$).
+
+\paragraph{Triplet, $M_S=\pm1$ (single determinants v, vi):}
+\begin{align}
+  {}^3\Psi(M_S=+1) &= \tfrac{1}{\sqrt2}\bigl[\pa(1)\pb(2)-\pb(1)\pa(2)\bigr]\,\alpha_1\alpha_2,\\
+  {}^3\Psi(M_S=-1) &= \tfrac{1}{\sqrt2}\bigl[\pa(1)\pb(2)-\pb(1)\pa(2)\bigr]\,\beta_1\beta_2.
+\end{align}
+
+\paragraph{Open-shell singlet, $M_S=0$ (two determinants iii, iv):}
+\begin{equation}
+  {}^1\Psi(M_S=0) = \tfrac{1}{\sqrt2}\bigl[\pa(1)\pb(2)+\pb(1)\pa(2)\bigr]\cdot
+                    \tfrac{1}{\sqrt2}\bigl[\beta_1\alpha_2-\alpha_1\beta_2\bigr].
+\end{equation}
+Written with unnormalised Slater determinants
+$D_{\text{iii}}=\begin{vmatrix}\pa(1)\alpha_1 & \pb(1)\beta_1\\ \pa(2)\alpha_2 & \pb(2)\beta_2\end{vmatrix}$,
+$D_{\text{iv}}=\begin{vmatrix}\pa(1)\beta_1 & \pb(1)\alpha_1\\ \pa(2)\beta_2 & \pb(2)\alpha_2\end{vmatrix}$:
+\begin{equation}
+  {}^1\Psi(M_S=0) = \tfrac{1}{2}\bigl[D_{\text{iv}} - D_{\text{iii}}\bigr].
+\end{equation}
+\note{Erratum (checked symbolically with SymPy): the paper prints this combination with a ``+''
+sign, $\tfrac12[D_{\text{iii}}+D_{\text{iv}}]$. Expanding that gives
+$\tfrac12[\pa(1)\pb(2)-\pb(1)\pa(2)][\alpha_1\beta_2+\beta_1\alpha_2]$, i.e.\ the $M_S=0$
+\emph{triplet} component. The singlet needs the minus sign shown above. The physical point is
+unaffected: the triplet is single-reference, the open-shell singlet is multireference.}
+
+\paragraph{Triplet, $M_S=0$ [supplementary]:}
+\begin{equation}
+  {}^3\Psi(M_S=0) = \tfrac{1}{\sqrt2}\bigl[\pa(1)\pb(2)-\pb(1)\pa(2)\bigr]\cdot
+  \tfrac{1}{\sqrt2}\bigl[\alpha_1\beta_2+\beta_1\alpha_2\bigr] = \tfrac12\bigl[D_{\text{iii}}+D_{\text{iv}}\bigr].
+\end{equation}
+
+%--------------------------------------------------------------------
+\subsection*{3. Coulomb and exchange [paper, p.\,442, qualitative; integrals supplementary]}
+The paper names the Coulomb repulsion $J_{xy}$ and exchange interaction $K_{xy}$ between electrons
+$x,y$. Standard definitions:
+\begin{align}
+  J_{ab} &= \iint \frac{|\pa(1)|^2\,|\pb(2)|^2}{r_{12}}\,d\tau_1 d\tau_2, &
+  K_{ab} &= \iint \frac{\pa^*(1)\pb(1)\,\pb^*(2)\pa(2)}{r_{12}}\,d\tau_1 d\tau_2 \;\ge 0 .
+\end{align}
+For the wavefunctions above, with frozen orbitals and one-electron energies $h_a,h_b$
+[supplementary]:
+\begin{align}
+  E({}^3\Psi) &= h_a + h_b + J_{ab} - K_{ab}, &
+  E({}^1\Psi_{\text{OSS}}) &= h_a + h_b + J_{ab} + K_{ab},
+\end{align}
+\begin{equation}
+  \Delta E_{\mathrm{ST}} \equiv E(\mathrm{S}) - E(\mathrm{T}) = 2K_{ab}.
+\end{equation}
+\note{This single-configuration estimate is the ``Hund's rule'' picture the paper criticises. It
+ignores orbital relaxation, static correlation (mixing with the closed-shell configurations i and
+ii) and dynamic spin polarisation, which can make the singlet the ground state.}
+
+\paragraph{Disjoint NBMOs (Borden--Davidson) [paper, p.\,443]:} if $\pa$ and $\pb$ share no
+atoms, $\pa(\mathbf r)\pb(\mathbf r)\approx0$ everywhere, so
+\begin{equation}
+  K_{ab}\approx 0 \;\Rightarrow\; \Delta E_{\mathrm{ST}}\approx 0,
+\end{equation}
+and higher-order effects (spin polarisation) decide the ground state; often the singlet
+(CBD, TME). Non-disjoint NBMOs ($K_{ab}>0$) give triplet ground states (MX, TriMB).
+
+%--------------------------------------------------------------------
+\subsection*{4. Hund's rule explanations [paper, p.\,442]}
+\begin{itemize}
+  \item \textbf{Hund (1925):} among multiplets of one configuration, the highest $S$ is lowest.
+  \item \textbf{Slater:} the triplet has less $e^-$--$e^-$ repulsion because of the Fermi hole
+        (exchange $-K$).
+  \item \textbf{Later (less-screening rule):} $V_{ee}$ is actually \emph{larger} in the triplet.
+        The Fermi hole reduces nuclear screening, so $|V_{ne}|$ grows by more:
+        \begin{equation}
+          \Delta V_{ee} > 0,\qquad \Delta V_{ne} < 0,\qquad |\Delta V_{ne}| > \Delta V_{ee}
+          \quad(\text{T relative to S}).
+        \end{equation}
+        Virial theorem: $E = -\langle T\rangle = \tfrac12\langle V\rangle$, with
+        $V = V_{ne}+V_{ee}+V_{nn}$ [supplementary].
+  \item \textbf{Correlation magnitude:} $|E_{\text{corr}}(\uparrow\uparrow)| \approx
+        \tfrac{1}{10}\,|E_{\text{corr}}(\uparrow\downarrow)|$ (same-spin vs.\ opposite-spin pair).
+\end{itemize}
+
+%--------------------------------------------------------------------
+\subsection*{5. Janak / extended Koopmans view [paper, p.\,443]}
+At the Hartree--Fock level, the singlet--triplet gap equals the difference between the HOMO
+energies of the triplet and the open-shell singlet:
+\begin{equation}
+  \Delta E_{\mathrm{ST}} = \varepsilon^{\,\mathrm{T}}_{\mathrm{HOMO}} - \varepsilon^{\,\mathrm{OSS}}_{\mathrm{HOMO}}
+\end{equation}
+\note{The paper gives no sign convention; this is a literal transcription of its wording.
+Janak's theorem in general [supplementary]: $\partial E/\partial n_i = \varepsilon_i$.}
+
+%--------------------------------------------------------------------
+\subsection*{6. Topology rules of spin coupling [paper, p.\,443; Scheme 1]}
+Dynamic spin polarisation produces an alternating (damped) spin wave along the chain:
+\begin{equation}
+  \text{sites separated by }\begin{cases}
+     \text{odd number of bonds} & \Rightarrow \text{ferromagnetic (parallel) coupling}\\
+     \text{even number of bonds} & \Rightarrow \text{antiferromagnetic (antiparallel) coupling}
+  \end{cases}
+\end{equation}
+\textbf{Ovchinnikov's rule (VB):} the most spin-alternant determinant has the lowest energy and
+the largest weight. For alternant hydrocarbons with $n^*$ starred and $n^\circ$ unstarred atoms
+[supplementary, standard form]:
+\begin{equation}
+  S_{\text{ground}} = \tfrac12\,\bigl|\,n^* - n^\circ\,\bigr|.
+\end{equation}
+
+%--------------------------------------------------------------------
+\subsection*{7. Aufbau vs.\ quasi-closed-shell (non-aufbau) occupation [paper, pp.\,447--449; Fig.\,10]}
+\begin{align}
+  \text{aufbau:}&\quad \varepsilon_{\text{doubly occ.}} < \varepsilon_{\text{SOMO}} < \varepsilon_{\text{LUMO}},\\
+  \text{quasi-closed-shell:}&\quad \varepsilon_{\text{SOMO}} < \varepsilon_{\text{HOMO}}\;(\text{doubly occupied}) < \varepsilon_{\text{LUMO}}.
+\end{align}
+Redox fingerprint (core $=$ lower doubly occupied MOs):
+\begin{align}
+  \text{aufbau:}\quad & (\text{core})^{2}\,(\text{SOMO})^{1}
+     \xrightarrow{-e^-} (\text{core})^{2}(\text{SOMO})^{0}\ \ \text{(closed shell)}\\
+  \text{non-aufbau:}\quad & (\text{core})^{2}(\text{SOMO})^{1}(\text{HOMO})^{2}
+     \xrightarrow{-e^-} (\text{core})^{2}(\text{SOMO})^{1}(\text{HOMO})^{1}\ \ \text{(T or OSS diradical)}\\
+  & (\text{core})^{2}(\text{SOMO})^{1}(\text{HOMO})^{2}
+     \xrightarrow{+e^-} (\ldots)(\text{SOMO})^{1}(\text{HOMO})^{2}(\text{LUMO})^{1}\ \ \text{(diradical)}
+\end{align}
+The SOMO is not touched by electron removal or addition. Evidence must come from observables
+(IP/EA, CV redox potentials, ESR/magnetic data of the products), not from orbital energies alone:
+ROHF orbital ordering depends on canonicalisation [paper, p.\,449].
+
+\paragraph{Spin-polarised donor (Scheme 3) [paper, p.\,449]:} in an unrestricted picture the
+unpaired $\alpha$ spin splits the donor HOMO into $\varepsilon^\alpha_{\text{HOMO}} \ne
+\varepsilon^\beta_{\text{HOMO}}$; the $\alpha$-HOMO can lie above the $\alpha$-SOMO.
+
+\paragraph{Distonic radical anions (Fig.\,16) [paper, p.\,452]:}
+\begin{equation}
+  {}^{\bullet}\mathrm{R}\!\sim\!\mathrm{A}^{-}\ (\text{non-aufbau})
+  \;\underset{-\mathrm{H}^+}{\overset{+\mathrm{H}^+}{\rightleftharpoons}}\;
+  {}^{\bullet}\mathrm{R}\!\sim\!\mathrm{AH}\ (\text{aufbau}),\qquad
+  {}^{\bullet}\mathrm{R}\!\sim\!\mathrm{A}^{-} \xrightarrow{-e^-} {}^{\bullet}\mathrm{R}\!\sim\!\mathrm{A}^{\bullet}
+  \ \ (\text{diradical, not } \mathrm{R}^+\!\sim\!\mathrm{A}^-).
+\end{equation}
+Radical stabilisation is measured by methyl-transfer equilibria
+$\mathrm{Me{-}R}\!\sim\!\mathrm{A} \rightleftharpoons {}^\bullet\mathrm{R}\!\sim\!\mathrm{A} + {}^\bullet\mathrm{Me}$
+(radical stabilisation energy), as drawn in Fig.\,16.
+
+%--------------------------------------------------------------------
+\subsection*{8. Historical statements quoted in the paper [paper, p.\,448]}
+\begin{itemize}
+  \item \textbf{Ehrenfest adiabatic principle (1917):} ``if a system be affected in a reversible
+        adiabatic way, the allowed motions are transformed into allowed motions.''
+  \item \textbf{Pauli (1925), original form:} ``it should be forbidden for more than one electron
+        with the same value of the main quantum number $n$ to have the same value for the other
+        three quantum numbers $k$, $j$ and $m$.''
+  \item \textbf{Modern form:} antisymmetry, Eq.~(1). Individual-electron quantum numbers do not
+        commute with $\hat H$; only total quantities (e.g.\ $\hat{J}^2$, $\hat{S}^2$) do:
+        $[\hat H,\hat{\mathbf{l}}_i^{\,2}]\neq0$ in general, while $[\hat H,\hat{\mathbf J}^2]=0$.
+  \item \textbf{3d/4s:} in neutral transition-metal atoms $\varepsilon_{4s} > \varepsilon_{3d}$ when
+        both are populated (4s ionised first), yet 4s fills first because the 4s--3d repulsion is
+        smaller than the 3d--3d repulsion.
+\end{itemize}
+
+%--------------------------------------------------------------------
+\subsection*{9. State labels appearing in the figures}
+\begin{tabular}{lll}
+  Fig.\,2a & H$_2$ dissociation & ground ${}^1\Sigma_g^+$, excited ${}^3\Sigma_u^+$; degenerate at $r\to\infty$\\
+  Fig.\,2b & ethylene C=C twist & ${}^1B_1$ and ${}^3A_2$; degenerate at $90^\circ$\\
+  Fig.\,2c & TM complex, M--L distance & ${}^1A_1$, ${}^5T_2$, ${}^3T$ (spin crossover)\\
+  Fig.\,5  & tropylidene & ${}^1A_2$ (two determinants) vs.\ ${}^3A_2$; orbitals $2b_1$, $a_1$, $2a_2$\\
+\end{tabular}
+
+\end{document}
