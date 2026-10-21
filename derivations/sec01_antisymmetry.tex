@@ -1,0 +1,67 @@
+\section{Antisymmetry and two-electron spin functions}\label{sec:anti}
+
+\begin{reviewclaim}
+``According to the Pauli exclusion principle, the wavefunction for a system of fermions must be
+antisymmetric with respect to the interchange of any two particles \dots\ only the system (atom,
+molecule) as a whole possesses well-defined (sharp) stationary states.'' (p.~441)
+\end{reviewclaim}
+
+\subsection{Why the exchange eigenvalue is $\pm1$}
+Let $\hat P_{12}$ swap all coordinates (space and spin) of electrons 1 and 2:
+$\hat P_{12}\Psi(x_1,x_2,\dots)=\Psi(x_2,x_1,\dots)$.
+\begin{enumerate}
+  \item Swapping twice restores the original ordering, so $\hat P_{12}^2=\hat 1$.
+  \item If $\hat P_{12}\Psi=\lambda\Psi$, then $\Psi=\hat P_{12}^2\Psi=\lambda^2\Psi$, hence $\lambda=\pm1$.
+  \item $\Hop$ of \cref{eq:H} is symmetric in the electron labels, so $[\Hop,\hat P_{12}]=0$, and the
+        eigenstates of $\Hop$ can be chosen as simultaneous eigenstates of $\hat P_{12}$.
+  \item The postulate (spin--statistics) for electrons selects $\lambda=-1$:
+        \begin{equation}\label{eq:antisym}
+          \Psi(x_2,x_1,\dots)=-\Psi(x_1,x_2,\dots).
+        \end{equation}
+  \item A Slater determinant obeys \cref{eq:antisym} automatically: exchanging electrons 1 and 2
+        exchanges two rows of the determinant, which multiplies it by $-1$.
+  \item If two spin orbitals coincide, two columns are equal and the determinant vanishes. This is
+        Pauli's original, one-electron version (``no two electrons with the same four quantum
+        numbers'') recovered as a \emph{consequence} of \cref{eq:antisym} in the independent-particle
+        approximation. Section~\ref{sec:qn} shows why, beyond that approximation, one-electron quantum
+        numbers do not exist.
+\end{enumerate}
+
+\subsection{Spin operators on two electrons}
+Single-electron spin-$\tfrac12$ operators act as
+$\hat s_z\alpha=\tfrac12\alpha$, $\hat s_z\beta=-\tfrac12\beta$, $\hat s_+\beta=\alpha$, $\hat s_+\alpha=0$,
+$\hat s_-\alpha=\beta$, $\hat s_-\beta=0$.
+Total spin: $\hat S_z=\hat s_z(1)+\hat s_z(2)$, $\hat S_\pm=\hat s_\pm(1)+\hat s_\pm(2)$ and
+\begin{equation}\label{eq:S2}
+  \hat S^2=\hat S_-\hat S_++\hat S_z^2+\hat S_z .
+\end{equation}
+(\emph{Proof of \cref{eq:S2}:} $\hat S_-\hat S_+=(\hat S_x-i\hat S_y)(\hat S_x+i\hat S_y)
+=\hat S_x^2+\hat S_y^2+i[\hat S_x,\hat S_y]=\hat S^2-\hat S_z^2-\hat S_z$, using $[\hat S_x,\hat S_y]=i\hat S_z$.)
+
+Apply \cref{eq:S2} to the four products $\alpha_1\alpha_2,\alpha_1\beta_2,\beta_1\alpha_2,\beta_1\beta_2$:
+\begin{enumerate}
+  \item $\alpha_1\alpha_2$: $\hat S_+\alpha_1\alpha_2=0$; $\hat S_z\alpha_1\alpha_2=\alpha_1\alpha_2$.
+        Hence $\hat S^2\alpha_1\alpha_2=(0+1+1)\alpha_1\alpha_2=2\,\alpha_1\alpha_2$, i.e.\ $S(S+1)=2$, $S=1$, $M_S=1$.
+  \item $\beta_1\beta_2$: by the same steps with $\hat S_+\beta_1\beta_2=\alpha_1\beta_2+\beta_1\alpha_2$,
+        $\hat S_-(\alpha_1\beta_2+\beta_1\alpha_2)=2\beta_1\beta_2$, $\hat S_z^2+\hat S_z\to 1-1=0$:
+        $\hat S^2\beta_1\beta_2=2\beta_1\beta_2$ ($S=1$, $M_S=-1$).
+  \item $\alpha_1\beta_2$: $\hat S_+\alpha_1\beta_2=\alpha_1\alpha_2$, then $\hat S_-\alpha_1\alpha_2=\beta_1\alpha_2+\alpha_1\beta_2$;
+        $\hat S_z\alpha_1\beta_2=0$. Hence $\hat S^2\alpha_1\beta_2=\alpha_1\beta_2+\beta_1\alpha_2$.
+        Likewise $\hat S^2\beta_1\alpha_2=\alpha_1\beta_2+\beta_1\alpha_2$.
+  \item Therefore $\hat S^2(\alpha_1\beta_2\pm\beta_1\alpha_2)=(1\pm1)(\alpha_1\beta_2\pm\beta_1\alpha_2)$:
+\end{enumerate}
+\begin{resultbox}
+\vspace{-1.2em}
+\begin{align}
+  \Theta_{1,+1}&=\alpha_1\alpha_2,\quad
+  \Theta_{1,0}=\tfrac1{\sqrt2}(\alpha_1\beta_2+\beta_1\alpha_2),\quad
+  \Theta_{1,-1}=\beta_1\beta_2 &&(S=1,\ \text{symmetric under }1\leftrightarrow2),\label{eq:tripspin}\\
+  \Theta_{0,0}&=\tfrac1{\sqrt2}(\alpha_1\beta_2-\beta_1\alpha_2) &&(S=0,\ \text{antisymmetric}).\label{eq:singspin}
+\end{align}
+Combined with \cref{eq:antisym}: a triplet must have an \emph{antisymmetric} spatial part, a singlet a
+\emph{symmetric} spatial part.
+\end{resultbox}
+\begin{verifybox}
+\texttt{t01\_spin\_and\_determinants.py}: $\hat S^2$, $\hat S_z$ built as $4\times4$ matrices; all four
+eigen-relations confirmed exactly (SymPy). \textbf{PASS}.
+\end{verifybox}

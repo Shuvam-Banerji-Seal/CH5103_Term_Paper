@@ -1,0 +1,73 @@
+\section{Orbital energies: Koopmans, Janak, and the singlet--triplet gap as a HOMO difference}\label{sec:koopmans}
+
+\begin{reviewclaim}
+``An alternative theoretical interpretation of the Hund's multiplicity rule has been proposed on the
+basis of Janak theorem (or extended Koopmans' theorem) in excited state density functional theory (DFT)
+for multiplets: at the Hartree--Fock level, the singlet--triplet gap (STG) is equal to the difference
+between the energies of the triplet's and open-shell singlet's HOMOs. This explanation echoes Pearson's
+maximum hardness principle, but lacks dynamic electron correlation.'' (p.~442--443, ref.~20 Liu \&
+Langenaeker 2003)
+\end{reviewclaim}
+
+\subsection{Koopmans' theorem}
+For a single determinant of spin orbitals $\{\chi_i\}$ write $[ij|kl]$ for spin-orbital integrals. Then
+\begin{equation}
+  E_N=\sum_i\langle i|\hat h|i\rangle+\tfrac12\sum_{i,j}\bigl([ii|jj]-[ij|ji]\bigr).
+\end{equation}
+\begin{enumerate}
+  \item Remove spin orbital $k$ \emph{without changing the others} (frozen orbitals). Every term containing
+        $k$ disappears:
+        $E_N-E_{N-1}^{(k)}=\langle k|\hat h|k\rangle+\tfrac12\sum_{j}\bigl([kk|jj]-[kj|jk]\bigr)+\tfrac12\sum_{i}\bigl([ii|kk]-[ik|ki]\bigr)$.
+        The $i=j=k$ term, counted in both sums, is $[kk|kk]-[kk|kk]=0$.
+  \item The two sums are equal by the symmetry of the integrals, so $E_N-E_{N-1}^{(k)}=\langle k|\hat h|k\rangle+\sum_j\bigl([kk|jj]-[kj|jk]\bigr)$.
+  \item The right-hand side is the diagonal Fock element, i.e.\ the canonical orbital energy $\varepsilon_k$. Hence
+        \begin{equation}\label{eq:koopmans}
+          \mathrm{IP}_k\equiv E_{N-1}^{(k)}-E_N=-\varepsilon_k\qquad(\text{frozen orbitals}).
+        \end{equation}
+\end{enumerate}
+Relaxation of the remaining orbitals lowers $E_{N-1}$. Correlation acts in the other direction, so
+\cref{eq:koopmans} is an approximation with partially cancelling errors.
+
+\subsection{Janak's theorem}
+In Kohn--Sham DFT with fractional occupations $n_i$:
+$E=\sum_in_i\langle\psi_i|-\tfrac12\nabla^2|\psi_i\rangle+\int v\rho+E_H[\rho]+E_{xc}[\rho]$, with
+$\rho=\sum_in_i|\psi_i|^2$.
+\begin{enumerate}
+  \item Differentiate with respect to $n_i$. The explicit dependence (through the prefactor $n_i$ and through
+        $\rho$) gives $\langle\psi_i|-\tfrac12\nabla^2|\psi_i\rangle+\int(v+v_H+v_{xc})|\psi_i|^2=\langle\psi_i|\hat h_{KS}|\psi_i\rangle=\varepsilon_i$.
+  \item The implicit dependence through $\partial\psi_j/\partial n_i$ gives
+        \[\sum_jn_j\bigl[\langle\partial_{n_i}\psi_j|\hat h_{KS}|\psi_j\rangle+\text{c.c.}\bigr]=\sum_jn_j\varepsilon_j\,\partial_{n_i}\langle\psi_j|\psi_j\rangle=0,\]
+        because each $\psi_j$ is an eigenfunction of $\hat h_{KS}$ and stays normalised.
+  \item Hence $\partial E/\partial n_i=\varepsilon_i$, for any $E_{xc}$ [verified: Janak, \emph{Phys.\ Rev.\ B} \textbf{18}, 7165 (1978), abstract].
+        Integrating, $E(n_i=1)-E(n_i=0)=\int_0^1\varepsilon_i(n)\dd n\approx\varepsilon_i(\tfrac12)$ (Slater's transition state).
+\end{enumerate}
+
+\subsection{The singlet--triplet gap as a HOMO-energy difference (frozen-orbital derivation)}
+Use the $2e/2o$ states of \cref{sec:energies} and define, for each state $X\in\{T,\text{OSS}\}$, the ``HOMO
+energy'' as minus the energy needed to remove the electron from $\pb$, leaving $\pa$ frozen (the
+Koopmans/$\Delta$SCF definition, \cref{eq:koopmans}). The ion has energy $E_{\text{ion}}=h_a$ in both cases.
+\begin{enumerate}
+  \item $\varepsilon_b^{T}=E_T-E_{\text{ion}}=h_b+J_{ab}-K_{ab}$.
+  \item $\varepsilon_b^{\text{OSS}}=E_{\text{OSS}}-E_{\text{ion}}=h_b+J_{ab}+K_{ab}$.
+  \item Subtract:
+        \begin{equation}\label{eq:STeps}
+          \boxed{E_{\text{OSS}}-E_T=\varepsilon_{\text{HOMO}}^{\text{OSS}}-\varepsilon_{\text{HOMO}}^{T}=2K_{ab}.}
+        \end{equation}
+\end{enumerate}
+\begin{resultbox}
+Within frozen orbitals the singlet--triplet gap \emph{is} the difference of the HOMO energies. The
+triplet's HOMO lies lower by $2K_{ab}$: it is more strongly bound, i.e.\ ``harder''. That is the sense in
+which the argument ``echoes'' the maximum-hardness principle. The sign convention is now fixed:
+STG $\equiv E_S-E_T=\varepsilon^{S}_{\text{HOMO}}-\varepsilon^{T}_{\text{HOMO}}$.
+Like Slater's argument, \cref{eq:STeps} has no dynamic correlation and no orbital relaxation, so it
+inherits the limitations discussed in \cref{sec:hund}.
+\end{resultbox}
+\begin{verifybox}
+T10 (\texttt{t10\_t12\_t13\_symbolic.py}): \cref{eq:STeps} symbolically. T2: the Koopmans identity
+$\varepsilon_k=E_N-E_{N-1}^{(k)}$ checked numerically for random integrals in a 3-electron case. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Liu \& Langenaeker, \emph{Theor.\ Chem.\ Acc.}\ \textbf{110}, 338 (2003), doi:10.1007/s00214-003-0487-6: not accessed
+(search summaries only state $\Delta E_{ST}=\Delta\varepsilon_{\text{HOMO}}$). The maximum-hardness connection is the
+review's wording and was not verified against the original.
+\end{sourcebox}

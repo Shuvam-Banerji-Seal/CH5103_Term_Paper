@@ -1,0 +1,88 @@
+% Step-by-step derivations of the mathematics in
+%   G. Gryn'ova, M. L. Coote, C. Corminboeuf, "Theory and practice of uncommon molecular
+%   electronic configurations", WIREs Comput. Mol. Sci. 2015, 5, 440-459. doi:10.1002/wcms.1233
+% Every numbered result is tied to a verification script in ../verification/ (see the summary section).
+% Build:  make derivations   (from the repository root)
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,enumitem,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=green!40!black,urlcolor=blue!60!black]{hyperref}
+\usepackage[nameinlink]{cleveref}
+
+\numberwithin{equation}{section}
+\setlist{itemsep=2pt,topsep=3pt}
+
+% ---- notation
+\newcommand{\pa}{\varphi_a}
+\newcommand{\pb}{\varphi_b}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\braket}[2]{\langle #1\vert #2\rangle}
+\newcommand{\mel}[3]{\langle #1\vert #2\vert #3\rangle}
+\newcommand{\ev}[1]{\langle #1\rangle}
+\newcommand{\eri}[4]{(#1#2\vert #3#4)}
+\newcommand{\Hop}{\hat H}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\abar}{\bar a}
+\newcommand{\bbar}{\bar b}
+
+% ---- boxes
+\tcbset{colback=white,boxrule=0.5pt,arc=1pt,left=4pt,right=4pt,top=3pt,bottom=3pt,fonttitle=\bfseries\small}
+\newtcolorbox{reviewclaim}{colframe=black!55,title=Statement in the review}
+\newtcolorbox{resultbox}{colframe=green!45!black,title=Result}
+\newtcolorbox{verifybox}{colframe=blue!55!black,title=Verification}
+\newtcolorbox{sourcebox}{colframe=orange!70!black,title=Original sources (status)}
+\newtcolorbox{caveatbox}{colframe=red!60!black,title=Caveat / correction}
+
+\newtheorem{proposition}{Proposition}[section]
+
+\title{Derivations for\\ \emph{``Theory and practice of uncommon molecular electronic configurations''}\\
+\large (Gryn'ova, Coote \& Corminboeuf, \emph{WIREs Comput.\ Mol.\ Sci.} \textbf{2015}, 5, 440--459)}
+\author{CH5103 term paper --- supporting derivations}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The review contains a small number of explicit formulas and a large number of verbal claims whose
+justification lives in the cited literature: Hund's rule and its competing explanations, static
+versus dynamic correlation, disjoint non-bonding orbitals, spin polarisation, the Ovchinnikov rule,
+the Janak/Koopmans view of singlet--triplet gaps, kinetic exchange, the arbitrariness of ROHF orbital
+energies, the 3d/4s problem, and the critique of the aufbau principle. This document derives each
+of them from first principles, one step at a time, states every assumption, and checks every
+result symbolically (SymPy) or numerically (PySCF, exact diagonalisation). Where the original papers
+could be read, their content is quoted; where they were paywalled, this is stated and only the
+independently derived mathematics is given. Two errors in the review are identified: a sign error
+in the two-determinant open-shell singlet (\cref{sec:twoe}), and the year of the Katriel--Pauncz
+reference (1977, not 1975). One claim is shown to be system-dependent (same-spin vs.\ opposite-spin
+correlation, \cref{sec:hund}).
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sec00_conventions}
+\input{sec01_antisymmetry}
+\input{sec02_two_electron}
+\input{sec03_energies}
+\input{sec04_holes}
+\input{sec05_hund}
+\input{sec06_static}
+\input{sec07_kinetic_exchange}
+\input{sec08_huckel}
+\input{sec09_spin_polarisation}
+\input{sec10_koopmans_janak}
+\input{sec11_quasi_closed_shell}
+\input{sec12_rohf}
+\input{sec13_3d4s}
+\input{sec14_quantum_numbers}
+\input{sec15_adiabatic}
+\input{sec16_broken_symmetry}
+\input{sec17_summary}
+
+\end{document}

@@ -1,0 +1,48 @@
+\section{Why individual electrons have no good quantum numbers}\label{sec:qn}
+
+\begin{reviewclaim}
+``\dots according to modern quantum mechanics, in the stationary states the quantum numbers of individual
+electrons do not commute with the Hamiltonian, only the total angular momentum does. For this reason
+\dots\ the Pauli exclusion principle has been reformulated to reflect the antisymmetry of the
+wavefunction \dots'' (p.~448, ref.~77 Scerri 1991). ``\dots assigning individual electrons to individual
+orbitals and individual sets of quantum numbers is erroneous'' (p.~441).
+\end{reviewclaim}
+
+\subsection{The commutators}
+Take an atom (nucleus at the origin), so $\Hop=\sum_i\hat h(i)+\sum_{i<j}r_{ij}^{-1}$ with
+$\hat h(i)=-\tfrac12\nabla_i^2-Z/r_i$. Orbital angular momentum of electron 1:
+$\hat{\mathbf l}_1=-i\,\mathbf r_1\times\nabla_1$.
+\begin{enumerate}
+  \item $\hat{\mathbf l}_1$ commutes with $\hat h(1)$ (spherical symmetry) and with $\hat h(j)$, $j\ne1$ (different variables).
+        The only possible obstruction is $1/r_{12}$.
+  \item Apply $\hat l_{1z}=-i(x_1\partial_{y_1}-y_1\partial_{x_1})$ to $V=1/r_{12}$, with
+        $\partial_{y_1}r_{12}^{-1}=-(y_1-y_2)/r_{12}^3$ and $\partial_{x_1}r_{12}^{-1}=-(x_1-x_2)/r_{12}^3$:
+        \[
+          \hat l_{1z}V=-i\,\frac{-x_1(y_1-y_2)+y_1(x_1-x_2)}{r_{12}^3}=-i\,\frac{x_1y_2-x_2y_1}{r_{12}^3}.
+        \]
+        Since $\hat l_{1z}$ is a first-order differential operator, $[\hat l_{1z},V]f=(\hat l_{1z}V)f$ for any $f$, so
+        \begin{equation}
+          [\hat l_{1z},\,r_{12}^{-1}]=-i\,\frac{x_1y_2-x_2y_1}{r_{12}^3}\neq0 .
+        \end{equation}
+  \item For electron 2, $\partial_{y_2}r_{12}^{-1}=+(y_1-y_2)/r_{12}^3$ etc., which gives
+        $\hat l_{2z}V=-i\,(x_2y_1-x_1y_2)/r_{12}^3=-\hat l_{1z}V$.
+  \item Hence $[\hat L_z,r_{12}^{-1}]=[\hat l_{1z}+\hat l_{2z},r_{12}^{-1}]=0$. The same holds for the $x$ and $y$
+        components. Physically, $\hat{\mathbf L}$ generates a simultaneous rotation of both electrons, which
+        leaves $r_{12}$ unchanged; $\hat{\mathbf l}_1$ rotates electron 1 alone, which changes $r_{12}$.
+  \item Consequently $[\Hop,\hat{\mathbf L}]=0$ and $[\Hop,\hat L^2]=0$, but $[\Hop,\hat{\mathbf l}_1]\neq0$ and $[\Hop,\hat l_1^2]\neq0$.
+        $\hat{\mathbf S}$ and $\hat S^2$ commute with $\Hop$ trivially, since $\Hop$ is spin-free.
+\end{enumerate}
+\begin{resultbox}
+Exact atomic eigenstates can be labelled by $L,M_L,S,M_S$ (and parity), not by one-electron $(n,l,m_l,m_s)$.
+Those labels belong to the independent-particle model, in which $1/r_{ij}$ is replaced by a spherically
+averaged mean field. Pauli's 1925 one-electron formulation is therefore a statement about that model. The
+exact, model-independent statement is the antisymmetry \cref{eq:antisym}.
+\end{resultbox}
+\begin{verifybox}
+T13 (\texttt{t10\_t12\_t13\_symbolic.py}): $[\hat l_{1z},r_{12}^{-1}]f$ evaluated symbolically on an arbitrary
+function $f$ reproduces the expression above. $[\hat L_k,r_{12}^{-1}]f=0$ for $k=x,y,z$, and $[\hat l_1^2,r_{12}^{-1}]\neq0$. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Scerri, \emph{Br.\ J.\ Philos.\ Sci.}\ \textbf{42}, 309 (1991); Pauli, \emph{Z.\ Phys.}\ \textbf{31}, 765 (1925): not
+accessed. The commutator algebra is standard and was verified here.
+\end{sourcebox}

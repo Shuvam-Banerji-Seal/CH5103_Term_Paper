@@ -1,0 +1,72 @@
+\section{ROHF orbital energies are not unique (canonicalisation)}\label{sec:rohf}
+
+\begin{reviewclaim}
+``\dots the orbitals themselves are neither observable, nor unique (in fact, erroneous non-aufbau
+occupations can be observed with restricted open-shell methods depending on the canonicalization
+parameters of the $\alpha$ and $\beta$ electrons in Fock matrix, see Ref 82) \dots'' (p.~449; ref.~82
+Glaesemann \& Schmidt 2010)
+\end{reviewclaim}
+
+\subsection{High-spin ROHF and its stationarity conditions}
+Orbital spaces: doubly occupied (core) $c$, singly occupied ($\alpha$ only) $o$, virtual $v$. Densities:
+$\mathbf D^\alpha=\mathbf D_c+\mathbf D_o$ and $\mathbf D^\beta=\mathbf D_c$. The energy has the UHF form
+$E[\mathbf D^\alpha,\mathbf D^\beta]$, so its first variation is
+\begin{equation}\label{eq:dE}
+  \delta E=\operatorname{tr}(\mathbf F^\alpha\,\delta\mathbf D^\alpha)+\operatorname{tr}(\mathbf F^\beta\,\delta\mathbf D^\beta),
+\end{equation}
+with $\mathbf F^\sigma=\partial E/\partial\mathbf D^\sigma$ the UHF Fock matrices built from the ROHF densities.
+\begin{enumerate}
+  \item An infinitesimal real rotation mixing orbital $q$ into orbital $p$ by angle $\kappa$ changes the density of a
+        spin $\sigma$ only if exactly one of $p,q$ is occupied in that spin. Then
+        $\delta\mathbf D^\sigma=\kappa(\ket p\bra q+\ket q\bra p)$, and $\delta E$ picks up $2\kappa F^\sigma_{pq}$.
+  \item \textbf{$c$--$o$ rotation:} for $\alpha$ both orbitals are occupied (no change); for $\beta$, $c$ is occupied
+        and $o$ empty. Stationarity requires $F^\beta_{co}=0$.
+  \item \textbf{$o$--$v$ rotation:} for $\alpha$, $o$ is occupied and $v$ empty; for $\beta$ both are empty.
+        Stationarity requires $F^\alpha_{ov}=0$.
+  \item \textbf{$c$--$v$ rotation:} both spins change. Stationarity requires $F^\alpha_{cv}+F^\beta_{cv}=0$.
+  \item \textbf{Rotations within $c$, within $o$, or within $v$} leave $\mathbf D^\alpha$ and $\mathbf D^\beta$ unchanged, hence
+        $\delta E=0$ \emph{identically}. Nothing in the variational principle fixes them.
+\end{enumerate}
+
+\subsection{Effective Fock operator and the arbitrariness of orbital energies}
+To get orbitals from a single eigenvalue problem, one builds an effective Fock matrix $\mathbf R$ whose
+off-diagonal blocks enforce steps 2--4:
+\begin{equation}
+  \mathbf R=\begin{pmatrix}
+  \mathbf R_{cc} & \mathbf F^\beta_{co} & \tfrac12(\mathbf F^\alpha+\mathbf F^\beta)_{cv}\\
+  \cdot & \mathbf R_{oo} & \mathbf F^\alpha_{ov}\\
+  \cdot & \cdot & \mathbf R_{vv}\end{pmatrix},\qquad
+  \mathbf R_{xx}=A_{xx}\mathbf F^\alpha_{xx}+B_{xx}\mathbf F^\beta_{xx}\ \ (\text{any choice}).
+\end{equation}
+At convergence the off-diagonal blocks vanish (steps 2--4), and the orbitals diagonalise each diagonal
+block separately. By step 5 the total energy, the densities and every observable derived from them are
+independent of $A_{xx},B_{xx}$. The \emph{orbital energies}, the eigenvalues of $\mathbf R_{xx}$, are not. The
+relative position of the SOMO (eigenvalue of $\mathbf R_{oo}$) and the HOMO of the closed shell (top
+eigenvalue of $\mathbf R_{cc}$) is therefore a matter of convention.
+
+\begin{verifybox}
+T11a (\texttt{t11\_rohf\_and\_distonic.py}), ROHF/6-31G*:
+\begin{itemize}
+  \item Stationarity: $|F^\beta_{co}|,|F^\alpha_{ov}|,|(F^\alpha+F^\beta)_{cv}|<10^{-7}$ for H$_2$NO, NO$_2$, CH$_3$ and allyl.
+        The blocks that need not vanish do not: $|F^\alpha_{co}|=0.11$, $|F^\beta_{ov}|=0.16$ (H$_2$NO). This confirms
+        steps 2--4. PySCF's \texttt{get\_roothaan\_fock} uses exactly these off-diagonal blocks.
+  \item Canonicalisation, H$_2$NO: $\varepsilon_{\text{SOMO}}=-0.119$ ($\mathbf R_{oo}=\tfrac12(\mathbf F^\alpha+\mathbf F^\beta)$),
+        $-0.440$ ($\mathbf F^\alpha$), $+0.203\,E_h$ ($\mathbf F^\beta$), while the closed-shell HOMO is $-0.467$. Same energy
+        $E=-130.36970936\,E_h$ in every case.
+  \item With one open orbital, $\varepsilon_{\text{SOMO}}(A)=AF^\alpha_{oo}+(1-A)F^\beta_{oo}$ is linear in $A$. The SOMO drops
+        below the HOMO for $A>A^*$, with $A^*\approx1.04$ for H$_2$NO and NO$_2$. The flip was verified explicitly.
+\end{itemize}
+\textbf{PASS}.
+\end{verifybox}
+\begin{caveatbox}
+For these ordinary radicals the ordering flips only for weights slightly outside the ``convex'' range
+$0\le A\le1$. So the review's warning is mathematically exact (the ordering is not invariant), but whether
+a \emph{standard} canonicalisation produces a spurious non-aufbau ordering depends on the molecule and
+the scheme. This is why the review, correctly, asks for evidence from observables: ionisation
+energies, redox potentials and the spin state of the products (\cref{sec:qcs}).
+\end{caveatbox}
+\begin{sourcebox}
+Glaesemann \& Schmidt, \emph{J.\ Phys.\ Chem.\ A} \textbf{114}, 8772 (2010), doi:10.1021/jp101758y: not accessed.
+The specific canonicalisation parameter sets they compare could not be checked. The derivation above
+is general.
+\end{sourcebox}

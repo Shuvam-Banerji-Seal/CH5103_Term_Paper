@@ -1,0 +1,85 @@
+\section{Static correlation: H$_2$ dissociation and the weak-interaction limit (Figure 2)}\label{sec:static}
+
+\begin{reviewclaim}
+``\dots dynamic correlation is weak compared to static correlation effects, i.e.\ correlation between
+configurations in the multireference wavefunction \dots\ The weaker the interaction between the two
+nonbonding molecular orbitals, the stronger the static correlation (Figure 2). This is clearly
+illustrated by \dots\ the H$_2$ homolytic dissociation curve or the singlet ground state of square
+cyclobutadiene \dots'' (p.~442)
+\end{reviewclaim}
+
+\subsection{H$_2$ in a minimal basis: exact two-configuration treatment}
+Basis: one $1s$ function on each nucleus, $\chi_A,\chi_B$, overlap $S$. By symmetry the MOs are
+\begin{equation}
+  \sigma_g\equiv\varphi_1=\frac{\chi_A+\chi_B}{\sqrt{2(1+S)}},\qquad
+  \sigma_u\equiv\varphi_2=\frac{\chi_A-\chi_B}{\sqrt{2(1-S)}} .
+\end{equation}
+$\varphi_1$ is even and $\varphi_2$ odd under inversion, so $h_{12}=\eri1112=\eri2221=0$ and \cref{eq:Hsinglet}
+splits. The OSS ($^1\Sigma_u^+$) is alone, and the two closed shells ($^1\Sigma_g^+$ symmetry) mix:
+\begin{equation}\label{eq:h2ci}
+  \mathbf H(^1\Sigma_g^+)=\begin{pmatrix}2h_{11}+J_{11}&K_{12}\\K_{12}&2h_{22}+J_{22}\end{pmatrix},\qquad
+  E_{\text{CI}}=\tfrac12\Bigl[E_1+E_2-\sqrt{(E_2-E_1)^2+4K_{12}^2}\Bigr],
+\end{equation}
+with $E_1=2h_{11}+J_{11}$ (the RHF energy), $E_2=2h_{22}+J_{22}$, and
+$E(^3\Sigma_u^+)=h_{11}+h_{22}+J_{12}-K_{12}$, $E(^1\Sigma_u^+)=h_{11}+h_{22}+J_{12}+K_{12}$
+(nuclear repulsion $1/R$ added to all).
+
+\subsection{The dissociation limit, step by step}
+Let $R\to\infty$, so $S\to0$ and all two-centre overlap densities $\chi_A\chi_B\to0$. Define the on-site
+repulsion $U=\eri AAAA$, the inter-site repulsion $V=\eri AABB\to1/R$, and the H-atom energy $E_H$.
+\begin{enumerate}
+  \item Orbital products: $\varphi_1^2=\tfrac12(\chi_A^2+\chi_B^2+2\chi_A\chi_B)\to\tfrac12(\chi_A^2+\chi_B^2)$,
+        $\varphi_2^2\to\tfrac12(\chi_A^2+\chi_B^2)$, $\varphi_1\varphi_2\to\tfrac12(\chi_A^2-\chi_B^2)$.
+  \item Two-electron integrals (each product contributes $\tfrac12\cdot\tfrac12$):
+        \begin{align*}
+        J_{11}=J_{22}=J_{12}&\to\tfrac14\bigl[\eri AAAA+\eri AABB+\eri BBAA+\eri BBBB\bigr]=\tfrac12(U+V),\\
+        K_{12}=\eri1212&\to\tfrac14\bigl[\eri AAAA-\eri AABB-\eri BBAA+\eri BBBB\bigr]=\tfrac12(U-V).
+        \end{align*}
+  \item One-electron integrals: $h_{11}=h_{22}\to h_{AA}=E_H-\tfrac1R$ (an electron on A also feels nucleus B
+        as a point charge at distance $R$).
+  \item RHF: $E_{\text{RHF}}=2h_{11}+J_{11}+\tfrac1R=2E_H-\tfrac2R+\tfrac12(U+V)+\tfrac1R\to2E_H+\tfrac U2-\tfrac1{2R}$.
+        \emph{The RHF error at dissociation is $U/2$}, which does not vanish.
+  \item Triplet: $E_T=2h_{11}+J_{12}-K_{12}+\tfrac1R=2E_H-\tfrac2R+V+\tfrac1R\to2E_H$. Correct.
+  \item CI: the diagonal elements are now equal ($E_1=E_2$), so by \cref{eq:h2ci}
+        $E_{\text{CI}}=E_1-K_{12}=2E_H+\tfrac U2-\tfrac1{2R}-\tfrac12(U-V)\to2E_H$. Correct.
+        The eigenvector has $c_1=-c_2=\tfrac1{\sqrt2}$: \emph{two configurations with equal weight}. This is
+        maximal static correlation.
+  \item What that eigenvector is: $\varphi_1(1)\varphi_1(2)-\varphi_2(1)\varphi_2(2)\to\tfrac12[(\chi_A+\chi_B)(\chi_A+\chi_B)-(\chi_A-\chi_B)(\chi_A-\chi_B)]
+        =\chi_A(1)\chi_B(2)+\chi_B(1)\chi_A(2)$, the purely covalent Heitler--London function. By contrast
+        $\varphi_1(1)\varphi_1(2)$ alone is $\tfrac12[\text{covalent}+\text{ionic}]$, which is the origin of the
+        $U/2$ error in step 4.
+  \item OSS: $E(^1\Sigma_u^+)=E_T+2K_{12}\to2E_H+U-V$. It is the antisymmetric \emph{ionic} combination.
+\end{enumerate}
+
+\begin{verifybox}
+T5 (\texttt{t03\_t05\_hund\_virial\_h2.py}), STO-3G, PySCF vs.\ the closed forms at $R=1.4,3,6,20$ bohr.
+RHF, 2$\times$2 CI\,=\,FCI and ROHF triplet agree with \cref{eq:h2ci} to $4\times10^{-16}\,E_h$ (max.\ deviation, tight SCF). At $R=20$:
+$E_{\text{CI}}=E_T=-0.933164=2E_H$; $E_{\text{RHF}}-2E_H=0.3623=K_{12}$; $J_{11}-K_{12}=0.050=1/R$ (so $U=J_{11}+K_{12}=0.7746$);
+$E(^1\Sigma_u^+)-2E_H=0.7246=U-1/R$. Every limit in steps 4--8 is reproduced. \textbf{PASS}.
+\end{verifybox}
+
+\subsection{General weak-interaction limit (Figure 2b, twisted ethylene)}
+Take the $2e/2o$ model with orbitals of different symmetry ($h_{ab}=\eri aaab=\eri bbba=0$), orbital
+energy gap $\Delta$ ($h_a=-\Delta/2$, $h_b=+\Delta/2$), and for simplicity $J_{aa}=J_{bb}\equiv J_d$,
+$J_{ab}\equiv J_x$. This describes the $\pi/\pi^*$ pair of ethylene, where $\Delta$ is the $\pi$--$\pi^*$
+splitting, which goes to $0$ at a $90^\circ$ twist.
+\begin{enumerate}
+  \item Closed-shell block: $\begin{pmatrix}J_d-\Delta&K\\K&J_d+\Delta\end{pmatrix}$, eigenvalues $J_d\pm\sqrt{\Delta^2+K^2}$.
+  \item Ground singlet: $E_S=J_d-\sqrt{\Delta^2+K^2}$, with coefficient ratio
+        $\dfrac{c_2}{c_1}=\dfrac{E_S-(J_d-\Delta)}{K}=\dfrac{\Delta-\sqrt{\Delta^2+K^2}}{K}$.
+  \item Limits: $\Delta\gg K$ gives $c_2/c_1\to0$ (one configuration, closed shell, no static correlation);
+        $\Delta\to0$ gives $c_2/c_1\to-1$ (two configurations of equal weight, a pure diradical).
+  \item Gap to the triplet ($E_T=J_x-K$): $E_S-E_T=(J_d-J_x)+K-\sqrt{\Delta^2+K^2}$.
+\end{enumerate}
+\begin{resultbox}
+Static correlation (the weight of the second configuration) is controlled by $\Delta/K$. The smaller
+the splitting of the two frontier orbitals (``weaker interaction''), the more multiconfigurational the
+singlet becomes, and the closer it comes to the triplet. This is the content of Figure~2(a,b).
+\end{resultbox}
+\begin{verifybox}
+T6 (\texttt{t06\_t09\_models.py}): eigenvalue, ratio and both limits verified symbolically. \textbf{PASS}.
+Balkov\'a \& Bartlett, \emph{J.\ Chem.\ Phys.}\ \textbf{101}, 8972 (1994), doi:10.1063/1.468057
+[abstract]: MR-CC places the square-cyclobutadiene singlet 6.9~kcal/mol below the triplet.
+\end{verifybox}
+Figure~2(c) (spin crossover in a transition-metal complex) is qualitative in the review and contains no
+mathematics to derive.

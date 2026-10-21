@@ -1,0 +1,80 @@
+\section{Dynamic spin polarisation, topology rules, Ovchinnikov and Lieb}\label{sec:spinpol}
+
+\begin{reviewclaim}
+``\dots instantaneous correlation effects, in particular the dynamic spin polarization (Scheme 1). A
+damped spin wave so formed generates ferromagnetic coupling between the spins separated by an odd number
+of sites, and antiferromagnetic between those separated by an even number of sites, thus yielding the
+topology rules of spin coupling. Within the spin-Hamiltonian VB theory, Ovchinnikov's qualitative rule
+dictates that the most spin-alternant determinant is expected to have the lowest energy and the highest
+contribution.'' (p.~443)
+\end{reviewclaim}
+
+\subsection{Spin polarisation is a correlation effect}
+\begin{enumerate}
+  \item In Hückel (independent-electron) theory the unpaired electron of an odd alternant radical sits in
+        the NBMO. By \cref{sec:huckel} the NBMO vanishes on the smaller (unstarred) set. The spin density on
+        unstarred atoms is therefore \emph{exactly zero}.
+  \item Add on-site repulsion $U\sum_i\hat n_{i\uparrow}\hat n_{i\downarrow}$ (Hubbard model). An $\uparrow$ electron
+        in the NBMO repels $\downarrow$ density on the starred atoms more than $\uparrow$ density. Paired
+        electrons therefore rearrange so that $\downarrow$ density accumulates on the neighbouring (unstarred)
+        atoms: a negative spin density appears between positive ones. This is Scheme~1 of the review.
+\end{enumerate}
+\begin{verifybox}
+T9: pentadienyl radical (5-site chain, 5 electrons, $S_z=\tfrac12$), exact diagonalisation.
+$U=0$: $\rho_s=(0.333,0,0.333,0,0.333)$. $U=3t$: $\rho_s=(0.451,-0.182,0.462,-0.182,0.451)$, sum $=1$.
+The alternation appears only with $U\neq0$. \textbf{PASS}.
+\end{verifybox}
+
+\subsection{Odd/even rule from the bipartite structure}
+\begin{enumerate}
+  \item From \cref{sec:kinex}, for $U\gg t$ each bond carries an antiferromagnetic coupling
+        $J_{\text{AF}}=4t^2/U$. At half filling the low-energy physics is the Heisenberg model
+        $\hat H=J_{\text{AF}}\sum_{\langle ij\rangle}\hat{\mathbf S}_i\cdot\hat{\mathbf S}_j$.
+  \item On a bipartite graph every bond joins $\mathcal A$ to $\mathcal B$. The energy is lowest when neighbours
+        are antiparallel: spins on $\mathcal A$ point one way and spins on $\mathcal B$ the other (the Néel pattern).
+  \item Two sites are in the same set iff the path between them has an even number of bonds, i.e.\ an
+        \emph{odd} number of intervening atoms. Hence:
+        same set $\Rightarrow$ parallel (ferromagnetic); different sets $\Rightarrow$ antiparallel.
+  \item Example: in $m$-xylylene the radical CH$_2$ carbons are joined via 3 intervening ring atoms (odd), so
+        they couple ferromagnetically (triplet). In $p$-xylylene there are 4 (even), so the coupling is
+        antiferromagnetic: a singlet (actually Kekulé, closed shell). This is the review's rule.
+\end{enumerate}
+
+\subsection{Ovchinnikov's rule and Lieb's theorem}
+\begin{enumerate}
+  \item Counting the Néel configuration: $n_A$ spins up and $n_B$ spins down gives $S=\tfrac12|n_A-n_B|$.
+        This is \textbf{Ovchinnikov's rule} for the ground-state spin of an alternant hydrocarbon,
+        $S=\tfrac12|n^*-n^\circ|$.
+  \item The rule was conjectured from VB/Heisenberg arguments. Lieb (1989) proved it rigorously for the
+        repulsive Hubbard model at half filling on any bipartite graph: \emph{the ground state is unique and
+        has $S=\tfrac12\bigl||\mathcal B|-|\mathcal A|\bigr|$}, for every $U>0$ [verified: \emph{Phys.\ Rev.\ Lett.}\ \textbf{62}, 1201 (1989)].
+  \item Consequences: CBD and TME ($n_A=n_B$) have singlet ground states; TMM (1/3) and MX (3/5) are triplets;
+        TriMB (3/6) is a quartet; 1,2,4,5-tetramethylenebenzene (5/5) is a singlet. These are the review's
+        Figure~3 assignments.
+\end{enumerate}
+\begin{verifybox}
+T9: Hubbard model ($t=1$, $U=3$), exact diagonalisation in every $S_z$ sector. The ground-state $S$ equals
+$\tfrac12|n_A-n_B|$ for all 7 graphs: CBD 0, TMM 1, TME 0, MX 1, TriMB $\tfrac32$, TetraMB 0, $p$-xylylene 0. \textbf{PASS}.
+\end{verifybox}
+
+\subsection{Disjoint diradicals: the singlet is selected by spin polarisation (Kollmar--Staemmler)}
+For disjoint NBMOs (CBD, TME) the first-order gap $2K_{ab}$ vanishes (\cref{sec:huckel}). The degeneracy is
+lifted only at second order, through the spin-polarised configurations above. In D$_{4h}$ CBD, ``the
+bonding $\pi$-electrons can partially localize on the same pair of atoms as the same-spin unpaired
+electrons; however, in the triplet state such advantageous spin polarization is not possible'' (review,
+p.~443). The numerical signature is a gap $\propto U^2$, with the singlet lower.
+\begin{verifybox}
+T9b: gap $E_T-E_S>0$ (singlet lower), scaling as $U^{1.97}$ (CBD) and $U^{1.95}$ (TME) for $U\to0$;
+cf.\ linear scaling with the triplet lower for the nondisjoint TMM and MX. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Kollmar \& Staemmler, \emph{Theor.\ Chim.\ Acta} \textbf{48}, 223 (1978), doi:10.1007/BF00549021 (not accessed).
+Ovchinnikov, \emph{Theor.\ Chim.\ Acta} \textbf{47}, 297 (1978), doi:10.1007/BF00549259: $S=(N_A-N_B)/2$ as quoted in
+arXiv:1906.08544. Lieb 1989: statement verified.
+\end{sourcebox}
+\begin{caveatbox}
+Ovchinnikov's rule and Lieb's theorem apply to \emph{alternant} (bipartite) $\pi$ systems described by
+Hubbard/Heisenberg-type models. The review's own counterexamples (pyridinium analogue V, Figure~6;
+$\sigma$--$\pi$ diradicals such as the didehydrotoluenes) lie outside these assumptions. This is consistent
+with its warning that such rules ``inevitably'' have ``limited scope''.
+\end{caveatbox}

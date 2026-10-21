@@ -1,0 +1,138 @@
+\section{Hund's multiplicity rule: Slater's argument, the virial theorem and ``less screening''}\label{sec:hund}
+
+\begin{reviewclaim}
+``Slater's original explanation of the Hund's rule preference for the high-spin state was therefore
+based upon less electron--electron Coulomb repulsion in the triplet state \dots\ However, it has been
+later shown that the electron--electron repulsion is actually greater in the high-spin state, and an
+alternative explanation---the so-called less screening rule---has been offered. According to this rule,
+Fermi holes in the triplet state lead to decreased screening of the nucleus and larger
+electron--nucleus attraction. While this in turn causes the electron clouds to contract and partially
+restores the electron--electron repulsion, the system overall is nonetheless stabilized.'' (p.~442,
+refs.~11--14). Also: ``the absolute value of the correlation energy is approximately an order of
+magnitude lower for a pair of two same-spin electrons compared to that of opposite-spin electrons'' (ref.~16).
+\end{reviewclaim}
+
+\subsection{Slater's argument (frozen orbitals)}
+From \cref{eq:ET,eq:EOSS}, with identical orbitals in both states,
+\begin{gather}\label{eq:slater}
+  E_T-E_{\text{OSS}}=-2K_{ab}<0,\qquad
+  \underbrace{\ev{V_{ee}}_T-\ev{V_{ee}}_{\text{OSS}}}_{=(J-K)-(J+K)}=-2K_{ab},\\
+  \ev{T}_T-\ev{T}_{\text{OSS}}=0,\qquad \ev{V_{ne}}_T-\ev{V_{ne}}_{\text{OSS}}=0 .
+\end{gather}
+All of the stabilisation is assigned to $V_{ee}$.
+
+\subsection{The virial theorem (scaling proof)}
+\begin{proposition}\label{prop:virial}
+For an exact bound eigenstate of an atom (one nucleus at the origin), $2\ev{T}+\ev{V}=0$, hence
+$E=-\ev{T}=\tfrac12\ev V$. The same holds for any approximate wavefunction that is variationally optimal
+with respect to uniform scaling.
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item For a normalised $\Psi$ define $\Psi_\eta(\mathbf r_1,\dots,\mathbf r_N)=\eta^{3N/2}\Psi(\eta\mathbf r_1,\dots,\eta\mathbf r_N)$
+        with $\eta>0$. Substituting $\mathbf s_i=\eta\mathbf r_i$ ($\dd^{3N}r=\eta^{-3N}\dd^{3N}s$) shows that
+        $\Psi_\eta$ is normalised.
+  \item Kinetic energy: $\nabla_{\mathbf r}=\eta\nabla_{\mathbf s}$, so $\ev{T}_\eta=\eta^2\ev T$.
+  \item Potential energy: every Coulomb term ($-Z/r_i$ and $1/r_{ij}$) is homogeneous of degree $-1$,
+        $1/r=\eta/s$, so $\ev V_\eta=\eta\ev V$.
+  \item $E(\eta)=\eta^2\ev T+\eta\ev V$. The exact eigenstate is a stationary point of the energy
+        functional with respect to \emph{all} variations, in particular this one, so
+        $\left.\dd E/\dd\eta\right|_{\eta=1}=2\ev T+\ev V=0$.
+  \item Then $E=\ev T+\ev V=\ev T-2\ev T=-\ev T$, and $E=\tfrac12\ev V$.
+  \item (Molecules: the nuclear positions also scale. One finds $2\ev T+\ev V=-\sum_A\mathbf R_A\cdot\nabla_{\mathbf R_A}E$,
+        which vanishes at an equilibrium geometry.)\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection{Why the frozen-orbital argument cannot be the true mechanism}
+\begin{enumerate}
+  \item Apply \cref{prop:virial} to both exact states and subtract:
+        \begin{equation}\label{eq:virialdiff}
+          \Delta E\equiv E_T-E_S=-\Delta\ev T=\tfrac12\bigl(\Delta\ev{V_{ne}}+\Delta\ev{V_{ee}}\bigr).
+        \end{equation}
+  \item In \cref{eq:slater} $\Delta\ev T=0$. By \cref{eq:virialdiff} this would force $\Delta E=0$, contradicting
+        $\Delta E=-2K<0$. The frozen-orbital pair of states violates the virial theorem, so it cannot
+        describe how the \emph{exact} energy difference is partitioned. (This is precisely the objection of
+        Hongo et al.: ``This assumption leaves the kinetic energy $T$ unchanged for different spin states,
+        which cannot be correct as each eigenstate must satisfy the virial theorem.'')
+  \item Since $\Delta E<0$, \cref{eq:virialdiff} demands $\Delta\ev T>0$ (the triplet electrons are more
+        compressed) and $\Delta\ev V=2\Delta E<0$. If, as the review states, $\Delta\ev{V_{ee}}>0$, then necessarily
+        \begin{equation}\label{eq:lessscreen}
+          \Delta\ev{V_{ne}}=2\Delta E-\Delta\ev{V_{ee}}<2\Delta E<0,\qquad|\Delta\ev{V_{ne}}|>\Delta\ev{V_{ee}} .
+        \end{equation}
+        The triplet is stabilised by a stronger electron--nucleus attraction that over-compensates the
+        larger electron--electron repulsion: the less-screening mechanism.
+  \item Physical picture: the Fermi hole (\cref{sec:holes}) keeps parallel electrons apart, so each
+        electron screens the nucleus less from the other. The electrons contract towards the nucleus,
+        which lowers $V_{ne}$, raises $T$ (\cref{eq:virialdiff}), and also raises $V_{ee}$, because
+        contracted electrons are on average closer together.
+\end{enumerate}
+
+\subsection{Numerical test: helium $1s2s$, $2\,^3S$ versus $2\,^1S$}
+Helium is the simplest case: two electrons, and the same configuration $1s2s$ gives a singlet and a triplet.
+The two-electron Schr\"odinger equation was solved exactly within a large even-tempered Gaussian basis
+($16s7p4d$). The spatial function $\Psi(1,2)=\sum_{pq}C_{pq}\varphi_p(1)\varphi_q(2)$ is restricted to symmetric
+$C$ (singlet) or antisymmetric $C$ (triplet), following \cref{sec:anti}. The exponents were uniformly scaled
+by the variationally optimal $\eta^2$, which by \cref{prop:virial} enforces the virial theorem.
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+state & $E$ & exact $E$ (Drake) & $\ev T$ & $\ev{V_{ne}}$ & $\ev{V_{ee}}$\\
+\midrule
+$2\,^3S$ & $-2.175212$ & $-2.175229$ & $2.175212$ & $-4.618633$ & $0.268208$\\
+$2\,^1S$ & $-2.145865$ & $-2.145974$ & $2.145865$ & $-4.541465$ & $0.249735$\\
+\midrule
+$\Delta(T-S)$ & $-0.029347$ & $-0.029255$ & $+0.029347$ & $-0.077168$ & $+0.018473$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The virial ratio $-\ev V/\ev T=2.000000$ for both states. Check of \cref{eq:virialdiff}:
+$\tfrac12(-0.077168+0.018473)=-0.029348\approx\Delta E$. The triplet has the \emph{larger} electron
+repulsion ($+0.0185\,E_h$), the opposite of Slater's picture. It is stabilised by a $0.077\,E_h$ gain in
+nuclear attraction, exactly as in \cref{eq:lessscreen}.
+
+\paragraph{Literature values for carbon ($^3P$ vs.\ $^1D$), Hongo et al.\ 2004, Table I [verified: arXiv cond-mat/0408147].}
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+method & $\Delta\ev{V_{ee}}$ & $\Delta\ev{V_{en}}$ & $\Delta\ev T$\\
+\midrule
+HF & $+0.032$ & $-0.145$ & $+0.057$\\
+DMC (linear estimator) & $+0.074$ & $-0.169$ & $+0.048$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(Values in $E_h$, triplet minus singlet, computed from their Table~I.) The pattern is the same as for He.
+
+\subsection{Same-spin versus opposite-spin correlation}
+The review (citing Krylov 2001) states that the correlation energy of a same-spin pair is about an order
+of magnitude smaller than that of an opposite-spin pair. Krylov's introduction says this
+[verified: ScienceDirect preview of Chem.\ Phys.\ Lett.\ 338, 375]. The reason is the Fermi hole: the
+same-spin pair is already kept apart at the mean-field level, so there is less left for correlation to do.
+Tests:
+\begin{itemize}
+  \item He: $E_{\text{corr}}(1\,^1S)=-0.04205$ (one $\uparrow\downarrow$ pair) vs.\ $E_{\text{corr}}(2\,^3S)=-0.00098\,E_h$
+        (one $\uparrow\uparrow$ pair; exact minus ROHF in the same basis). Ratio $0.023$: the statement holds,
+        and strongly.
+  \item Molecules, MP2/cc-pVTZ, frozen core: same-spin/opposite-spin ratio of the total correlation energy
+        is $0.32$ (H$_2$O), $0.35$ (N$_2$), $0.27$ (C$_2$H$_4$). \emph{Per pair} it is $0.43$, $0.43$, $0.32$.
+\end{itemize}
+\begin{caveatbox}
+``An order of magnitude'' is right for compact two-electron systems such as He, but overstated for
+valence electrons in molecules at the MP2 level, where same-spin pairs carry roughly one third of the
+correlation per pair. This is consistent with the empirical SCS-MP2 scaling ($c_{os}=6/5$, $c_{ss}=1/3$; Grimme 2003).
+\end{caveatbox}
+
+\begin{verifybox}
+T4 (\texttt{t03\_t05\_hund\_virial\_h2.py}): energies within $1.7\times10^{-5}$ and $1.1\times10^{-4}\,E_h$ of the exact
+values; virial satisfied; $\Delta V_{ee}>0$, $\Delta V_{ne}<0$, $|\Delta V_{ne}|>\Delta V_{ee}$. \textbf{PASS}.
+T15 (\texttt{t09b\_t15\_correlation.py}): numbers above. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Boyd, \emph{Nature} \textbf{310}, 480 (1984), doi:10.1038/310480a0. Abstract read: Hund's rule is a
+consequence of Fermi correlation, which leads to less screening of the nucleus in the high-spin state.
+Hongo et al., \emph{J.\ Chem.\ Phys.}\ \textbf{121}, 7144 (2004): full text read (arXiv). Katriel \& Pauncz,
+\emph{Adv.\ Quantum Chem.}\ \textbf{10}, 143 (\textbf{1977}, not 1975 as cited), doi:10.1016/S0065-3276(08)60580-8:
+not accessed. Hongo et al., \emph{J.\ Magn.\ Magn.\ Mater.}\ \textbf{310}, e560 (2007): not accessed.
+Slater (1929): cited by the review only via Kollmar \& Staemmler (ref.~9).
+\end{sourcebox}

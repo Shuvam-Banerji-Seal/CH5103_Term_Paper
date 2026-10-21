@@ -1,0 +1,91 @@
+\section{Localised orbitals, ionic configurations and kinetic exchange}\label{sec:kinex}
+
+\begin{reviewclaim}
+``The kinetic exchange picture based on the Hubbard model is a related, yet also simplistic (and not
+satisfying virial theorem) spin alignment rule. It attributes stability of a singlet state in the case
+of orthogonal atomic orbitals (AOs) to the fact that perturbation yielding ionic configuration is
+allowed only from this state, and not from the triplet.'' (p.~442, ref.~19 Yamanaka et al.\ 2005).
+Also: ``the importance of resonance between open-shell singlet and closed-shell zwitterionic
+configurations'' (p.~444, Figure~6).
+\end{reviewclaim}
+
+\subsection{Two-site model in a localised basis}
+Two orthonormal localised orbitals $l,r$ (one per radical centre). Parameters:
+\begin{gather}
+  h_{ll}=h_{rr}=0,\quad h_{lr}=-t,\quad U=\eri llll=\eri rrrr,\quad V=\eri llrr,\\
+  k=\eri lrlr\ (\ge0),\quad \eri lllr=\eri rrrl=0 .
+\end{gather}
+($V=k=0$ is the Hubbard dimer; $V,k\neq0$ the ``extended'' model.)
+
+\paragraph{Configurations.} \Cref{sec:twoe} with $a\to l$, $b\to r$: covalent singlet
+$\Phi_{\text{cov}}=\tfrac1{\sqrt2}[l(1)r(2)+r(1)l(2)]\Theta_{0,0}$; ionic $l(1)l(2)\Theta_{0,0}$ and $r(1)r(2)\Theta_{0,0}$;
+triplet $\tfrac1{\sqrt2}[l(1)r(2)-r(1)l(2)]\Theta_{1,M}$.
+
+\paragraph{Step 1: the triplet cannot mix with ionic configurations.} An ionic configuration has both
+electrons in the same spatial orbital, so its spatial part $l(1)l(2)$ is symmetric. By \cref{sec:anti} it
+must carry the singlet spin function. Since $\Hop$ is spin-free, $\mel{\text{ionic}}{\Hop}{\text{triplet}}=0$
+(orthogonal spin parts). This is the precise meaning of ``perturbation yielding ionic configuration is
+allowed only from'' the singlet.
+
+\paragraph{Step 2: matrix elements.} Insert the parameters into \cref{eq:Hsinglet,eq:ET}:
+\begin{equation}
+  E_T=V-k,\qquad
+  \mathbf H_S=\begin{pmatrix}U&k&-\sqrt2t\\k&U&-\sqrt2t\\-\sqrt2t&-\sqrt2t&V+k\end{pmatrix}
+  \ \ (\text{basis } ll,\ rr,\ \text{cov}).
+\end{equation}
+
+\paragraph{Step 3: symmetry-adapt the ionic pair.} $\Phi_{\text{ion}\pm}=\tfrac1{\sqrt2}(ll\pm rr)$ has
+energy $U\pm k$. Its coupling to cov is $\tfrac1{\sqrt2}(-\sqrt2t\mp\sqrt2t)$, i.e.\ $-2t$ for ion$+$ and
+$0$ for ion$-$. The ground singlet comes from the $2\times2$ block
+$\begin{pmatrix}V+k&-2t\\-2t&U+k\end{pmatrix}$:
+\begin{equation}\label{eq:ES_ext}
+  E_S=\tfrac12\Bigl[U+V+2k-\sqrt{(U-V)^2+16t^2}\Bigr].
+\end{equation}
+
+\paragraph{Step 4: singlet--triplet gap and its expansion.}
+\begin{equation}\label{eq:gap_ext}
+  E_S-E_T=\tfrac12(U-V)+2k-\tfrac12\sqrt{(U-V)^2+16t^2}
+  \;=\;2k-\frac{4t^2}{U-V}+O\!\left(\frac{t^4}{(U-V)^3}\right),
+\end{equation}
+using $\sqrt{x^2+16t^2}=x+8t^2/x+O(t^4/x^3)$ for $x=U-V\gg t$.
+
+\begin{resultbox}
+Two competing terms:
+\begin{itemize}
+  \item $+2k$, \emph{potential (direct) exchange}. It favours the triplet (Hund-like, \cref{sec:energies}).
+  \item $-4t^2/(U-V)$, \emph{kinetic exchange}. The covalent singlet lowers its energy by virtual hopping into the
+        ionic configuration (second-order perturbation: $|{-2t}|^2/[(V+k)-(U+k)]$). The triplet cannot do this
+        (step~1), so it favours the singlet.
+\end{itemize}
+Mapped onto $\hat H_{\text{spin}}=-2J\,\hat{\mathbf S}_1\cdot\hat{\mathbf S}_2$ (for which $E_S-E_T=2J$):
+$J\simeq k-2t^2/(U-V)$. For the pure Hubbard dimer ($V=k=0$), $E_S=\tfrac12(U-\sqrt{U^2+16t^2})\simeq-4t^2/U$
+and $E_T=0$, i.e.\ antiferromagnetic coupling $J_{\text{AF}}=4t^2/U$ in the convention
+$\hat H=J_{\text{AF}}\hat{\mathbf S}_1\cdot\hat{\mathbf S}_2$.
+\end{resultbox}
+
+\paragraph{Ionic resonance in charged polyradicals (Figure 6).} Pyridinium-bridged diradicals (V in
+Figure~6) are the case where the closed-shell zwitterionic (``ionic'') resonance structures are low in
+energy: effectively $U-V$ is small. By \cref{eq:gap_ext} the kinetic term $-4t^2/(U-V)$ then grows and
+can overcome $2k$, reversing the topology-predicted triplet. This is the review's point that this
+contribution ``exceeds the exchange and Coulomb terms''. (A qualitative mapping; the review gives no
+numbers.)
+
+\paragraph{On ``not satisfying the virial theorem''.} The Hubbard model has no separate $\hat T$ and $\hat V$.
+Its energy is not a stationary point with respect to coordinate scaling, so \cref{prop:virial} cannot be
+imposed. Like the frozen-orbital model of \cref{sec:hund}, it cannot say which physical energy component
+pays for the spin preference.
+
+\paragraph{Relation to delocalised orbitals.} With $a,b=(l\pm r)/\sqrt2$ one finds
+$a(1)a(2)-b(1)b(2)=l(1)r(2)+r(1)l(2)$ (as in \cref{sec:static}, step 7). The ``two-configuration'' singlet of
+the delocalised picture is the covalent singlet of the localised picture. Static correlation in one
+basis is the absence of ionic character in the other.
+
+\begin{verifybox}
+T7 (\texttt{t06\_t09\_models.py}): \cref{eq:ES_ext,eq:gap_ext} verified symbolically, including the series
+coefficient $-4t^2/U$; and numerically against PySCF full CI with the same integrals ($t=1$, $U=6$,
+$V=1.5$, $k=0.2$), and against an independent fermionic exact-diagonalisation code. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Yamanaka et al., \emph{Int.\ J.\ Quantum Chem.}\ \textbf{105}, 687 (2005): not accessed. The derivation above
+is the standard Anderson kinetic-exchange argument, reconstructed independently and tested.
+\end{sourcebox}

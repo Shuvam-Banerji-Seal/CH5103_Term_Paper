@@ -1,0 +1,31 @@
+\section{Conventions}\label{sec:conv}
+
+\begin{itemize}
+  \item Atomic units throughout: $\hbar=m_e=e=4\pi\varepsilon_0=1$; energies in hartree ($E_h$).
+  \item Non-relativistic, clamped-nuclei electronic Hamiltonian for $N$ electrons and nuclei $A$ with
+        charges $Z_A$ at $\mathbf R_A$:
+        \begin{equation}\label{eq:H}
+          \Hop=\sum_{i=1}^{N}\hat h(i)+\sum_{i<j}\frac{1}{r_{ij}},\qquad
+          \hat h(i)=-\tfrac12\nabla_i^2-\sum_A\frac{Z_A}{|\mathbf r_i-\mathbf R_A|}.
+        \end{equation}
+        $\Hop$ contains no spin operators.
+  \item Spatial orbitals $\varphi_p(\mathbf r)$ are real and orthonormal, $\braket{\varphi_p}{\varphi_q}=\delta_{pq}$.
+        Spin functions: $\alpha,\beta$, with $\braket{\alpha}{\alpha}=\braket{\beta}{\beta}=1$, $\braket{\alpha}{\beta}=0$.
+        Spin orbitals: $\varphi_p\alpha\equiv p$, $\varphi_p\beta\equiv\bar p$.
+        Shorthand: $\varphi_p(1)\equiv\varphi_p(\mathbf r_1)$, $\alpha_1\equiv\alpha(\sigma_1)$.
+  \item One- and two-electron integrals (chemists' notation):
+        \begin{align}
+          h_{pq}&=\int\varphi_p(\mathbf r)\,\hat h\,\varphi_q(\mathbf r)\dd\mathbf r,\\
+          \eri pqrs&=\iint\frac{\varphi_p(1)\varphi_q(1)\,\varphi_r(2)\varphi_s(2)}{r_{12}}\dd\mathbf r_1\dd\mathbf r_2,
+        \end{align}
+        with Coulomb and exchange integrals
+        \begin{equation}\label{eq:JK}
+          J_{pq}=\eri ppqq,\qquad K_{pq}=\eri pqpq .
+        \end{equation}
+        For real orbitals $\eri pqrs=\eri qprs=\eri pqsr=\eri rspq$ (8-fold symmetry).
+  \item Unnormalised $2\times2$ Slater determinant of spin orbitals $\chi_1,\chi_2$:
+        $D[\chi_1,\chi_2]=\chi_1(1)\chi_2(2)-\chi_2(1)\chi_1(2)$; the normalised determinant is
+        $\tfrac1{\sqrt2}D$, written $\ket{\chi_1\chi_2}$.
+  \item Tags used: \textbf{[paper]} = stated in the review; \textbf{[derived]} = derived here;
+        \textbf{[verified: \dots]} = checked in this work against a source or a calculation.
+\end{itemize}

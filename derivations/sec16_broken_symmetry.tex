@@ -1,0 +1,41 @@
+\section{Broken-symmetry DFT/UHF and spin projection}\label{sec:bs}
+
+\begin{reviewclaim}
+``In terms of computations, relatively `cheap' methods such as unrestricted or broken symmetry formalisms
+suffer from a number of serious drawbacks \dots'' (p.~443)
+\end{reviewclaim}
+
+\subsection{Why a single unrestricted determinant cannot be an open-shell singlet}
+Take the $2e/2o$ broken-symmetry (BS) determinant $\ket{a'\bar b'}$ with $a'$ localised mostly on centre $l$ and
+$b'$ mostly on $r$. In the orthonormal basis $\pa,\pb$ (overlap $\braket{a'}{b'}=s$) it is a mixture of the
+$M_S=0$ singlet and triplet (\cref{sec:twoe}, \cref{eq:T0,eq:OSS}). Its spin expectation value is
+\begin{equation}
+  \ev{\hat S^2}_{\text{BS}}=S_z(S_z+1)+N_\beta-\sum_{i\in\alpha,\,j\in\beta}|\braket{i}{j}|^2=0+1-s^2,
+\end{equation}
+which lies between $0$ (pure singlet, $s=1$) and $1$ (equal singlet--triplet mixture, $s=0$).
+
+\subsection{Yamaguchi's approximate projection}
+\begin{enumerate}
+  \item Model: $\hat H=-2J\,\hat{\mathbf S}_1\cdot\hat{\mathbf S}_2$. With $\hat{\mathbf S}_1\cdot\hat{\mathbf S}_2=\tfrac12[S(S+1)-\tfrac32]$:
+        $E_T=-\tfrac J2$, $E_S=\tfrac{3J}2$, so $E_S-E_T=2J$.
+  \item Write the BS state as $\Psi_{\text{BS}}=c_S\Psi_S+c_T\Psi_T$ ($M_S=0$), so $\ev{\hat S^2}_{\text{BS}}=2|c_T|^2$ and
+        $E_{\text{BS}}=|c_S|^2E_S+|c_T|^2E_T$.
+  \item Then $E_{\text{BS}}-E_T=|c_S|^2(E_S-E_T)=\bigl(1-\tfrac12\ev{\hat S^2}_{\text{BS}}\bigr)2J=\bigl(2-\ev{\hat S^2}_{\text{BS}}\bigr)J$.
+  \item With $E_{\text{HS}}=E_T$ (single determinant, exact in this model) and $\ev{\hat S^2}_{\text{HS}}=2$:
+        \begin{equation}\label{eq:yamaguchi}
+          \boxed{J=\frac{E_{\text{BS}}-E_{\text{HS}}}{\ev{\hat S^2}_{\text{HS}}-\ev{\hat S^2}_{\text{BS}}}},\qquad E_S-E_T=2J .
+        \end{equation}
+\end{enumerate}
+\begin{verifybox}
+T14 (\texttt{t06\_t09\_models.py}): BS-UHF solved self-consistently for the Hubbard dimer.
+Yamaguchi's $J$ compared with the exact $J=(E_S-E_T)/2=\tfrac14(U-\sqrt{U^2+16t^2})$:
+relative error $-7.7\%$ ($U=3t$), $-0.9\%$ ($6t$), $-0.1\%$ ($12t$), $<0.05\%$ ($24t$). The projection works when the
+two centres are weakly coupled (strongly correlated, $\ev{\hat S^2}_{\text{BS}}\to1$) and degrades as the
+system becomes more covalent. This is one of the ``serious drawbacks'' of the cheap approaches. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Formula as given by secondary sources (IntechOpen chapter, ORCA manual) and attributed to Yamaguchi and
+co-workers (1986/1988). Original papers not accessed. The derivation above is self-contained. Sign
+conventions differ between sources; the one used here is $\hat H=-2J\hat{\mathbf S}_1\cdot\hat{\mathbf S}_2$, with $J<0$
+antiferromagnetic.
+\end{sourcebox}

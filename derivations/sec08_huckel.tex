@@ -1,0 +1,86 @@
+\section{Non-bonding MOs, disjointness and the sign of $K$ (Borden--Davidson)}\label{sec:huckel}
+
+\begin{reviewclaim}
+``Borden and Davidson proposed to classify the nonbonding molecular orbitals (NBMOs) $\varphi_a$ and
+$\varphi_b$ as either disjoint or nondisjoint. If the two orbitals do not have common atoms and the
+probability of two electrons occupying the same space is nil independent of their spins, they are
+termed disjoint. Under such circumstances, the energy of an open-shell singlet can become comparable to
+or even lower than that of a triplet.'' (p.~443) Examples: CBD, TME (disjoint, singlet); MX, TriMB
+(nondisjoint, high spin) (p.~443--444, Figure~3).
+\end{reviewclaim}
+
+\subsection{Hückel NBMOs: the zero-sum rule}
+Hückel Hamiltonian for a conjugated $\pi$ system with adjacency matrix $\mathbf A$ ($A_{ij}=1$ if atoms
+$i,j$ are bonded): $\mathbf H=\alpha\mathbf 1+\beta\mathbf A$. Writing $E=\alpha+x\beta$, the secular equation
+is $\mathbf A\mathbf c=x\mathbf c$.
+\begin{enumerate}
+  \item An NBMO has $E=\alpha$, i.e.\ $x=0$, so $\mathbf A\mathbf c=\mathbf 0$.
+  \item Row $i$ of this equation reads $\sum_{j\in\mathcal N(i)}c_j=0$. \textbf{Zero-sum rule:} for every atom, the
+        NBMO coefficients of its neighbours sum to zero.
+\end{enumerate}
+
+\subsection{Alternant hydrocarbons: pairing theorem and NBMO count}
+If the atoms split into ``starred'' ($\mathcal A$, $n_A$ atoms) and ``unstarred'' ($\mathcal B$, $n_B$ atoms) sets with
+bonds only between the sets (a bipartite graph), then in that ordering
+$\mathbf A=\begin{pmatrix}\mathbf0&\mathbf B\\\mathbf B^{\mathsf T}&\mathbf0\end{pmatrix}$, with $\mathbf B$ of size $n_A\times n_B$.
+\begin{enumerate}
+  \item \emph{Pairing theorem.} If $\mathbf A\binom{\mathbf u}{\mathbf v}=x\binom{\mathbf u}{\mathbf v}$, i.e.\
+        $\mathbf B\mathbf v=x\mathbf u$ and $\mathbf B^{\mathsf T}\mathbf u=x\mathbf v$, then
+        $\mathbf A\binom{\mathbf u}{-\mathbf v}=\binom{-\mathbf B\mathbf v}{\mathbf B^{\mathsf T}\mathbf u}=\binom{-x\mathbf u}{x\mathbf v}=-x\binom{\mathbf u}{-\mathbf v}$.
+        Levels come in $\pm x$ pairs, with coefficients equal in magnitude and the sign flipped on one set.
+  \item \emph{Lower bound from the sublattice imbalance.} $\operatorname{rank}\mathbf A=2\operatorname{rank}\mathbf B\le2\min(n_A,n_B)$.
+        Hence the number of NBMOs (the nullity) is $N-\operatorname{rank}\mathbf A\ge N-2\min(n_A,n_B)=|n_A-n_B|$.
+  \item \emph{Longuet-Higgins bound.} $\operatorname{rank}\mathbf B$ cannot exceed the largest number of
+        non-attacking nonzero entries of $\mathbf B$. That is the size $T$ of a maximum matching, which equals
+        the number of double bonds in the best Kekulé structure. So $\#\text{NBMO}\ge N-2T\ \ (\ge|n_A-n_B|)$.
+        \textbf{This is a lower bound, not an equality}: square cyclobutadiene has $T=2$, so $N-2T=0$,
+        yet it has two NBMOs (its $\pm x$ pairs include an accidental $x=0$ pair).
+\end{enumerate}
+
+\subsection{Which NBMO pairs are disjoint? Explicit constructions}
+\paragraph{TME (atoms 1,2 central; 3,4 on C1; 5,6 on C2).} Zero-sum at atoms 3 and 4 (single neighbour 1)
+gives $c_1=0$. At atoms 5 and 6 it gives $c_2=0$. At atom 1: $c_2+c_3+c_4=0$, so $c_4=-c_3$. At atom 2:
+$c_5=-c_6$. The NBMO space is spanned by
+\begin{equation}
+  \varphi_a=\tfrac1{\sqrt2}(\chi_3-\chi_4),\qquad\varphi_b=\tfrac1{\sqrt2}(\chi_5-\chi_6),
+\end{equation}
+which share no atom: \textbf{disjoint} (two allyl-type NBMOs on separate halves).
+
+\paragraph{Square CBD (ring 1-2-3-4).} Zero-sum at atom 1: $c_2+c_4=0$; at atom 2: $c_1+c_3=0$. So
+$\varphi_a=\tfrac1{\sqrt2}(\chi_1-\chi_3)$ and $\varphi_b=\tfrac1{\sqrt2}(\chi_2-\chi_4)$: \textbf{disjoint}.
+
+\paragraph{TMM (centre 0, terminals 1,2,3).} $c_0=0$ (zero-sum at a terminal), and $c_1+c_2+c_3=0$ (zero-sum
+at the centre). Every nonzero vector in this plane has at least two nonzero entries (one nonzero entry
+cannot sum to zero). Two such vectors with disjoint supports would need at least $2+2=4$ terminal
+atoms, but there are only 3. So no basis of the NBMO space is disjoint: \textbf{nondisjoint}.
+
+\subsection{Why disjointness kills $K_{ab}$: zero differential overlap}
+Expand $\varphi_a=\sum_\mu a_\mu\chi_\mu$, $\varphi_b=\sum_\nu b_\nu\chi_\nu$ in atomic $p_\pi$ orbitals:
+\begin{enumerate}
+  \item $K_{ab}=\eri abab=\sum_{\mu\nu\lambda\sigma}a_\mu b_\nu a_\lambda b_\sigma\eri{\mu}{\nu}{\lambda}{\sigma}$.
+  \item ZDO approximation: $\eri\mu\nu\lambda\sigma=\delta_{\mu\nu}\delta_{\lambda\sigma}\gamma_{\mu\lambda}$, with $\gamma_{\mu\lambda}$ the
+        Coulomb repulsion between charges on atoms $\mu$ and $\lambda$.
+  \item Then $K_{ab}=\sum_{\mu\lambda}(a_\mu b_\mu)(a_\lambda b_\lambda)\gamma_{\mu\lambda}$.
+  \item \emph{Disjoint} $\Rightarrow$ $a_\mu b_\mu=0$ for every atom $\Rightarrow$ $K_{ab}=0$ exactly (within ZDO).
+        By \cref{eq:EOSS}, $E_{\text{OSS}}-E_T=2K_{ab}=0$: the first-order Hund preference vanishes, and
+        higher-order effects (spin polarisation, \cref{sec:spinpol}) decide the ground state.
+  \item \emph{Nondisjoint} $\Rightarrow$ some $a_\mu b_\mu\neq0$. Since $\gamma$ is a positive-definite Coulomb
+        matrix (\cref{sec:holes}), $K_{ab}>0$ and the triplet is favoured at first order.
+  \item In the Hubbard limit ($\gamma_{\mu\lambda}=U\delta_{\mu\lambda}$): $K_{ab}=U\sum_\mu a_\mu^2b_\mu^2$.
+\end{enumerate}
+
+\begin{verifybox}
+T8 (\texttt{t06\_t09\_models.py}): Hückel spectra of CBD, TMM, TME, MX, TriMB, 1,2,4,5-TetraMB and
+$p$-xylylene. Pairing theorem, zero-sum rule and $\#\text{NBMO}\ge N-2T\ge|n_A-n_B|$ hold in every case;
+CBD shows the strict inequality. Minimising $\sum_\mu a_\mu^2b_\mu^2$ over all rotations of the degenerate
+NBMO pair gives $\approx0$ for CBD, TME and TetraMB (disjoint), and $1/6$ (TMM) and $1/16$ (MX) (nondisjoint).
+T9b (\texttt{t09b\_t15\_correlation.py}): in the Hubbard model at small $U$ the triplet--singlet gap of TMM
+and MX is linear in $U$ (fitted exponent 0.97, 0.96). For TMM $-0.01643$ at $U=0.05t$ matches
+$-2U\cdot\tfrac16=-0.0167$, and MX matches $-2U\cdot\tfrac1{16}$. For disjoint CBD and TME the gap is
+$\propto U^{1.97},U^{1.95}$, i.e.\ zero at first order, as derived. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Borden \& Davidson, \emph{J.\ Am.\ Chem.\ Soc.}\ \textbf{99}, 4587 (1977), doi:10.1021/ja00456a010: not accessed;
+definition as quoted in the review. Longuet-Higgins, \emph{J.\ Chem.\ Phys.}\ \textbf{18}, 265 (1950): the matching
+bound as cited in arXiv:1906.08544. The proofs above are self-contained.
+\end{sourcebox}

@@ -1,0 +1,58 @@
+\section{The 3d/4s problem}\label{sec:3d4s}
+
+\begin{reviewclaim}
+``In neutral atoms, the energy of a 4s orbital is slightly above that of a 3d orbital (when both orbitals
+are populated), therefore, 4s electrons are first ionized. However, 4s orbital is also populated first,
+because it offers less repulsion with a 3d electron than that between two 3d electrons, once the orbital
+energies are re-evaluated in the new configurations.'' (p.~448, refs.~79--81)
+\end{reviewclaim}
+
+\subsection{Average-of-configuration energies}
+Model a configuration $d^{n_d}s^{n_s}$ by its average energy. Each electron has one-electron energy $h_d$ or $h_s$,
+and every pair of electrons repels with an \emph{average} repulsion that depends only on the shells:
+$\bar J_{dd}$ (two d electrons), $\bar J_{ds}$, and $J_{ss}$. (For example $\bar J_{dd}=F^0(dd)-\tfrac{2}{63}[F^2(dd)+F^4(dd)]$
+in Slater--Condon parameters. Only the shell structure matters here.)
+\begin{enumerate}
+  \item Count the pairs: $\binom{n_d}2$ d--d pairs, $n_dn_s$ d--s pairs, $\binom{n_s}2$ s--s pairs. Hence
+        \begin{equation}
+          E(d^{n_d}s^{n_s})=n_dh_d+n_sh_s+\tbinom{n_d}{2}\bar J_{dd}+n_dn_s\bar J_{ds}+\tbinom{n_s}{2}J_{ss}.
+        \end{equation}
+  \item The two competing configurations with $n+2$ valence electrons:
+        \begin{align*}
+          E(d^ns^2)&=nh_d+2h_s+\tbinom n2\bar J_{dd}+2n\bar J_{ds}+J_{ss},\\
+          E(d^{n+1}s^1)&=(n+1)h_d+h_s+\tbinom{n+1}2\bar J_{dd}+(n+1)\bar J_{ds}.
+        \end{align*}
+  \item Subtract, using $\binom{n+1}2-\binom n2=n$:
+        \begin{equation}\label{eq:Delta3d4s}
+          \Delta\equiv E(d^{n+1}s)-E(d^ns^2)=h_d-h_s+n\bar J_{dd}+(1-n)\bar J_{ds}-J_{ss}.
+        \end{equation}
+  \item Orbital energies \emph{in the configuration $d^ns^2$}, Koopmans style ($\varepsilon=E(N)-E(N-1)$, frozen):
+        \begin{align*}
+          \varepsilon_d&=E(d^ns^2)-E(d^{n-1}s^2)=h_d+(n-1)\bar J_{dd}+2\bar J_{ds},\\
+          \varepsilon_s&=E(d^ns^2)-E(d^ns^1)=h_s+n\bar J_{ds}+J_{ss}.
+        \end{align*}
+  \item Therefore $\varepsilon_d-\varepsilon_s=h_d-h_s+(n-1)\bar J_{dd}+(2-n)\bar J_{ds}-J_{ss}$, and comparing with \cref{eq:Delta3d4s}:
+        \begin{equation}\label{eq:3d4s}
+          \boxed{\Delta=(\varepsilon_d-\varepsilon_s)+\bigl(\bar J_{dd}-\bar J_{ds}\bigr).}
+        \end{equation}
+\end{enumerate}
+\begin{resultbox}
+Even when $\varepsilon_{3d}<\varepsilon_{4s}$ (3d ``below'' 4s), the $d^ns^2$ configuration is lower in energy
+($\Delta>0$) whenever $\bar J_{dd}-\bar J_{ds}>\varepsilon_s-\varepsilon_d$. Because 3d is compact and 4s diffuse,
+$\bar J_{dd}\gg\bar J_{ds}$: moving an electron from 4s into 3d costs the large d--d repulsion. Example
+(illustrative parameters, $n=2$): $\varepsilon_d=-1.50$, $\varepsilon_s=-0.90$, $\Delta=+0.10$.
+\end{resultbox}
+\paragraph{Ionisation.} From $d^ns^2$, the Koopmans ionisation energies are $-\varepsilon_s$ and $-\varepsilon_d$.
+With $\varepsilon_s>\varepsilon_d$, the 4s electron leaves first, as observed for transition-metal cations.
+Both statements in the review follow from the same two numbers, $\varepsilon$ and $\bar J$, evaluated
+\emph{in the relevant configuration}. The ``building-up'' order and the ``removal'' order need not agree.
+\begin{verifybox}
+T12 (\texttt{t10\_t12\_t13\_symbolic.py}): \cref{eq:Delta3d4s,eq:3d4s} and both orbital-energy formulas
+verified symbolically for general $n$; the cation analogue is $\Delta(n-1)$; the numerical example satisfies
+$\varepsilon_d<\varepsilon_s$ and $\Delta>0$. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Vanquickenborne, Pierloot \& Devoghel, \emph{Inorg.\ Chem.}\ \textbf{28}, 1805 (1989); Melrose \& Scerri,
+\emph{J.\ Chem.\ Educ.}\ \textbf{73}, 498 (1996): not accessed. The derivation reconstructs the
+average-of-configuration argument independently.
+\end{sourcebox}

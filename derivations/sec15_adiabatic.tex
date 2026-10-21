@@ -1,0 +1,48 @@
+\section{The adiabatic principle and the aufbau argument}\label{sec:adiabatic}
+
+\begin{reviewclaim}
+Bohr's building-up principle assumed ``that electrons exist in sharp stationary states, and that these
+states are preserved upon addition of an electron and a proton''. These assumptions ``originate from the
+Ehrenfest's adiabatic principle: `if a system be affected in a reversible adiabatic way, the allowed
+motions are transformed into allowed motions.' However, this principle does not apply to aperiodic
+systems, i.e., all systems other than a hydrogen atom.'' ``\dots the aufbau principle, by assuming the
+existence of unchanging stationary individual electronic states, violates the Pauli exclusion principle.''
+(p.~448)
+\end{reviewclaim}
+
+\subsection{The quantum adiabatic theorem (what it does guarantee)}
+Let $\Hop(t)$ change slowly, with instantaneous eigenstates $\Hop(t)\psi_n(t)=E_n(t)\psi_n(t)$, non-degenerate.
+\begin{enumerate}
+  \item Expand $\Psi(t)=\sum_nc_n(t)e^{i\theta_n(t)}\psi_n(t)$ with $\theta_n=-\int_0^tE_n\dd t'$.
+  \item Insert into $i\partial_t\Psi=\Hop\Psi$. The $E_n$ terms cancel against $\dot\theta_n$, leaving
+        $\sum_n\bigl(\dot c_n\psi_n+c_n\dot\psi_n\bigr)e^{i\theta_n}=0$.
+  \item Project on $\psi_m$: $\dot c_m=-\sum_nc_n\braket{\psi_m}{\dot\psi_n}e^{i(\theta_n-\theta_m)}$.
+  \item Differentiate $\Hop\psi_n=E_n\psi_n$ in time and project on $\psi_m$ ($m\ne n$):
+        $\braket{\psi_m}{\dot\psi_n}=\dfrac{\mel{\psi_m}{\dot{\Hop}}{\psi_n}}{E_n-E_m}$.
+  \item If $|\mel{\psi_m}{\dot\Hop}{\psi_n}|\ll(E_n-E_m)^2$, the rapidly oscillating phase makes the coupling average
+        out, and $|c_m|$ stays at its initial value: a system starting in $\psi_n$ ends in the
+        \emph{continuously connected} eigenstate $\psi_n(t)$.
+\end{enumerate}
+
+\subsection{What it does not guarantee: the aufbau assumptions}
+\begin{enumerate}
+  \item The theorem is about a \emph{fixed} Hilbert space and a Hamiltonian with a continuously varying
+        parameter. Going from element $Z$ to $Z+1$ adds a particle. The $N$- and $(N+1)$-electron Hilbert
+        spaces are different, so there is no continuous path of Hamiltonians on which the theorem could act.
+  \item Even if one varies $Z$ continuously at fixed $N$, the theorem preserves the label of an
+        \emph{$N$-electron} eigenstate, the conserved quantities of \cref{sec:qn} ($L,S,\dots$). It says nothing about
+        one-electron states. These are not eigenstates of $\Hop$, because $[\Hop,\hat{\mathbf l}_i]\ne0$.
+  \item Within the orbital model, the orbitals of $d^ns^2$ and $d^{n+1}s$ differ (\cref{sec:3d4s}). Adding or removing
+        an electron changes all orbitals (\cref{sec:koopmans}, orbital relaxation beyond Koopmans).
+\end{enumerate}
+\begin{resultbox}
+The adiabatic theorem cannot justify the idea that previously ``built-up'' one-electron states persist,
+unchanged, when electrons and protons are added. That is the mathematical content behind the review's
+historical criticism. The claim that Ehrenfest's principle ``does not apply to aperiodic systems'' refers
+to the old (Bohr--Sommerfeld) quantum theory, where adiabatic invariants $\oint p\dd q$ are defined only
+for (multiply) periodic motion. It is historical and could not be checked against the original here.
+\end{resultbox}
+\begin{sourcebox}
+Ehrenfest, \emph{Philos.\ Mag.}\ \textbf{33}, 500 (1917); Scerri (1991): not accessed (quotation from the review).
+Born \& Fock (1928) for the quantum adiabatic theorem; the derivation above is standard.
+\end{sourcebox}

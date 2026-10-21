@@ -1,0 +1,84 @@
+\section{Two electrons in two orbitals: the wavefunctions of Figure 1}\label{sec:twoe}
+
+\begin{reviewclaim}
+Triplet components (p.~441):
+$^3\Psi(M_S=+1)=\tfrac1{\sqrt2}[\pa(1)\pb(2)-\pb(1)\pa(2)]\alpha_1\alpha_2$,
+$^3\Psi(M_S=-1)=\tfrac1{\sqrt2}[\pa(1)\pb(2)-\pb(1)\pa(2)]\beta_1\beta_2$, ``i.e.\ they can be
+represented as single determinants v and vi''. Open-shell singlet:
+$^1\Psi(M_S=0)=\tfrac1{\sqrt2}[\pa(1)\pb(2)+\pb(1)\pa(2)]\cdot\tfrac1{\sqrt2}[\beta_1\alpha_2-\alpha_1\beta_2]$,
+``a combination of two determinants, iii and iv'', printed as
+$\tfrac1{\sqrt2}\tfrac1{\sqrt2}\bigl(\,|\dots|_{\text{iii}}+|\dots|_{\text{iv}}\bigr)$.
+\end{reviewclaim}
+
+\subsection{The six determinants}
+With two spatial orbitals and two spin functions there are four spin orbitals $a,\abar,b,\bbar$ and
+$\binom42=6$ two-electron determinants (Figure~1 of the review):
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+label & occupation & $D$ (unnormalised) & $M_S$\\
+\midrule
+i   & $\pa^2$ & $D[a,\abar]=\pa(1)\pa(2)\,(\alpha_1\beta_2-\beta_1\alpha_2)$ & 0\\
+ii  & $\pb^2$ & $D[b,\bbar]=\pb(1)\pb(2)\,(\alpha_1\beta_2-\beta_1\alpha_2)$ & 0\\
+iii & $\pa^\alpha\pb^\beta$ & $D[a,\bbar]=\pa(1)\pb(2)\alpha_1\beta_2-\pb(1)\pa(2)\beta_1\alpha_2$ & 0\\
+iv  & $\pa^\beta\pb^\alpha$ & $D[\abar,b]=\pa(1)\pb(2)\beta_1\alpha_2-\pb(1)\pa(2)\alpha_1\beta_2$ & 0\\
+v   & $\pa^\alpha\pb^\alpha$ & $D[a,b]=[\pa(1)\pb(2)-\pb(1)\pa(2)]\alpha_1\alpha_2$ & $+1$\\
+vi  & $\pa^\beta\pb^\beta$ & $D[\abar,\bbar]=[\pa(1)\pb(2)-\pb(1)\pa(2)]\beta_1\beta_2$ & $-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each entry follows from $D[\chi_1,\chi_2]=\chi_1(1)\chi_2(2)-\chi_2(1)\chi_1(2)$; for example
+$D[a,\bbar]=\pa(1)\alpha_1\,\pb(2)\beta_2-\pb(1)\beta_1\,\pa(2)\alpha_2$.
+
+\subsection{Triplet $M_S=\pm1$: single determinants}
+Rows v and vi already factorise into (antisymmetric space)$\times$(symmetric spin $\Theta_{1,\pm1}$).
+Normalising with $\tfrac1{\sqrt2}$ gives exactly the review's $^3\Psi(M_S=\pm1)$. Each is one determinant.
+\textbf{[paper, confirmed]}
+
+\subsection{$M_S=0$: two determinants are needed}
+Determinants iii and iv individually are \emph{not} spin eigenfunctions: their spin parts
+($\alpha_1\beta_2$ or $\beta_1\alpha_2$) are not of the forms \cref{eq:tripspin,eq:singspin}. Form the
+sum and the difference. Write $A=\pa(1)\pb(2)$, $B=\pb(1)\pa(2)$:
+\begin{align}
+  D_{\text{iii}}&=A\,\alpha_1\beta_2-B\,\beta_1\alpha_2, \qquad
+  D_{\text{iv}}=A\,\beta_1\alpha_2-B\,\alpha_1\beta_2.\\
+  D_{\text{iii}}+D_{\text{iv}}&=A(\alpha_1\beta_2+\beta_1\alpha_2)-B(\beta_1\alpha_2+\alpha_1\beta_2)
+     =(A-B)(\alpha_1\beta_2+\beta_1\alpha_2),\label{eq:sum}\\
+  D_{\text{iv}}-D_{\text{iii}}&=A(\beta_1\alpha_2-\alpha_1\beta_2)-B(\alpha_1\beta_2-\beta_1\alpha_2)
+     =(A+B)(\beta_1\alpha_2-\alpha_1\beta_2).\label{eq:diff}
+\end{align}
+Normalise: $\braket{A\mp B}{A\mp B}=2$ (orthonormal orbitals) and the spin factors have norm$^2=2$,
+so each combination needs a factor $\tfrac12$.
+
+\begin{resultbox}
+\vspace{-1.2em}
+\begin{align}
+  ^3\Psi(M_S=0)&=\tfrac12\bigl(D_{\text{iii}}+D_{\text{iv}}\bigr)
+     =\tfrac1{\sqrt2}[\pa(1)\pb(2)-\pb(1)\pa(2)]\;\tfrac1{\sqrt2}[\alpha_1\beta_2+\beta_1\alpha_2],\label{eq:T0}\\
+  ^1\Psi_{\text{OSS}}&=\tfrac12\bigl(D_{\text{iv}}-D_{\text{iii}}\bigr)
+     =\tfrac1{\sqrt2}[\pa(1)\pb(2)+\pb(1)\pa(2)]\;\tfrac1{\sqrt2}[\beta_1\alpha_2-\alpha_1\beta_2].\label{eq:OSS}
+\end{align}
+The open-shell singlet is irreducibly a two-determinant function; the high-spin triplet components are
+single determinants. This is why a single-reference method describes the triplet but not the
+open-shell singlet of a diradical. \textbf{[paper's physics, confirmed]}
+\end{resultbox}
+
+\begin{caveatbox}
+The review writes the singlet as $\tfrac1{\sqrt2}\tfrac1{\sqrt2}(D_{\text{iii}}+D_{\text{iv}})$, with a
+\emph{plus} sign. By \cref{eq:sum} that combination is the $M_S=0$ component of the \emph{triplet},
+\cref{eq:T0}. The singlet requires the minus sign of \cref{eq:diff}. (Its overall sign is arbitrary;
+$\tfrac12(D_{\text{iii}}-D_{\text{iv}})$ is equally correct.) The review's product form, in the line
+above it, is correct. The physical conclusion is unaffected.
+\end{caveatbox}
+
+\paragraph{Closed-shell singlets.} Rows i and ii factorise as (symmetric space)$\times\sqrt2\,\Theta_{0,0}$:
+\[
+  \tfrac1{\sqrt2}D_{\text{i}}=\pa(1)\pa(2)\,\Theta_{0,0},\qquad \tfrac1{\sqrt2}D_{\text{ii}}=\pb(1)\pb(2)\,\Theta_{0,0}.
+\]
+So the two-electron/two-orbital ($2e/2o$) problem has \textbf{three singlets} (i, ii, OSS) and \textbf{one
+triplet} (three components).
+
+\begin{verifybox}
+\texttt{t01\_spin\_and\_determinants.py}: every identity above expanded symbolically; the review's
+``$+$'' combination is confirmed equal to $^3\Psi(M_S=0)$ and \emph{not} to $^1\Psi_{\text{OSS}}$. \textbf{PASS}.
+\end{verifybox}

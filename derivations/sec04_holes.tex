@@ -1,0 +1,52 @@
+\section{Fermi and Coulomb holes; positivity of $K$ and $J\ge K$}\label{sec:holes}
+
+\begin{reviewclaim}
+``\dots two electrons of the same spin cannot occupy the same space \dots\ The corresponding shortage
+of the electron of a certain spin in the vicinity of another electron of the same spin is known as the
+Fermi hole. Two opposite-spin electrons, on the other hand, are not subject to the exclusion principle.'' (p.~442)
+\end{reviewclaim}
+
+\subsection{Pair densities}
+The spin-integrated pair density is $P(\mathbf r_1,\mathbf r_2)=N(N-1)\sum_{\sigma_1\sigma_2}\int|\Psi|^2\dd x_3\cdots$.
+For two electrons it is $2\sum_{\sigma_1\sigma_2}|\Psi(x_1,x_2)|^2$. The spin parts are normalised, so
+\begin{equation}
+  P_T(\mathbf r_1,\mathbf r_2)=2\,|\Phi_T|^2=\bigl[\pa(1)\pb(2)-\pb(1)\pa(2)\bigr]^2,\qquad
+  P_{\text{OSS}}=\bigl[\pa(1)\pb(2)+\pb(1)\pa(2)\bigr]^2 .
+\end{equation}
+\begin{enumerate}
+  \item Set $\mathbf r_1=\mathbf r_2=\mathbf r$: $P_T(\mathbf r,\mathbf r)=[\pa\pb-\pb\pa]^2=0$ for \emph{every}
+        $\mathbf r$. Two same-spin electrons are never found at the same point. This is the Fermi hole,
+        and it is exact (no approximation beyond the form of $\Psi$).
+  \item $P_{\text{OSS}}(\mathbf r,\mathbf r)=4\,\pa(\mathbf r)^2\pb(\mathbf r)^2\ge0$. It is not zero
+        unless the orbitals do not overlap in space. There is no exclusion for an antiparallel pair,
+        so the singlet's two electrons can come together. (The Coulomb hole, the reduction of $P$ at
+        small $r_{12}$ caused by $1/r_{12}$ itself, is absent from these single-configuration functions.
+        It appears only with correlation, i.e.\ configuration mixing.)
+\end{enumerate}
+
+\subsection{$K_{ab}\ge0$}
+Let $\rho(\mathbf r)=\pa(\mathbf r)\pb(\mathbf r)$ (the overlap density). Then $K_{ab}=\iint\rho(1)\rho(2)/r_{12}$.
+\begin{enumerate}
+  \item Fourier representation of the Coulomb kernel: $\dfrac1{|\mathbf r|}=\displaystyle\int\frac{\dd^3k}{(2\pi)^3}\frac{4\pi}{k^2}\,e^{i\mathbf k\cdot\mathbf r}$.
+  \item Insert this and define $\tilde\rho(\mathbf k)=\int\rho(\mathbf r)e^{-i\mathbf k\cdot\mathbf r}\dd\mathbf r$.
+        Because $\rho$ is real, $\tilde\rho(-\mathbf k)=\tilde\rho(\mathbf k)^*$:
+        \[
+          K_{ab}=\int\frac{\dd^3k}{(2\pi)^3}\frac{4\pi}{k^2}\Bigl(\int\rho(1)e^{i\mathbf k\cdot\mathbf r_1}\Bigr)
+          \Bigl(\int\rho(2)e^{-i\mathbf k\cdot\mathbf r_2}\Bigr)
+          =\int\frac{\dd^3k}{(2\pi)^3}\frac{4\pi}{k^2}\,|\tilde\rho(\mathbf k)|^2 .
+        \]
+  \item The integrand is non-negative, so $K_{ab}\ge0$. Equality holds iff $\tilde\rho\equiv0$, i.e.\
+        iff $\pa\pb=0$ everywhere (orbitals with no common region of space).
+\end{enumerate}
+
+\subsection{$J_{ab}\ge K_{ab}$}
+\begin{enumerate}
+  \item Take $f(1,2)=\pa(1)\pb(2)-\pb(1)\pa(2)$. Then $\iint f^2/r_{12}\ge0$ because the integrand is non-negative.
+  \item Expand: $\iint f^2/r_{12}=J_{ab}+J_{ab}-2K_{ab}=2(J_{ab}-K_{ab})$ (same integrals as in \cref{sec:energies}).
+  \item Hence $J_{ab}\ge K_{ab}\ge0$. The triplet repulsion $J-K$ is non-negative, and lies below the
+        singlet value $J+K$.
+\end{enumerate}
+\begin{verifybox}
+\texttt{t03\_t05\_hund\_virial\_h2.py} (T3): for all canonical RHF/6-31G orbitals of water,
+$\min_{pq}K_{pq}=1.1\times10^{-3}\,E_h>0$ and $J_{pq}\ge K_{pq}$ for every pair. \textbf{PASS}.
+\end{verifybox}

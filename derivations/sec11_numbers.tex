@@ -1,0 +1,27 @@
+% numbers from verification/logs/t11.log (T11b) and logs/t11c.log (T11c)
+\subsection{Numerical test: a distonic radical anion and its conjugate acid}
+Model: the aminoxyl radical $^\bullet$ON(Me)CH$_2$CH$_2$COO$^-$, with a carboxylate that is not conjugated to
+the radical, and its protonated form $^\bullet$ON(Me)CH$_2$CH$_2$COOH. UB3LYP/6-31+G*; radical geometries
+optimised (geomeTRIC). Vertical oxidation at the radical geometry to (i) the triplet (one electron removed
+from below the SOMO, the diradical) and (ii) the closed-shell singlet (SOMO electron removed).
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+radical & $\alpha$-SOMO position & IE$\to$triplet & IE$\to$closed shell & $\Delta$(T$-$CS)\\
+\midrule
+acid (COOH) & is the $\alpha$-HOMO & 9.489 eV & 8.179 eV & $+1.31$ eV\\
+anion (COO$^-$) & 3 levels below the $\alpha$-HOMO & 4.008 eV & 3.946 eV & $+0.06$ eV\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{enumerate}
+  \item \emph{Orbital level: confirmed.} In the anion the $\alpha$-SOMO ($-2.40$~eV) lies below three doubly
+        occupied levels (character not analysed) ($\alpha$-HOMO $-1.62$~eV). In the acid the SOMO is the HOMO. This is
+        the pH-switchable SOMO--HOMO conversion of step 6.
+  \item \emph{Energetic level: shifted, but no crossover.} Deprotonation moves the
+        triplet--closed-shell preference by $1.25$~eV towards the diradical, but at this level the closed-shell
+        product of the anion remains lower, by $0.06$~eV. For this short-linker model, the orbital inversion
+        alone does not guarantee that oxidation yields the diradical. This is exactly why the review insists on
+        the energetic, observable criterion (caveat above).
+\end{enumerate}
+\input{sec11_numbers_t11c}

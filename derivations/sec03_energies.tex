@@ -1,0 +1,79 @@
+\section{Energies of the $2e/2o$ states and the full $2e/2o$ Hamiltonian}\label{sec:energies}
+
+The review discusses Coulomb repulsion $J_{xy}$ and exchange $K_{xy}$ verbally (p.~442). Here are the
+actual energy expressions.
+
+\subsection{Matrix elements by direct integration}
+For two electrons $\Hop=\hat h(1)+\hat h(2)+1/r_{12}$. Every state of \cref{sec:twoe} has the form
+(spatial part $\Phi$)$\times$(normalised spin part $\Theta$). $\Hop$ is spin-free, so
+$\mel{\Phi\Theta}{\Hop}{\Phi'\Theta'}=\braket{\Theta}{\Theta'}\,\mel{\Phi}{\Hop}{\Phi'}$. States with
+different $S$ have orthogonal spin parts and do not mix. It is enough to evaluate spatial integrals.
+
+\paragraph{Elementary integrals.} For orthonormal real orbitals:
+\begin{align}
+  \mel{\varphi_p(1)\varphi_q(2)}{\hat h(1)}{\varphi_r(1)\varphi_s(2)}&=h_{pr}\,\delta_{qs},\qquad
+  \mel{\varphi_p(1)\varphi_q(2)}{\hat h(2)}{\varphi_r(1)\varphi_s(2)}=\delta_{pr}\,h_{qs},\label{eq:oneint}\\
+  \mel{\varphi_p(1)\varphi_q(2)}{r_{12}^{-1}}{\varphi_r(1)\varphi_s(2)}&=\eri prqs .\label{eq:twoint}
+\end{align}
+
+\paragraph{Triplet.} $\Phi_T=\tfrac1{\sqrt2}(A-B)$ with $A=\pa(1)\pb(2)$, $B=\pb(1)\pa(2)$.
+\begin{enumerate}
+  \item One-electron part: $\mel{A}{\hat h(1)+\hat h(2)}{A}=h_{aa}+h_{bb}$, the same for $\mel{B}{\hat h(1)+\hat h(2)}{B}$, and
+        $\mel{A}{\hat h(1)+\hat h(2)}{B}=h_{ab}\delta_{ba}+\delta_{ab}h_{ba}=0$. So the one-electron part
+        is $\tfrac12(2h_{aa}+2h_{bb})=h_a+h_b$, where $h_a\equiv h_{aa}$.
+  \item Two-electron part: $\mel A{r_{12}^{-1}}A=\eri aabb=J_{ab}$, $\mel B{r_{12}^{-1}}B=J_{ab}$, and
+        $\mel A{r_{12}^{-1}}B=\eri abba=K_{ab}$. Then
+        $\tfrac12\bigl(J_{ab}+J_{ab}-K_{ab}-K_{ab}\bigr)=J_{ab}-K_{ab}$.
+\end{enumerate}
+\begin{equation}\label{eq:ET}
+  \boxed{E_T=h_a+h_b+J_{ab}-K_{ab}}
+\end{equation}
+
+\paragraph{Open-shell singlet.} $\Phi_{\text{OSS}}=\tfrac1{\sqrt2}(A+B)$. The same steps with $+$ signs
+on the cross terms give
+\begin{equation}\label{eq:EOSS}
+  \boxed{E_{\text{OSS}}=h_a+h_b+J_{ab}+K_{ab}},\qquad E_{\text{OSS}}-E_T=2K_{ab}.
+\end{equation}
+
+\paragraph{Closed shells.} $\Phi_{\text i}=\pa(1)\pa(2)$: $E_{\text i}=2h_a+J_{aa}$, and
+$E_{\text{ii}}=2h_b+J_{bb}$.
+
+\paragraph{Couplings between the singlets.}
+\begin{enumerate}
+  \item $\mel{\Phi_{\text i}}{\Hop}{\Phi_{\text{ii}}}$: one-electron terms vanish ($\delta_{ab}=0$ factors);
+        two-electron: $\mel{\pa\pa}{r_{12}^{-1}}{\pb\pb}=\eri abab=K_{ab}$.
+  \item $\mel{\Phi_{\text i}}{\Hop}{\Phi_{\text{OSS}}}=\tfrac1{\sqrt2}\bigl[\mel{\pa\pa}{\Hop}{A}+\mel{\pa\pa}{\Hop}{B}\bigr]$.
+        By \cref{eq:oneint},
+        \[\mel{\pa(1)\pa(2)}{\hat h(1)+\hat h(2)}{\pa(1)\pb(2)}=0+h_{ab},\]
+        and the same
+        for $B$. By \cref{eq:twoint}, $\mel{\pa\pa}{r_{12}^{-1}}{A}=\eri aaab$ and
+        $\mel{\pa\pa}{r_{12}^{-1}}{B}=\eri abaa=\eri aaab$. Sum: $\tfrac1{\sqrt2}\cdot2(h_{ab}+\eri aaab)$.
+  \item Likewise $\mel{\Phi_{\text{ii}}}{\Hop}{\Phi_{\text{OSS}}}=\sqrt2\,(h_{ab}+\eri bbba)$.
+\end{enumerate}
+
+\begin{resultbox}
+The singlet block of the exact $2e/2o$ Hamiltonian, in the basis $\{\Phi_{\text i},\Phi_{\text{ii}},\Phi_{\text{OSS}}\}$:
+\begin{equation}\label{eq:Hsinglet}
+\mathbf H_S=\begin{pmatrix}
+2h_a+J_{aa} & K_{ab} & \sqrt2\,(h_{ab}+\eri aaab)\\
+K_{ab} & 2h_b+J_{bb} & \sqrt2\,(h_{ab}+\eri bbba)\\
+\sqrt2\,(h_{ab}+\eri aaab) & \sqrt2\,(h_{ab}+\eri bbba) & h_a+h_b+J_{ab}+K_{ab}
+\end{pmatrix},
+\end{equation}
+and the triplet is the $1\times1$ block $E_T$ of \cref{eq:ET}. For orbitals of different symmetry
+(e.g.\ $\sigma_g$, $\sigma_u$ of H$_2$; or the NBMOs of a symmetric diradical),
+$h_{ab}=\eri aaab=\eri bbba=0$ and the OSS decouples from the closed shells.
+\end{resultbox}
+
+\paragraph{Consequence (Hund's rule at frozen orbitals).} With the \emph{same} orbitals in both states,
+\cref{eq:EOSS} gives $E_{\text{OSS}}>E_T$ whenever $K_{ab}>0$. $K_{ab}\ge0$ is proved in
+\cref{sec:holes}. This is Slater's argument: the triplet is lower by $2K_{ab}$ \emph{because} of a smaller
+electron--electron repulsion ($J-K$ vs.\ $J+K$). \Cref{sec:hund} shows that this mechanism is
+not the correct one once the orbitals are allowed to relax.
+
+\begin{verifybox}
+\texttt{t02\_two\_orbital\_hamiltonian.py}: for 5 random sets of integrals (with positive-definite
+two-electron kernel), the eigenvalues of \cref{eq:Hsinglet} and $E_T$ equal the singlet and triplet roots
+of a full-CI diagonalisation (PySCF \texttt{fci.direct\_spin1}, roots classified by $\ev{\hat S^2}$),
+to $2\times10^{-14}$ (max.\ deviation over 5 sets); $\Phi_{\text{OSS}}$ diagonal minus $E_T$ equals $2K_{ab}$. \textbf{PASS}.
+\end{verifybox}

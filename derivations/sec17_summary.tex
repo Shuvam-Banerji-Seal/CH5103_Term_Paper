@@ -1,0 +1,86 @@
+\section{Summary: verification record, corrections and sources}\label{sec:summary}
+
+\subsection{Verification record}
+All scripts are in \texttt{verification/} and run with
+\texttt{make verify} / \texttt{uv run --project . python -I <script>} (uv-locked: PySCF 2.14, SymPy 1.14, NumPy 2.5). Logs are in
+\texttt{plans/tests.md}.
+\begin{center}
+\small
+\begin{tabular}{llll}
+\toprule
+test & what is checked & section & result\\
+\midrule
+T1 & spin eigenfunctions; Fig.~1 combinations; sign erratum & \ref{sec:anti}, \ref{sec:twoe} & PASS\\
+T2 & $2e/2o$ singlet matrix and $E_T$ vs.\ full CI; Koopmans relations & \ref{sec:energies}, \ref{sec:koopmans}, \ref{sec:qcs} & PASS\\
+T3 & $K_{pq}\ge0$, $J_{pq}\ge K_{pq}$ (water MOs) & \ref{sec:holes} & PASS\\
+T4 & He $2\,^3S/2\,^1S$: virial, less screening & \ref{sec:hund} & PASS\\
+T5 & H$_2$ minimal basis: RHF/CI/triplet/OSS limits & \ref{sec:static} & PASS\\
+T6 & two-orbital gap model & \ref{sec:static} & PASS\\
+T7 & extended Hubbard dimer, kinetic exchange & \ref{sec:kinex} & PASS\\
+T8 & Hückel NBMO rules, disjointness & \ref{sec:huckel} & PASS\\
+T9 & Hubbard ED: Ovchinnikov/Lieb spins; spin alternation & \ref{sec:spinpol} & PASS\\
+T9b & gap $\propto U$ (nondisjoint) vs.\ $\propto U^2$ (disjoint) & \ref{sec:huckel}, \ref{sec:spinpol} & PASS\\
+T10 & S--T gap $=$ HOMO-energy difference & \ref{sec:koopmans} & PASS\\
+T11a & ROHF stationarity, canonicalisation dependence & \ref{sec:rohf} & PASS\\
+T11b & distonic anion: orbital inversion + pH switch; $\Delta$SCF crossover & \ref{sec:qcs} & partial (see \ref{sec:qcs})\\
+T12 & 3d/4s algebra & \ref{sec:3d4s} & PASS\\
+T13 & $[\hat l_1,r_{12}^{-1}]\ne0$, $[\hat L,r_{12}^{-1}]=0$ & \ref{sec:qn} & PASS\\
+T14 & Yamaguchi projection on BS-UHF dimer & \ref{sec:bs} & PASS\\
+T15 & same-spin vs.\ opposite-spin correlation & \ref{sec:hund} & PASS (claim qualified)\\
+T17 & Lean~4/Mathlib proofs of the algebraic identities & several & PASS (17 thms)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Lean formalisation (T17).} \texttt{verification/lean\_proofs/Ch5103/Identities.lean} contains
+machine-checked proofs of: the factorisations \cref{eq:sum,eq:diff} and a counterexample showing the
+review's ``$+$'' combination is not the singlet; $E_S-E_T=2K$ as a HOMO-energy difference; the scaling
+derivative $\dd E/\dd\eta|_1=2T+V$ and its virial consequences; the less-screening inequalities
+\cref{eq:lessscreen}; the incompatibility of frozen orbitals with the virial theorem; the H$_2$ dissociation
+limits; the gap-model and extended-dimer secular roots; the Hückel pairing theorem; the 3d/4s identity
+\cref{eq:3d4s}; and Yamaguchi's formula \cref{eq:yamaguchi}.
+
+\subsection{Corrections and qualifications to the review}
+\begin{enumerate}
+  \item \textbf{Sign error} (p.~441): the open-shell singlet is $\tfrac12(D_{\text{iv}}-D_{\text{iii}})$; the printed
+        $\tfrac12(D_{\text{iii}}+D_{\text{iv}})$ is the $M_S=0$ triplet (\cref{sec:twoe}).
+  \item \textbf{Citation year}: Katriel \& Pauncz, \emph{Adv.\ Quantum Chem.}\ \textbf{10}, 143--185 is 1977, not 1975.
+  \item \textbf{Same-spin correlation} ``an order of magnitude'' smaller: true for He ($\sim$1/40), but in molecular
+        valence shells at MP2 the per-pair ratio is $\sim$0.3--0.4 (\cref{sec:hund}).
+  \item \textbf{Janak/Koopmans statement}: the sign convention is unstated in the review; with frozen orbitals
+        $E_S-E_T=\varepsilon^S_{\text{HOMO}}-\varepsilon^T_{\text{HOMO}}=2K$ (\cref{sec:koopmans}).
+  \item \textbf{Longuet-Higgins count} (used implicitly for NBMO counting): $N-2T$ is a lower bound
+        (cyclobutadiene exceeds it).
+  \item \textbf{ROHF canonicalisation}: the ordering is convention-dependent, as stated. For common radicals
+        a flip needs weights slightly outside $[0,1]$, so observables must decide (\cref{sec:rohf}).
+\end{enumerate}
+
+\subsection{Sources and access status}
+\begin{center}
+\footnotesize
+\begin{tabular}{p{0.52\textwidth}p{0.40\textwidth}}
+\toprule
+reference & status in this work\\
+\midrule
+Hongo et al., J.\ Chem.\ Phys.\ 121, 7144 (2004), doi:10.1063/1.1795151 & full text (arXiv cond-mat/0408147); Table I used\\
+Boyd, Nature 310, 480 (1984), doi:10.1038/310480a0 & abstract\\
+Katriel \& Pauncz, Adv.\ Quantum Chem.\ 10, 143 (1977), doi:10.1016/S0065-3276(08)60580-8 & bibliographic only\\
+Krylov, Chem.\ Phys.\ Lett.\ 338, 375 (2001) & introduction (preview)\\
+Balkov\'a \& Bartlett, J.\ Chem.\ Phys.\ 101, 8972 (1994), doi:10.1063/1.468057 & abstract\\
+Lieb, Phys.\ Rev.\ Lett.\ 62, 1201 (1989) & theorem statement\\
+Ovchinnikov, Theor.\ Chim.\ Acta 47, 297 (1978), doi:10.1007/BF00549259 & as quoted in arXiv:1906.08544\\
+Janak, Phys.\ Rev.\ B 18, 7165 (1978) & abstract\\
+Borden \& Davidson, J.\ Am.\ Chem.\ Soc.\ 99, 4587 (1977), doi:10.1021/ja00456a010 & not accessed\\
+Kollmar \& Staemmler, Theor.\ Chim.\ Acta 48, 223 (1978), doi:10.1007/BF00549021 & not accessed\\
+Liu \& Langenaeker, Theor.\ Chem.\ Acc.\ 110, 338 (2003), doi:10.1007/s00214-003-0487-6 & not accessed\\
+Yamanaka et al., Int.\ J.\ Quantum Chem.\ 105, 687 (2005) & not accessed\\
+Glaesemann \& Schmidt, J.\ Phys.\ Chem.\ A 114, 8772 (2010), doi:10.1021/jp101758y & not accessed\\
+Vanquickenborne et al., Inorg.\ Chem.\ 28, 1805 (1989); Melrose \& Scerri (1996) & not accessed\\
+Gryn'ova et al., Nat.\ Chem.\ 5, 474 (2013); Gryn'ova \& Coote, J.\ Am.\ Chem.\ Soc.\ 135, 15392 (2013) & abstracts/summaries\\
+Westcott et al., J.\ Am.\ Chem.\ Soc.\ 122, 8083 (2000), doi:10.1021/ja994018p & bibliographic + author summary\\
+Scerri (1991); Ehrenfest (1917); Pauli (1925); Slater (1929) & not accessed\\
+\bottomrule
+\end{tabular}
+\end{center}
+Where an original was not accessed, nothing in this document is attributed to it beyond what the review
+itself states. The mathematics was derived independently and verified as listed above.

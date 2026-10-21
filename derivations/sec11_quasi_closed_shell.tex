@@ -1,0 +1,67 @@
+\section{Quasi-closed-shell (non-aufbau) radicals}\label{sec:qcs}
+
+\begin{reviewclaim}
+``In molecular systems with unpaired electrons, the violation of the aufbau principle in electron
+configuration is reflected in the conversion of the SOMO and HOMO orbital energies, yielding a so-called
+quasi-closed-shell state (Figure 10). Its main fingerprint is the electron attachment or removal pattern:
+upon ionization an electron is removed from the higher energy doubly occupied MO, leaving another
+unpaired electron behind, while upon addition new electron enters the former LUMO; essentially, SOMO does
+not participate in these processes.'' (p.~448--449) ``\dots a rigorous support for the non-aufbau
+occupation can be obtained a posteriori from the ionization potentials and electron affinities \dots as
+well as from the determination of the spin state \dots of the corresponding open-shell
+oxidation/reduction products.'' (p.~449)
+\end{reviewclaim}
+
+\subsection{Frozen-orbital model of the redox fingerprint}
+Three relevant orbitals: SOMO $s$, the highest doubly occupied orbital $h$, and the LUMO $l$. Ground
+configuration $(\text{core})\,s^1h^2$ (a doublet).
+\begin{enumerate}
+  \item UHF orbital energies, from \cref{eq:koopmans} applied to each spin orbital (Slater--Condon, \cref{sec:koopmans}):
+        \begin{align}
+          \varepsilon_h^\alpha&=h_h+J_{hh}+J_{hs}-K_{hs}, &\varepsilon_h^\beta&=h_h+J_{hh}+J_{hs},\label{eq:uhfh}\\
+          \varepsilon_s^\alpha&=h_s+2J_{hs}-K_{hs}, &\varepsilon_s^\beta(\text{virtual})&=h_s+J_{ss}+2J_{hs}-K_{hs}.\label{eq:uhfs}
+        \end{align}
+        (Interactions with the core are absorbed into $h_h,h_s$.)
+  \item \textbf{Spin polarisation of the donor HOMO (Scheme~3).} From \cref{eq:uhfh},
+        $\varepsilon_h^\beta-\varepsilon_h^\alpha=K_{hs}\ge0$: the $\alpha$ electron of $h$ (parallel to the unpaired spin) is
+        stabilised by exchange with the SOMO electron, while the $\beta$ electron is not. The donor's $\alpha$ and
+        $\beta$ HOMOs split. That is the content of Scheme~3.
+  \item \textbf{Condition for SOMO--HOMO conversion} (within the $\alpha$ manifold):
+        $\varepsilon_s^\alpha<\varepsilon_h^\alpha\iff h_s+2J_{hs}-K_{hs}<h_h+J_{hh}+J_{hs}-K_{hs}\iff h_s+J_{hs}<h_h+J_{hh}$.
+        In words: the SOMO's one-electron energy plus its repulsion with \emph{one} $h$ electron lies below
+        $h$'s one-electron energy plus its \emph{self}-repulsion. A stable, low-lying radical orbital and a
+        separate, electron-rich (high $h_h$, e.g.\ anionic) fragment favour this.
+  \item \textbf{Oxidation.} Koopmans: $\mathrm{IP}(h)=-\varepsilon_h<\mathrm{IP}(s)=-\varepsilon_s$, so the electron leaves $h$.
+        The product $(\text{core})\,s^1h^1$ is a diradical cation (or diradical, if the parent was an anion). Its
+        triplet and open-shell singlet are split by $E_{\text{OSS}}-E_T=2K_{sh}$ (\cref{eq:EOSS} with $a,b\to s,h$).
+        With $K_{sh}>0$ the triplet is lower: the observed ``triplet cation diradicals with nondegenerate SOMOs''.
+  \item \textbf{Reduction.} The added electron can enter the $\beta$ SOMO, at cost $\varepsilon_s^\beta$ of \cref{eq:uhfs}, giving
+        a closed-shell anion; or the LUMO, at $\varepsilon_l$, giving the diradical $s^1h^2l^1$. Koopmans picks the
+        lower: the diradical forms iff $\varepsilon_l<\varepsilon_s^\beta=h_s+J_{ss}+2J_{hs}-K_{hs}$. The large on-site
+        repulsion $J_{ss}$ makes this possible. Note that this is a \emph{separate} condition, not implied by
+        step 3; the review's Figure~10 depicts the case where it holds, and Figure~17 gives examples.
+  \item \textbf{Protonation switch.} Protonating the anionic fragment strongly lowers $h_h$ (Coulomb attraction of
+        $\mathrm H^+$). Once $h_h+J_{hh}<h_s+J_{hs}$ the aufbau order is restored, and oxidation removes the SOMO
+        electron, giving a closed-shell cation. This is the pH-switchable conversion of Figure~16.
+\end{enumerate}
+
+\begin{caveatbox}
+Steps 1--5 use frozen orbitals and canonical orbital energies. By \cref{sec:rohf} orbital energies are
+convention-dependent, and by \cref{sec:koopmans} relaxation shifts them. As the review says, the
+\emph{observable} criterion is energetic: compare the two possible oxidised states directly,
+$E(\text{diradical},T)$ vs.\ $E(\text{closed shell})$ ($\Delta$SCF).
+\end{caveatbox}
+
+\input{sec11_numbers}
+
+\begin{verifybox}
+T2: \cref{eq:uhfh,eq:uhfs}, $\varepsilon_h^\beta-\varepsilon_h^\alpha=K_{hs}$, and the cation $E_{\text{OSS}}-E_T=2K_{hs}$ verified
+numerically against Slater--Condon determinant energies for random integrals. \textbf{PASS}.
+\end{verifybox}
+\begin{sourcebox}
+Gryn'ova, Marshall, Blanksby \& Coote, \emph{Nat.\ Chem.}\ \textbf{5}, 474 (2013); Gryn'ova \& Coote,
+\emph{J.\ Am.\ Chem.\ Soc.}\ \textbf{135}, 15392 (2013): summaries only (SOMO--HOMO conversion when a stabilised
+radical is not $\pi$-conjugated with an anionic group; protonation restores normal ordering). Westcott et al.\
+(2000): VO(oep), where the unpaired metal d electron is bound more strongly than several ligand pairs
+(author summary).
+\end{sourcebox}
