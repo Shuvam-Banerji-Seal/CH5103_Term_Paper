@@ -207,6 +207,14 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  // ------------------------------------------------------------------ build stamp (written by scripts/build_site.sh)
+  fetch("data/build.json").then((r) => (r.ok ? r.json() : null)).then((b) => {
+    if (!b || !b.commit) return;
+    const short = b.commit.slice(0, 7), when = (b.built || "").replace("T", " ").replace("Z", " UTC");
+    const commit = `<a href="https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper/commit/${b.commit}">${short}</a>`;
+    $("#build-stamp").innerHTML = ` · built from ${commit} on ${when}` + (b.run ? ` (<a href="${b.run}">CI run</a>)` : "");
+  }).catch(() => {});
+
   // math last, once the dynamic content exists
   const renderAll = () => tex(document.body);
   if (window.renderMathInElement) renderAll(); else window.addEventListener("load", renderAll);

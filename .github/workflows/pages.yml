@@ -1,5 +1,10 @@
-name: Deploy site to GitHub Pages
+name: Build and deploy site
 
+# Everything on the site is rebuilt from source on every push to main:
+#   verify     the fast verification suite (fails the run if any test fails)
+#   documents  the slides (with builds + handout), the derivations and the formula sheet, in TeX Live
+#   site       the static site, assembled from site/ plus the two jobs' outputs
+#   deploy     GitHub Pages
 on:
   push:
     branches: [main]
@@ -7,31 +12,98 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  verify:
+    name: Verification suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - name: Sync the locked environment (uv.lock)
+        run: make sync
+      - name: Run T1, T1b, T2-T10, T9b, T12-T15 and the T11c log check
+        run: make verify
+      - name: Keep the outputs, also when a test fails
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: verification-results
+          path: verification/results/
+          if-no-files-found: error
+
+  documents:
+    name: Slides, derivations, formula sheet
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      # TeX Live 2026, full scheme (texlive/texlive:latest as of 2026-10-18), pinned for reproducible builds.
+      image: texlive/texlive@sha256:e8148b126545105c4aeeaa212f8a7bd02d05b500351372881055e1e59ae67d33
+    steps:
+      - name: Install tools the image may lack
+        run: |
+          missing=""
+          for c in make python3 git; do command -v "$c" >/dev/null 2>&1 || missing="$missing $c"; done
+          # shellcheck disable=SC2086  # $missing is a space-separated package list
+          if [ -n "$missing" ]; then apt-get update -qq && apt-get install -y -qq --no-install-recommends $missing; fi
+          lualatex --version | head -1
+      - uses: actions/checkout@v7
+      - name: Slides with every build step
+        run: make -C presentation pdf
+      - name: Slides as a handout (one page per frame)
+        run: make -C presentation handout
+      - name: Derivations
+        run: make derivations
+      - name: Formula sheet
+        run: make formulae
+      - uses: actions/upload-artifact@v7
+        with:
+          name: documents
+          path: |
+            presentation/ch5103-presentation.pdf
+            presentation/ch5103-handout.pdf
+            derivations/derivations.pdf
+            assets/formulae.pdf
+          if-no-files-found: error
+
+  site:
+    name: Assemble site
+    needs: [verify, documents]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - name: Assemble site
-        run: scripts/build_site.sh _site
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v7
+      - name: Put the freshly built PDFs in place
+        uses: actions/download-artifact@v8
+        with:
+          name: documents
+          path: .
+      - name: Put the fresh test outputs in place
+        uses: actions/download-artifact@v8
+        with:
+          name: verification-results
+          path: verification/results
+      - run: scripts/build_site.sh _site
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
   deploy:
-    needs: build
+    name: Deploy to GitHub Pages
+    needs: site
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

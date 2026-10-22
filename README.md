@@ -38,7 +38,8 @@ plus some overstated or imprecise claims. The distonic-radical pH switch is repr
 | [`docs/FINDINGS.md`](docs/FINDINGS.md) | Claim-by-claim assessment of the review |
 | [`docs/VERIFICATION.md`](docs/VERIFICATION.md) | Test matrix and how to run it |
 | [`plans/`](plans) | Working log: plan, decisions, doubts and their resolutions, full test log, slide audit |
-| [`site/`](site) | The GitHub Pages site; [`scripts/build_site.sh`](scripts/build_site.sh) assembles it, [`.github/workflows/pages.yml`](.github/workflows/pages.yml) deploys it |
+| [`site/`](site) | The GitHub Pages site, assembled by [`scripts/build_site.sh`](scripts/build_site.sh) |
+| [`.github/workflows/pages.yml`](.github/workflows/pages.yml) | On every push to `main`: runs the verification suite, rebuilds every PDF in TeX Live, assembles the site and deploys it (only if all tests pass) |
 
 ### Derivations at a glance
 

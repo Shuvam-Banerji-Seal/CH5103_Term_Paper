@@ -12,7 +12,9 @@ make verify-dft   # T11/T11c: DFT geometry optimisations, several hours on 16 co
 make lean         # Lean 4.29.1 + Mathlib v4.29.1 (downloads the Mathlib cache, ~5 GB)
 ```
 
-Each Python test prints a final `PASS`/`FAIL` line; `make verify` stores the full output of every script in
+Each Python test prints a final `PASS`/`FAIL` line, and `make verify` exits non-zero if any script crashes or
+does not end with a PASS line. GitHub Actions runs it on every push to `main` and publishes the website only
+if it passes; the outputs on the site come from that run. `make verify` also stores the full output of every script in
 [`verification/results/`](../verification/results). The DFT logs live in
 [`verification/logs/`](../verification/logs), and `t11c_check.py` (part of `make verify`) re-reads them and
 prints PASS/FAIL without re-running any DFT. Run a single test with
