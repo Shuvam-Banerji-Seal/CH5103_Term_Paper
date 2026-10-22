@@ -7,7 +7,7 @@ at 6-31+G*).  For each radical X (anion or protonated acid) and functional F:
    IE_CS = E_F(oxidised, closed-shell RKS)  - E_F(X)
 Non-aufbau (SOMO-HOMO converted) behaviour <=> IE_T < IE_CS.
 """
-import json, pathlib
+import argparse, json, pathlib
 import numpy as np
 from pyscf import gto, dft
 from pyscf.geomopt.geometric_solver import optimize
@@ -34,16 +34,36 @@ def ks(atom, charge, spin, basis, xc, unit="Angstrom"):
     mf = (dft.UKS(mol) if spin else dft.RKS(mol)); mf.xc = xc; mf.conv_tol = 1e-9; mf.max_cycle = 200
     return mf
 
+def geom_path(name):
+    parts = name.split()
+    return out / f"geom_{parts[0]}_{parts[1] if len(parts) > 1 else ''}.xyz".replace(" ", "")
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--only", nargs="*", default=None,
+                help="run only these 'SYSTEM_PREFIX:functional' pairs, e.g. TEMPO-4-COO-:camb3lyp")
+ap.add_argument("--reuse-geom", action="store_true", help="reuse saved logs/geom_*.xyz if present")
+args = ap.parse_args()
+
+def wanted(name, xc):
+    return args.only is None or any(name.startswith(o.split(":")[0]) and xc == o.split(":")[1] for o in args.only)
+
 results = {}
 for name, (smi, q) in systems.items():
-    mf = ks(embed(smi), q, 1, "6-31g*", "b3lyp")
-    mol_eq = optimize(mf, maxsteps=150)
-    xyz = mol_eq.atom_coords(unit="Angstrom"); syms = [mol_eq.atom_symbol(i) for i in range(mol_eq.natm)]
-    atom = [(s, tuple(x)) for s, x in zip(syms, xyz)]
-    (out / f"geom_{name.split()[0]}_{name.split()[1] if len(name.split())>1 else ''}.xyz".replace(" ", "")).write_text(
-        f"{len(atom)}\n{name}\n" + "\n".join(f"{s} {x:.6f} {y:.6f} {z:.6f}" for s, (x, y, z) in atom) + "\n")
+    todo = [xc for xc in functionals if wanted(name, xc)]
+    if not todo:
+        continue
+    gp = geom_path(name)
+    if args.reuse_geom and gp.exists():
+        atom = [(l.split()[0], tuple(map(float, l.split()[1:4]))) for l in gp.read_text().splitlines()[2:] if l.strip()]
+        print(f"{name}: reusing {gp.name}", flush=True)
+    else:
+        mf = ks(embed(smi), q, 1, "6-31g*", "b3lyp")
+        mol_eq = optimize(mf, maxsteps=150)
+        xyz = mol_eq.atom_coords(unit="Angstrom"); syms = [mol_eq.atom_symbol(i) for i in range(mol_eq.natm)]
+        atom = [(s, tuple(x)) for s, x in zip(syms, xyz)]
+        gp.write_text(f"{len(atom)}\n{name}\n" + "\n".join(f"{s} {x:.6f} {y:.6f} {z:.6f}" for s, (x, y, z) in atom) + "\n")
     results[name] = {}
-    for xc in functionals:
+    for xc in todo:
         rad = ks(atom, q, 1, "6-31+g*", xc).run()
         trip = ks(atom, q + 1, 2, "6-31+g*", xc).run()
         cs = ks(atom, q + 1, 0, "6-31+g*", xc).run()
@@ -59,5 +79,6 @@ for name, (smi, q) in systems.items():
         print(f"{name:34s} {xc:9s} IE_T={IE_T:6.3f} IE_CS={IE_CS:6.3f} eV  "
               f"Delta(T-CS)={IE_T-IE_CS:+.3f}  alpha-SOMO is {na-1-i_somo} below alpha-HOMO  <S2>_T={s2:.3f}",
               flush=True)
-(out / "t11c.json").write_text(json.dumps(results, indent=1))
+tag = "" if args.only is None else "_partial"
+(out / f"t11c{tag}.json").write_text(json.dumps(results, indent=1))
 print("T11c DONE")

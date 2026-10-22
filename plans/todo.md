@@ -15,7 +15,7 @@
 - [ ] T14 Yamaguchi projection on Hubbard dimer BS-UHF (D18)
 - [ ] T15 LaTeX compiles, no undefined refs; re-read
 - [ ] T16 citation checks (Katriel–Pauncz year; Lieb 1989; Hongo 2004 numbers; Liu–Langenaeker)
-- [ ] T11c [ADDED-CYCLE-1] [PARTIAL 5/8: key result obtained; remaining TEMPO runs BLOCKED: low system memory, rerun only on user request]
+- [ ] T11c [ADDED-CYCLE-1] [PARTIAL 6/8: TEMPO anion CAM-B3LYP done (-0.296 eV); TEMPO acid BLOCKED: low system memory, rerun only on user request]
 - [x] T17 [ADDED-CYCLE-1] Lean proofs — PASS (17 theorems, standard axioms only)
 - [ ] T9b [ADDED-CYCLE-1] gap scaling  -> DONE (PASS)
 - [ ] T15 [ADDED-CYCLE-1] SS/OS correlation -> DONE (PASS)

@@ -1,0 +1,262 @@
+TEMPO-4-COO-: reusing geom_TEMPO-4-COO-_.xyz
+TEMPO-4-COO-                       camb3lyp  IE_T= 4.120 IE_CS= 4.416 eV  Delta(T-CS)=-0.296  alpha-SOMO is 3 below alpha-HOMO  <S2>_T=2.011
+geometric-optimize called with the following command line:
+t11c_distonic_functionals.py --reuse-geom --only TEMPO-4-COO-:camb3lyp TEMPO-4-COOH:b3lyp TEMPO-4-COOH:camb3lyp
+
+                                        [91m())))))))))))))))/[0m                     
+                                    [91m())))))))))))))))))))))))),[0m                
+                                [91m*)))))))))))))))))))))))))))))))))[0m             
+                        [94m#,[0m    [91m()))))))))/[0m                [91m.)))))))))),[0m          
+                      [94m#%%%%,[0m  [91m())))))[0m                        [91m.))))))))*[0m        
+                      [94m*%%%%%%,[0m  [91m))[0m              [93m..[0m              [91m,))))))).[0m      
+                        [94m*%%%%%%,[0m         [93m***************/.[0m        [91m.)))))))[0m     
+                [94m#%%/[0m      [94m(%%%%%%,[0m    [93m/*********************.[0m       [91m)))))))[0m    
+              [94m.%%%%%%#[0m      [94m*%%%%%%,[0m  [93m*******/,[0m     [93m**********,[0m      [91m.))))))[0m   
+                [94m.%%%%%%/[0m      [94m*%%%%%%,[0m  [93m**[0m              [93m********[0m      [91m.))))))[0m  
+          [94m##[0m      [94m.%%%%%%/[0m      [94m(%%%%%%,[0m                  [93m,******[0m      [91m/)))))[0m  
+        [94m%%%%%%[0m      [94m.%%%%%%#[0m      [94m*%%%%%%,[0m    [92m,/////.[0m       [93m******[0m      [91m))))))[0m 
+      [94m#%[0m      [94m%%[0m      [94m.%%%%%%/[0m      [94m*%%%%%%,[0m  [92m////////,[0m      [93m*****/[0m     [91m,)))))[0m 
+    [94m#%%[0m  [94m%%%[0m  [94m%%%#[0m      [94m.%%%%%%/[0m      [94m(%%%%%%,[0m  [92m///////.[0m     [93m/*****[0m      [91m))))).[0m
+  [94m#%%%%.[0m      [94m%%%%%#[0m      [94m/%%%%%%*[0m      [94m#%%%%%%[0m   [92m/////)[0m     [93m******[0m      [91m))))),[0m
+    [94m#%%%%##%[0m  [94m%%%#[0m      [94m.%%%%%%/[0m      [94m(%%%%%%,[0m  [92m///////.[0m     [93m/*****[0m      [91m))))).[0m
+      [94m##[0m     [94m%%%[0m      [94m.%%%%%%/[0m      [94m*%%%%%%,[0m  [92m////////.[0m      [93m*****/[0m     [91m,)))))[0m 
+        [94m#%%%%#[0m      [94m/%%%%%%/[0m      [94m(%%%%%%[0m      [92m/)/)//[0m       [93m******[0m      [91m))))))[0m 
+          [94m##[0m      [94m.%%%%%%/[0m      [94m(%%%%%%,[0m                  [93m*******[0m      [91m))))))[0m  
+                [94m.%%%%%%/[0m      [94m*%%%%%%,[0m  [93m**.[0m             [93m/*******[0m      [91m.))))))[0m  
+              [94m*%%%%%%/[0m      [94m(%%%%%%[0m   [93m********/*..,*/*********[0m       [91m*))))))[0m   
+                [94m#%%/[0m      [94m(%%%%%%,[0m    [93m*********************/[0m        [91m)))))))[0m    
+                        [94m*%%%%%%,[0m         [93m,**************/[0m         [91m,))))))/[0m     
+                      [94m(%%%%%%[0m   [91m()[0m                              [91m))))))))[0m       
+                      [94m#%%%%,[0m  [91m())))))[0m                        [91m,)))))))),[0m        
+                        [94m#,[0m    [91m())))))))))[0m                [91m,)))))))))).[0m          
+                                 [91m()))))))))))))))))))))))))))))))/[0m             
+                                    [91m())))))))))))))))))))))))).[0m                
+                                         [91m())))))))))))))),[0m                     
+
+-=# [1;94m geomeTRIC started. Version: 1.1.1 [0m #=-
+Current date and time: 2026-10-22 12:18:12
+#========================================================#
+#| [92m    Arguments passed to driver run_optimizer():     [0m |#
+#========================================================#
+customengine              <pyscf.geomopt.geometric_solver.PySCFEngine object at 0x7f8e2661dac0> 
+input                     /tmp/tmp4ln41k2d/51c257fe-6a79-4553-88e3-48dd818effb0 
+logIni                    /home/shuvam/codes/CH5103_Term_Paper/.venv/lib/python3.12/site-packages/pyscf/geomopt/log.ini 
+maxiter                   150 
+----------------------------------------------------------
+Custom engine selected.
+Bonds will be generated from interatomic distances less than 1.20 times sum of covalent radii
+96 internal coordinates being used (instead of 96 Cartesians)
+Internal coordinate system (atoms numbered from 1):
+Distance 1-2
+Distance 1-15
+Distance 1-16
+Distance 1-17
+Distance 2-3
+Distance 2-4
+Distance 2-13
+Distance 3-18
+Distance 3-19
+Distance 3-20
+Distance 4-5
+Distance 4-21
+Distance 4-22
+Distance 5-6
+Distance 5-9
+Distance 5-23
+Distance 6-7
+Distance 6-8
+Distance 8-24
+Distance 9-10
+Distance 9-25
+Distance 9-26
+Distance 10-11
+Distance 10-12
+Distance 10-13
+Distance 11-27
+Distance 11-28
+Distance 11-29
+Distance 12-30
+Distance 12-31
+Distance 12-32
+Distance 13-14
+Angle 2-1-15
+Angle 2-1-16
+Angle 2-1-17
+Angle 15-1-16
+Angle 15-1-17
+Angle 16-1-17
+Angle 1-2-3
+Angle 1-2-4
+Angle 1-2-13
+Angle 3-2-4
+Angle 3-2-13
+Angle 4-2-13
+Angle 2-3-18
+Angle 2-3-19
+Angle 2-3-20
+Angle 18-3-19
+Angle 18-3-20
+Angle 19-3-20
+Angle 2-4-5
+Angle 2-4-21
+Angle 2-4-22
+Angle 5-4-21
+Angle 5-4-22
+Angle 21-4-22
+Angle 4-5-6
+Angle 4-5-9
+Angle 4-5-23
+Angle 6-5-9
+Angle 6-5-23
+Angle 9-5-23
+Angle 5-6-8
+Angle 7-6-8
+Angle 6-8-24
+Angle 5-9-10
+Angle 5-9-25
+Angle 5-9-26
+Angle 10-9-25
+Angle 10-9-26
+Angle 25-9-26
+Angle 9-10-11
+Angle 9-10-12
+Angle 9-10-13
+Angle 11-10-12
+Angle 11-10-13
+Angle 12-10-13
+Angle 10-11-27
+Angle 10-11-28
+Angle 10-11-29
+Angle 27-11-28
+Angle 27-11-29
+Angle 28-11-29
+Angle 10-12-30
+Angle 10-12-31
+Angle 10-12-32
+Angle 30-12-31
+Angle 30-12-32
+Angle 31-12-32
+Angle 2-13-10
+Angle 2-13-14
+Angle 10-13-14
+Out-of-Plane 6-5-7-8
+Dihedral 15-1-2-3
+Dihedral 15-1-2-4
+Dihedral 15-1-2-13
+Dihedral 16-1-2-3
+Dihedral 16-1-2-4
+Dihedral 16-1-2-13
+Dihedral 17-1-2-3
+Dihedral 17-1-2-4
+Dihedral 17-1-2-13
+Dihedral 1-2-3-18
+Dihedral 1-2-3-19
+Dihedral 1-2-3-20
+Dihedral 4-2-3-18
+Dihedral 4-2-3-19
+Dihedral 4-2-3-20
+Dihedral 13-2-3-18
+Dihedral 13-2-3-19
+Dihedral 13-2-3-20
+Dihedral 1-2-4-5
+Dihedral 1-2-4-21
+Dihedral 1-2-4-22
+Dihedral 3-2-4-5
+Dihedral 3-2-4-21
+Dihedral 3-2-4-22
+Dihedral 13-2-4-5
+Dihedral 13-2-4-21
+Dihedral 13-2-4-22
+Dihedral 1-2-13-10
+Dihedral 1-2-13-14
+Dihedral 3-2-13-10
+Dihedral 3-2-13-14
+Dihedral 4-2-13-10
+Dihedral 4-2-13-14
+Dihedral 2-4-5-6
+Dihedral 2-4-5-9
+Dihedral 2-4-5-23
+Dihedral 21-4-5-6
+Dihedral 21-4-5-9
+Dihedral 21-4-5-23
+Dihedral 22-4-5-6
+Dihedral 22-4-5-9
+Dihedral 22-4-5-23
+Dihedral 4-5-6-7
+Dihedral 4-5-6-8
+Dihedral 9-5-6-7
+Dihedral 9-5-6-8
+Dihedral 23-5-6-7
+Dihedral 23-5-6-8
+Dihedral 4-5-9-10
+Dihedral 4-5-9-25
+Dihedral 4-5-9-26
+Dihedral 6-5-9-10
+Dihedral 6-5-9-25
+Dihedral 6-5-9-26
+Dihedral 23-5-9-10
+Dihedral 23-5-9-25
+Dihedral 23-5-9-26
+Dihedral 5-6-8-24
+Dihedral 7-6-8-24
+Dihedral 5-9-10-11
+Dihedral 5-9-10-12
+Dihedral 5-9-10-13
+Dihedral 25-9-10-11
+Dihedral 25-9-10-12
+Dihedral 25-9-10-13
+Dihedral 26-9-10-11
+Dihedral 26-9-10-12
+Dihedral 26-9-10-13
+Dihedral 9-10-11-27
+Dihedral 9-10-11-28
+Dihedral 9-10-11-29
+Dihedral 12-10-11-27
+Dihedral 12-10-11-28
+Dihedral 12-10-11-29
+Dihedral 13-10-11-27
+Dihedral 13-10-11-28
+Dihedral 13-10-11-29
+Dihedral 9-10-12-30
+Dihedral 9-10-12-31
+Dihedral 9-10-12-32
+Dihedral 11-10-12-30
+Dihedral 11-10-12-31
+Dihedral 11-10-12-32
+Dihedral 13-10-12-30
+Dihedral 13-10-12-31
+Dihedral 13-10-12-32
+Dihedral 9-10-13-2
+Dihedral 9-10-13-14
+Dihedral 11-10-13-2
+Dihedral 11-10-13-14
+Dihedral 12-10-13-2
+Dihedral 12-10-13-14
+Translation-X 1-32
+Translation-Y 1-32
+Translation-Z 1-32
+Rotation-A 1-32
+Rotation-B 1-32
+Rotation-C 1-32
+<class 'geometric.internal.Distance'> : 32
+<class 'geometric.internal.Angle'> : 60
+<class 'geometric.internal.OutOfPlane'> : 1
+<class 'geometric.internal.Dihedral'> : 92
+<class 'geometric.internal.TranslationX'> : 1
+<class 'geometric.internal.TranslationY'> : 1
+<class 'geometric.internal.TranslationZ'> : 1
+<class 'geometric.internal.RotationA'> : 1
+<class 'geometric.internal.RotationB'> : 1
+<class 'geometric.internal.RotationC'> : 1
+> ===== Optimization Info: ====
+> Job type: Energy minimization
+> Maximum number of optimization cycles: 150
+> Initial / maximum trust radius (Angstrom): 0.100 / 0.300
+> Convergence Criteria:
+> Will converge when all 5 criteria are reached:
+>  |Delta-E| < 1.00e-06
+>  RMS-Grad  < 3.00e-04
+>  Max-Grad  < 4.50e-04
+>  RMS-Disp  < 1.20e-03
+>  Max-Disp  < 1.80e-03
+> === End Optimization Info ===

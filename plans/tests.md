@@ -22,3 +22,4 @@
 | c1 | T17 Lean 4.29.1 / Mathlib v4.29.1: 17 theorems (Identities.lean) | lake build; #print axioms | PASS | build OK first try, 0 sorry; all 17 depend only on propext, Classical.choice, Quot.sound |
 | c1 | T11c | t11c_distonic_functionals.py | NOT RUN | waiter job stopped by Claude Code (system critically low on memory: 1 GB free of 14 GB) before T11c started; no log produced. Not restarted per harness rule; awaiting user go-ahead |
 | c1 | T11c (partial, 5/8) | t11c_distonic_functionals.py | PASS at CAM-B3LYP | short anion: B3LYP +0.072, CAM-B3LYP -0.363 eV (diradical lower); short acid +1.406/+1.421; TEMPO-COO- B3LYP +0.067. Run stopped by Claude Code for low system memory (twice); TEMPO CAM-B3LYP + TEMPO acid missing |
+| c1 | T11c resume (--reuse-geom --only) | t11c_distonic_functionals.py | TEMPO-COO- CAM-B3LYP: IE_T 4.120, IE_CS 4.416, Δ=-0.296 eV (diradical) | run stopped again for low memory before TEMPO-COOH optimisation finished; 6/8 runs total |

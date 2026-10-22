@@ -57,12 +57,15 @@ radical geometry to the triplet diradical (T) or the closed-shell singlet (CS). 
 | short anion | B3LYP | 3 levels below α-HOMO | +0.07 eV |
 | short anion | **CAM-B3LYP** | 3 levels below α-HOMO | **−0.36 eV** |
 | TEMPO-4-COO⁻ | B3LYP | 2 levels below α-HOMO | +0.07 eV |
+| TEMPO-4-COO⁻ | **CAM-B3LYP** | 3 levels below α-HOMO | **−0.30 eV** |
 
 - **Orbital inversion and its removal on protonation:** reproduced with both functionals.
 - **Energetic switch (anion oxidised to a diradical, acid to a closed shell):** reproduced with the
   range-separated CAM-B3LYP. B3LYP misses it by ~0.07 eV, and lowers the closed-shell product
   disproportionately (0.61 vs 0.17 eV). Delocalisation error is a plausible cause, but this is untested.
-- **Incomplete:** the TEMPO-4-carboxylate runs at CAM-B3LYP and for the TEMPO acid were stopped by a
+- **Same for the review's own system:** TEMPO-4-carboxylate oxidises to the diradical at CAM-B3LYP
+  (−0.30 eV).
+- **Incomplete:** the protonated TEMPO acid (control) was not computed; the run was stopped by a
   low-memory condition.
 
 ## Not checked

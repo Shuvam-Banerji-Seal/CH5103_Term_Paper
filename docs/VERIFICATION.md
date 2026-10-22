@@ -37,7 +37,7 @@ Each Python test prints a final `PASS`/`FAIL` line. Run a single test with
 | T10 | `t10_t12_t13_symbolic.py` | S–T gap = HOMO-energy difference | 10 | PASS |
 | T11a | `t11_rohf_and_distonic.py` | ROHF stationarity blocks; canonicalisation dependence | 12 | PASS |
 | T11b | ″ | distonic radical anion ΔSCF, pH switch (B3LYP) | 11 | FAIL: no crossover (+0.06 eV); diagnosed by T11c |
-| T11c | `t11c_distonic_functionals.py` | functional (B3LYP/CAM-B3LYP) and separation dependence | 11 | PASS at CAM-B3LYP (−0.36 eV); 5/8 runs done, stopped for low memory |
+| T11c | `t11c_distonic_functionals.py` | functional (B3LYP/CAM-B3LYP) and separation dependence | 11 | PASS at CAM-B3LYP (short −0.36 eV, TEMPO −0.30 eV); 6/8 runs done (TEMPO acid missing, low memory) |
 | T12 | `t10_t12_t13_symbolic.py` | 3d/4s algebra | 13 | PASS |
 | T13 | ″ | [l₁, 1/r₁₂] ≠ 0, [L, 1/r₁₂] = 0 | 14 | PASS |
 | T14 | `t06_t09_models.py` | Yamaguchi projection on BS-UHF Hubbard dimer | 16 | PASS |
