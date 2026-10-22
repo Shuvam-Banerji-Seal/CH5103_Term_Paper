@@ -1,0 +1,118 @@
+% ============================================================ our verification machinery
+\section{Our verification}
+
+\begin{frame}{The repository}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \scriptsize
+    \begin{tabular}{@{}l l@{}}
+      \multicolumn{2}{@{}l}{\cgold{\ttfamily CH5103\_Term\_Paper/}}\\
+      \ttfamily\ \ paper/ & \cmuted{the review (PDF)}\\
+      \ttfamily\ \ derivations/ & \cmuted{18 LaTeX sections}\\
+      \ttfamily\ \ verification/ & \cmuted{T1--T15 scripts, logs}\\
+      \ttfamily\ \ \ \ lean\_proofs/ & \cmuted{Lean 4 + Mathlib (T17)}\\
+      \ttfamily\ \ assets/ & \cmuted{figures, captions (JSONL)}\\
+      \ttfamily\ \ presentation/ & \cmuted{this deck}\\
+      \ttfamily\ \ docs/ & \cmuted{findings, test matrix}\\
+      \ttfamily\ \ plans/ & \cmuted{working log}\\
+      \ttfamily\ \ pyproject.toml, uv.lock & \cmuted{pinned environment}\\
+      \ttfamily\ \ Makefile & \cmuted{one command per artefact}
+    \end{tabular}
+    \column{0.46\textwidth}
+    \onslide<2->{
+    \begin{plainpanel}
+      \ttfamily\footnotesize
+      make sync\ \ \ \ \ \ \ \cmuted{\# uv, locked env}\\
+      make verify\ \ \ \ \ \cmuted{\# T1--T15}\\
+      make verify-dft\ \cmuted{\# T11, T11c}\\
+      make lean\ \ \ \ \ \ \ \cmuted{\# T17}\\
+      make derivations\\
+      make figures\ \ \ \ \cmuted{\# byte-identical}
+    \end{plainpanel}}
+    \onslide<3->{\footnotesize Python 3.12 pinned by \texttt{uv.lock}\\ PySCF 2.14, SymPy 1.14\\ Lean 4.29.1, Mathlib 4.29.1}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The test matrix (1/2)}
+  \centering\small
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabular}{llll}
+    \toprule
+    test & what & method & result\\
+    \midrule
+    T1 & spin functions, Fig.\ 1 combinations, sign erratum & SymPy & \okpill\\
+    T2 & $2e/2o$ Hamiltonian vs full CI (5 random sets) & PySCF FCI & \okpill\\
+    T3 & $K_{pq}\ge0$, $J_{pq}\ge K_{pq}$ & RHF/6-31G H$_2$O & \okpill\\
+    T4 & He $2\,^3S/2\,^1S$: virial, less screening & exact 2-electron & \okpill\\
+    T5 & H$_2$ dissociation limits & STO-3G closed forms & \okpill\\
+    T6 & two-orbital gap model & SymPy & \okpill\\
+    T7 & kinetic exchange, extended dimer & SymPy + FCI & \okpill\\
+    T8 & Hückel NBMO rules, disjointness & NumPy & \okpill\\
+    T9 & Ovchinnikov/Lieb spins; spin alternation & exact diagonalisation & \okpill\\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{The test matrix (2/2)}
+  \centering\small
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabular}{llll}
+    \toprule
+    test & what & method & result\\
+    \midrule
+    T9b & gap $\propto U$ vs $\propto U^2$ & exact diagonalisation & \okpill\\
+    T10 & S--T gap $=$ HOMO difference & SymPy & \okpill\\
+    T11a & ROHF stationarity, canonicalisation & ROHF/6-31G* & \okpill\\
+    T11b & distonic anion, B3LYP & UB3LYP $\Delta$SCF & \badpill\\
+    T11c & distonic anions/acids, CAM-B3LYP & UKS $\Delta$SCF & \okpill\\
+    T12 & 3d/4s identity & SymPy & \okpill\\
+    T13 & $[\hat l_1,r_{12}^{-1}]\neq0$, $[\hat L,r_{12}^{-1}]=0$ & SymPy & \okpill\\
+    T14 & Yamaguchi projection & BS-UHF dimer & \okpill\\
+    T15 & same- vs opposite-spin correlation & MP2, He & \okpill\\
+    T17 & 17 algebraic theorems & Lean 4 + Mathlib & \okpill\\
+    \bottomrule
+  \end{tabular}
+  \vskip0.15cm
+  {\scriptsize\cmuted{T11b ``fails'' honestly: B3LYP misses the crossover by 0.07 eV; T11c explains why}}
+\end{frame}
+
+\begin{frame}[fragile]{Inside T4: helium solved exactly}{verification/t03\_t05\_hund\_virial\_h2.py (excerpt, unedited)}
+  \inputminted[fontsize=\tiny,firstline=42,lastline=62]{python}{../verification/t03_t05_hund_virial_h2.py}
+  {\footnotesize symmetric $C$ $\leftrightarrow$ singlet, antisymmetric $C$ $\leftrightarrow$ triplet (Part III)}
+\end{frame}
+
+\begin{frame}[fragile]{Inside T11a: ROHF Fock blocks}{verification/t11\_rohf\_and\_distonic.py (excerpt)}
+  \inputminted[fontsize=\scriptsize,firstline=14,lastline=24]{python}{../verification/t11_rohf_and_distonic.py}
+  \vskip0.1cm
+  \inputminted[fontsize=\scriptsize,firstline=51,lastline=54]{python}{../verification/t11_rohf_and_distonic.py}
+  \vskip0.1cm
+  {\small UHF Fock matrices from the ROHF densities, then the blocks the stationarity table says must vanish}
+\end{frame}
+
+\begin{frame}[fragile]{Inside T17: Lean proves the less-screening logic}{verification/lean\_proofs/Ch5103/Identities.lean (excerpt)}
+  \inputminted[fontsize=\scriptsize,firstline=72,lastline=83]{lean4}{../verification/lean_proofs/Ch5103/Identities.lean}
+  \onslide<2->{
+  \begin{checked}[Axiom audit]
+    \texttt{\#print axioms}, all 17 theorems: only \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}
+  \end{checked}}
+\end{frame}
+
+\begin{frame}{What the tests caught in our own work}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+    \small
+    \begin{itemize}
+      \item \cgold{T8}: we assumed $\#\text{NBMO}=N-2T$; cyclobutadiene says $\ge$
+      \item<2-> \cgold{T9b}: lowest $S_z=0$ level was the triplet's $M_S=0$ component, not a singlet
+      \item<3-> \cgold{T11a}: we expected a SOMO/HOMO flip in standard schemes; it needs $A>1$
+      \item<4-> \cgold{T5}: a symmetry tolerance of $10^{-10}$ failed on round-off at $S\sim10^{-16}$
+      \item<5-> \cgold{T12}: our illustrative numbers had the wrong sign of $\Delta$
+    \end{itemize}
+    \column{0.44\textwidth}
+    \onslide<6->{
+    \begin{keyresult}
+      every failure was diagnosed before the test changed, and each is logged in \texttt{plans/tests.md}
+    \end{keyresult}}
+    \onslide<7->{\small\cmuted{writing the test first is what turned ``I believe'' into ``checked''}}
+  \end{columns}
+\end{frame}

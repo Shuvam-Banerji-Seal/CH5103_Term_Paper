@@ -11,6 +11,8 @@ short anion & B3LYP     & 4.012 & 3.939 & $+0.072$\\
 short anion & CAM-B3LYP & 4.182 & 4.545 & $\mathbf{-0.363}$\\
 short acid  & B3LYP     & 9.498 & 8.092 & $+1.406$\\
 short acid  & CAM-B3LYP & 9.670 & 8.249 & $+1.421$\\
+TEMPO-4-COOH & B3LYP & 8.853 & 7.569 & $+1.285$\\
+TEMPO-4-COOH & CAM-B3LYP & 8.976 & 7.747 & $+1.229$\\
 TEMPO-4-COO$^-$ & B3LYP & 3.978 & 3.912 & $+0.067$\\
 TEMPO-4-COO$^-$ & CAM-B3LYP & 4.120 & 4.416 & $\mathbf{-0.296}$\\
 \bottomrule
@@ -27,6 +29,7 @@ anion) or 2--3 (TEMPO anion; B3LYP/CAM-B3LYP) levels below the $\alpha$-HOMO, an
         delocalisation error is a hypothesis, not tested here.
   \item The review's own class of system behaves the same way. TEMPO-4-carboxylate gives the diradical at
         CAM-B3LYP ($-0.296$~eV) and narrowly misses it at B3LYP ($+0.067$~eV). Separation is not the deciding
-        factor; the functional is. The protonated TEMPO acid (the control) was not computed: the run was
-        stopped when the workstation ran out of memory.
+        factor; the functional is. The protonated TEMPO acid (the control) prefers the closed shell at both
+        levels ($+1.285$ and $+1.229$~eV), with the SOMO as the $\alpha$-HOMO: the pH switch is reproduced for
+        TEMPO-4-carboxylate as well.
 \end{enumerate}

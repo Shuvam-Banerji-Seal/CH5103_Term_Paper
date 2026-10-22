@@ -44,6 +44,9 @@ oxidising a distonic radical anion) is only partly reproduced by our model calcu
 - **ROHF canonicalisation.** The ordering is indeed convention-dependent. But for common radicals
   (H₂NO, NO₂, CH₃, allyl) a SOMO/HOMO flip needs a mixing weight slightly outside the usual [0, 1]
   range (A* ≈ 1.04) (T11a).
+- **Possible wording slip, p. 445 (Fig. 7e).** The text says the Zn²⁺ complex overrides "the preference for the
+  triplet ground state, predicted on the basis of disjoint NBMOs". By the review's own rule (p. 443), disjoint NBMOs
+  make the singlet competitive; a triplet preference needs non-disjoint NBMOs. Not checked against ref. 52.
 - **Janak/Koopmans statement.** The sign convention is not stated in the review; the derivation fixes it.
 
 ## Reproduced, but functional-dependent: SOMO–HOMO conversion in distonic radical anions
@@ -56,6 +59,7 @@ radical geometry to the triplet diradical (T) or the closed-shell singlet (CS). 
 | short acid | B3LYP / CAM-B3LYP | is the HOMO | +1.41 / +1.42 eV |
 | short anion | B3LYP | 3 levels below α-HOMO | +0.07 eV |
 | short anion | **CAM-B3LYP** | 3 levels below α-HOMO | **−0.36 eV** |
+| TEMPO acid | B3LYP / CAM-B3LYP | is the HOMO | +1.29 / +1.23 eV |
 | TEMPO-4-COO⁻ | B3LYP | 2 levels below α-HOMO | +0.07 eV |
 | TEMPO-4-COO⁻ | **CAM-B3LYP** | 3 levels below α-HOMO | **−0.30 eV** |
 
@@ -65,8 +69,8 @@ radical geometry to the triplet diradical (T) or the closed-shell singlet (CS). 
   disproportionately (0.61 vs 0.17 eV). Delocalisation error is a plausible cause, but this is untested.
 - **Same for the review's own system:** TEMPO-4-carboxylate oxidises to the diradical at CAM-B3LYP
   (−0.30 eV).
-- **Incomplete:** the protonated TEMPO acid (control) was not computed; the run was stopped by a
-  low-memory condition.
+- **Control:** the protonated TEMPO acid prefers the closed shell at both levels (+1.29 / +1.23 eV), so the
+  pH switch is reproduced for TEMPO-4-carboxylate too (all 8 runs complete).
 
 ## Not checked
 

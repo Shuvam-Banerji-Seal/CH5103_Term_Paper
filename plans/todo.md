@@ -1,21 +1,24 @@
-# Master TODO (cycle 1)
-- [ ] T1 sympy: spin eigenfunctions & Fig.1 combos (D1,D2)
-- [ ] T2 Slater–Condon 2e/2o matrix vs brute-force FCI with random integrals (D3,D12,D13)
-- [ ] T3 K_ab >= 0 numeric check on random orbitals/grid (D4)
-- [ ] T4 He 2^3S / 2^1S FCI: E, <T>,<Vne>,<Vee>, virial (D5)
-- [ ] T5 H2 STO-3G PySCF scan vs analytic formulas (D6)
-- [ ] T6 two-orbital CI weights vs Delta (D7)
-- [ ] T7 Hubbard dimer exact vs -4t^2/U (D8)
-- [ ] T8 Hückel NBMO + disjoint rotation test for TMM,TME,CBD,MX (D9)
-- [ ] T9 Hubbard ED ground-state S for CBD,TMM,TME,MX,TriMB vs Lieb/Ovchinnikov; spin alternation (D10)
-- [ ] T10 Koopmans/frozen-orbital S-T relation sympy (D11)
-- [ ] T11 ROHF block conditions + canonicalization ordering demo (D14)
-- [ ] T12 3d/4s algebra sympy (D15)
-- [ ] T13 commutator [l1z,1/r12]≠0, [L_z,1/r12]=0 sympy (D16)
-- [ ] T14 Yamaguchi projection on Hubbard dimer BS-UHF (D18)
-- [ ] T15 LaTeX compiles, no undefined refs; re-read
-- [ ] T16 citation checks (Katriel–Pauncz year; Lieb 1989; Hongo 2004 numbers; Liu–Langenaeker)
-- [ ] T11c [ADDED-CYCLE-1] [PARTIAL 6/8: TEMPO anion CAM-B3LYP done (-0.296 eV); TEMPO acid BLOCKED: low system memory, rerun only on user request]
-- [x] T17 [ADDED-CYCLE-1] Lean proofs — PASS (17 theorems, standard axioms only)
-- [ ] T9b [ADDED-CYCLE-1] gap scaling  -> DONE (PASS)
-- [ ] T15 [ADDED-CYCLE-1] SS/OS correlation -> DONE (PASS)
+# Master TODO (final, cycle 1) — status taken from tests.md
+- [x] T1 spin eigenfunctions & Fig.1 combos (D1,D2) — PASS; sign erratum confirmed
+- [x] T2 2e/2o matrix vs FCI, random integrals (D3,D12,D13) — PASS (max dev 2e-14)
+- [x] T3 K>=0, J>=K (D4) — PASS (water MOs)
+- [x] T4 He 2^3S/2^1S exact, virial, less screening (D5) — PASS
+- [x] T5 H2 STO-3G closed forms vs PySCF (D6) — PASS after diagnosed tolerance fix (max dev 4e-16)
+- [x] T6 two-orbital gap model (D7) — PASS
+- [x] T7 extended Hubbard dimer, -4t^2/U (D8) — PASS
+- [x] T8 Hückel NBMO rules, disjointness (D9) — PASS after diagnosed fix (N-2T is a lower bound)
+- [x] T9 Hubbard ED spins vs Ovchinnikov/Lieb; spin alternation (D10) — PASS
+- [x] T9b [ADDED-CYCLE-1] gap ∝ U vs U^2 — PASS after diagnosed fix (singlet identification)
+- [x] T10 frozen-orbital S-T = HOMO difference (D11) — PASS
+- [x] T11a ROHF stationarity + canonicalisation (D14) — PASS (revised expectation: flip only for A>1)
+- [x] T11b distonic anion B3LYP ΔSCF — KNOWN-FAILING, diagnosed by T11c (functional dependence)
+- [x] T11c [ADDED-CYCLE-1] distonic anions/acids, B3LYP vs CAM-B3LYP — PASS 8/8 runs
+- [x] T12 3d/4s algebra (D15) — PASS after diagnosed fix (illustration numbers)
+- [x] T13 commutators (D16) — PASS
+- [x] T14 Yamaguchi projection (D18) — PASS
+- [x] T15 [ADDED-CYCLE-1] same- vs opposite-spin correlation — PASS (review claim qualified)
+- [x] T16 citation checks — Katriel–Pauncz 1977 (DB1), Lieb 1989 (DB2), Hongo 2004 (DB3) verified;
+      Liu–Langenaeker 2003 [BLOCKED: paywalled, content not accessible — only review's paraphrase used]
+- [x] T17 [ADDED-CYCLE-1] Lean 4/Mathlib, 17 theorems — PASS (standard axioms only)
+- [x] Derivations LaTeX compiles; no undefined references (2 sub-6pt overfull boxes remain, cosmetic)
+- [x] [ADDED-CYCLE-1] Beamer presentation — builds from scratch with zero warnings/bad boxes

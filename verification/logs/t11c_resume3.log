@@ -1,0 +1,4 @@
+TEMPO-4-COOH: reusing geom_TEMPO-4-COOH_.xyz
+TEMPO-4-COOH                       b3lyp     IE_T= 8.853 IE_CS= 7.569 eV  Delta(T-CS)=+1.285  alpha-SOMO is 0 below alpha-HOMO  <S2>_T=2.007
+TEMPO-4-COOH                       camb3lyp  IE_T= 8.976 IE_CS= 7.747 eV  Delta(T-CS)=+1.229  alpha-SOMO is 0 below alpha-HOMO  <S2>_T=2.007
+T11c DONE

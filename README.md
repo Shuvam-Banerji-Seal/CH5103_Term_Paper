@@ -17,7 +17,7 @@ ordering). This repository contains:
 
 **Verdict:** see [`docs/FINDINGS.md`](docs/FINDINGS.md). In short, the theory is sound wherever it
 could be tested. One sign error and one citation error were found, plus some overstated claims. The
-distonic-radical pH switch is reproduced with CAM-B3LYP but not with B3LYP.
+distonic-radical pH switch is reproduced with CAM-B3LYP (both test systems) but not with B3LYP.
 
 ## Contents
 
@@ -25,6 +25,7 @@ distonic-radical pH switch is reproduced with CAM-B3LYP but not with B3LYP.
 |---|---|
 | [`paper/`](paper) | The review (open access, CC BY-NC-ND; redistributed unmodified) |
 | [`derivations/`](derivations) | LaTeX derivations: 18 sections ([`derivations.pdf`](derivations/derivations.pdf)) |
+| [`presentation/`](presentation) | Beamer deck, 134 frames ([`ch5103-presentation.pdf`](presentation/ch5103-presentation.pdf)) |
 | [`assets/figures/`](assets/figures) | All 17 figures + 5 schemes at 300 dpi |
 | [`assets/figures.jsonl`](assets/figures.jsonl) | Figure/scheme number → file, page, verbatim caption |
 | [`assets/formulae.tex`](assets/formulae.tex) | Key formulae, ready to paste ([PDF](assets/formulae.pdf)) |
@@ -59,6 +60,7 @@ make verify        # fast verification suite (prints PASS/FAIL per test)
 make derivations   # build derivations/derivations.pdf
 make figures       # re-extract figures + captions from the PDF
 make lean          # Lean 4 proofs (fetches the Mathlib cache)
+make -C presentation   # beamer deck (LuaLaTeX)
 ```
 
 Notes:

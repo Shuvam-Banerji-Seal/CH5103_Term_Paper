@@ -1,0 +1,99 @@
+% ============================================================ verdict, take-home, references
+\section{Verdict}
+
+\begin{frame}{Scorecard (1/2): confirmed}
+  \centering\small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{p{8.6cm}l}
+    \toprule
+    claim & verdict\\
+    \midrule
+    triplet single-, open-shell singlet multi-reference & \okpill\\
+    \onslide<2->{less screening, not lower $V_{ee}$, explains Hund's rule} & \onslide<2->{\okpill}\\
+    \onslide<3->{static correlation grows as orbital interaction weakens} & \onslide<3->{\okpill}\\
+    \onslide<4->{kinetic exchange; disjoint NBMOs; topology / Ovchinnikov rules} & \onslide<4->{\okpill}\\
+    \onslide<5->{3d/4s; one-electron quantum numbers not conserved} & \onslide<5->{\okpill}\\
+    \onslide<6->{ROHF orbital energies are convention-dependent} & \onslide<6->{\okpill\ \warnpill}\\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{Scorecard (2/2): qualified or wrong}
+  \centering\small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{p{8.6cm}l}
+    \toprule
+    claim & verdict\\
+    \midrule
+    distonic anions oxidise to diradicals, switchable by pH & \partpill\\
+    \onslide<2->{same-spin correlation ``an order of magnitude'' smaller} & \onslide<2->{\warnpill}\\
+    \onslide<3->{aufbau ``violates'' Pauli; aufbau and Hund's rule ``obsolete''} & \onslide<3->{\warnpill}\\
+    \onslide<4->{$^1\Psi_{\OSS}=\tfrac12(D_{\text{iii}}+D_{\text{iv}})$ \ (p.\ 441)} & \onslide<4->{\badpill}\\
+    \onslide<5->{Katriel \& Pauncz cited as 1975 (it is 1977)} & \onslide<5->{\badpill}\\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{The errors, once more}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{erratum}[Sign error, p.\ 441]
+      $\tfrac12(D_{\text{iii}}\ \crose{+}\ D_{\text{iv}})$ is the $M_S=0$ triplet; the open-shell singlet is
+      $\tfrac12(D_{\text{iv}}\ \cgreen{-}\ D_{\text{iii}})$
+    \end{erratum}
+    \onslide<2->{
+    \begin{erratum}[Citation, ref.\ 11]
+      Katriel \& Pauncz, \emph{Adv.\ Quantum Chem.}\ 10, 143 is from 1977
+    \end{erratum}}
+    \column{0.48\textwidth}
+    \onslide<3->{
+    \begin{paperclaim}[Possible slip, p.\ 445]
+      ``triplet ground state, predicted on the basis of disjoint NBMOs'' contradicts the review's own disjoint/nondisjoint rule
+    \end{paperclaim}}
+    \onslide<4->{\small none of these touches a conclusion: the chemistry of the review stands}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Take-home}
+  \begin{enumerate}
+    \item a spin state is decided by \cgold{correlation}, not by a single term: Hund's rule, aufbau and topology rules are
+          theorems of \emph{models}
+    \item<2-> the \cgold{virial theorem} settles Hund's rule: the high-spin state wins on nuclear attraction
+    \item<3-> \cgold{disjointness} removes first-order exchange; second-order spin polarisation then picks the singlet
+    \item<4-> \cgold{orbital energies are not observables}: judge non-aufbau claims by redox energetics
+    \item<5-> distonic radical anions \cgold{do} oxidise to diradicals at CAM-B3LYP, \emph{but} B3LYP disagrees by 0.07 eV:
+          a sensitive claim
+  \end{enumerate}
+  \vskip0.3cm
+  \onslide<6->{\centering\noircalli\Large\cgold{Even the open-shell singlet in print can fluctuate.}\par}
+\end{frame}
+
+\begin{frame}{Key references}
+  \scriptsize
+  \begin{itemize}
+    \item G.\ Gryn'ova, M.\ L.\ Coote, C.\ Corminboeuf, \emph{WIREs Comput.\ Mol.\ Sci.}\ \textbf{5}, 440 (2015)
+    \item K.\ Hongo et al., \emph{J.\ Chem.\ Phys.}\ \textbf{121}, 7144 (2004) \quad (carbon, QMC, less screening)
+    \item R.\ J.\ Boyd, \emph{Nature} \textbf{310}, 480 (1984)
+    \item J.\ Katriel, R.\ Pauncz, \emph{Adv.\ Quantum Chem.}\ \textbf{10}, 143 (1977)
+    \item W.\ T.\ Borden, E.\ R.\ Davidson, \emph{J.\ Am.\ Chem.\ Soc.}\ \textbf{99}, 4587 (1977)
+    \item A.\ A.\ Ovchinnikov, \emph{Theor.\ Chim.\ Acta} \textbf{47}, 297 (1978)
+    \item E.\ H.\ Lieb, \emph{Phys.\ Rev.\ Lett.}\ \textbf{62}, 1201 (1989)
+    \item J.\ F.\ Janak, \emph{Phys.\ Rev.\ B} \textbf{18}, 7165 (1978)
+    \item A.\ I.\ Krylov, \emph{Chem.\ Phys.\ Lett.}\ \textbf{338}, 375 (2001)
+    \item A.\ Balkov\'a, R.\ J.\ Bartlett, \emph{J.\ Chem.\ Phys.}\ \textbf{101}, 8972 (1994)
+    \item K.\ R.\ Glaesemann, M.\ W.\ Schmidt, \emph{J.\ Phys.\ Chem.\ A} \textbf{114}, 8772 (2010)
+    \item G.\ Gryn'ova, D.\ L.\ Marshall, S.\ J.\ Blanksby, M.\ L.\ Coote, \emph{Nat.\ Chem.}\ \textbf{5}, 474 (2013)
+  \end{itemize}
+  \vskip0.1cm
+  {\cmuted{full access status of every source: derivations, \S17}}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering]
+  \centering
+  \vfill
+  {\noircalli\Huge\cgold{Thank you}}
+  \vskip0.5cm
+  {\noirgaramond\large derivations \textbullet\ code \textbullet\ proofs \textbullet\ slides}\\[4pt]
+  {\ttfamily\small github.com/Shuvam-Banerji-Seal/CH5103\_Term\_Paper}
+  \vfill
+\end{frame}

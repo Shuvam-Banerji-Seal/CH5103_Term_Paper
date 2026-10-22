@@ -1,0 +1,56 @@
+% ============================================================ Koopmans, Janak, S-T gap as HOMO difference
+\section{Koopmans \& Janak}
+
+\begin{frame}{The claim}
+  \begin{paperclaim}
+    ``An alternative theoretical interpretation of the Hund's multiplicity rule has been proposed on the basis of Janak
+    theorem (or extended Koopmans' theorem) \dots: at the Hartree--Fock level, the singlet-triplet gap (STG) is equal to the
+    difference between the energies of the triplet's and open-shell singlet's HOMOs.'' (p.\ 442--443)
+  \end{paperclaim}
+  \vskip0.2cm
+  \onslide<2->{\centering three steps: \cgold{Koopmans' theorem} \;$\to$\; \cgold{Janak's theorem} \;$\to$\; \cgold{the gap}\par}
+  \vskip0.2cm
+  \onslide<3->{\centering\small\cmuted{(which difference, which sign? the review does not say; the derivation will)}\par}
+\end{frame}
+
+\begin{frame}{Koopmans' theorem}
+  \begin{assume}
+    single determinant of spin orbitals $\chi_i$; remove $\chi_k$ \emph{without} relaxing the others
+  \end{assume}
+  {\large
+  \begin{align*}
+    E_N&=\textstyle\sum_i\langle i|\hat h|i\rangle+\tfrac12\sum_{i,j}\bigl([ii|jj]-[ij|ji]\bigr)\\
+    \uncover<2->{E_N-E_{N-1}^{(k)}}&\uncover<2->{=\langle k|\hat h|k\rangle+\tfrac12\textstyle\sum_j(\ldots)_{kj}+\tfrac12\sum_i(\ldots)_{ik}}\\
+    &\uncover<3->{=\langle k|\hat h|k\rangle+\textstyle\sum_j\bigl([kk|jj]-[kj|jk]\bigr)}\uncover<3->{\ \ \cmuted{(\text{the }j=k\text{ term is }0)}}\\
+    &\uncover<4->{=\varepsilon_k}
+  \end{align*}}
+  \onslide<5->{\centering\large $\mathrm{IP}_k=E_{N-1}^{(k)}-E_N=-\varepsilon_k$ \quad\small\cmuted{(frozen orbitals)}\par}
+\end{frame}
+
+\begin{frame}{Janak's theorem}
+  \begin{assume}[Kohn--Sham with fractional occupations $n_i$]
+    $E=\sum_in_i\langle\psi_i|-\tfrac12\nabla^2|\psi_i\rangle+\int v\rho+E_H[\rho]+E_{xc}[\rho]$, \quad $\rho=\sum_in_i|\psi_i|^2$
+  \end{assume}
+  {\large
+  \begin{align*}
+    \frac{\partial E}{\partial n_i}\bigg|_{\text{explicit}}&=\langle\psi_i|-\tfrac12\nabla^2+v+v_H+v_{xc}|\psi_i\rangle=\varepsilon_i\\
+    \uncover<2->{\frac{\partial E}{\partial n_i}\bigg|_{\text{via }\psi_j}}&\uncover<2->{=\textstyle\sum_jn_j\varepsilon_j\,
+      \partial_{n_i}\langle\psi_j|\psi_j\rangle=\hlg<3->{0}}
+  \end{align*}}
+  \onslide<3->{\centering $\boxed{\partial E/\partial n_i=\varepsilon_i}$ \ for any $E_{xc}$ \quad\small\cmuted{(Janak, Phys.\ Rev.\ B 18, 7165, 1978)}\par}
+\end{frame}
+
+\begin{frame}{The gap as a HOMO difference}
+  define each state's ``HOMO energy'' as minus the cost of removing the $\pb$ electron, $\pa$ frozen; \ ion: $E_{\text{ion}}=h_a$
+  {\large
+  \begin{align*}
+    \uncover<2->{\varepsilon_b^{T}}&\uncover<2->{=E_T-E_{\text{ion}}=h_b+J_{ab}-K_{ab}}\\
+    \uncover<3->{\varepsilon_b^{\OSS}}&\uncover<3->{=E_{\OSS}-E_{\text{ion}}=h_b+J_{ab}+K_{ab}}\\
+    \uncover<4->{E_{\OSS}-E_T}&\uncover<4->{=\varepsilon^{\OSS}_{\text{HOMO}}-\varepsilon^{T}_{\text{HOMO}}=2K_{ab}}
+  \end{align*}}
+  \onslide<5->{
+  \begin{keyresult}
+    true at frozen orbitals; the triplet's HOMO is lower (more bound, ``harder'') by $2K$.
+    Like Slater's argument it has no relaxation and no dynamic correlation, as the review notes.\hfill\okpill
+  \end{keyresult}}
+\end{frame}

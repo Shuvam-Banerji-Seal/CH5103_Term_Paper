@@ -1,0 +1,134 @@
+% ============================================================ the aufbau principle on trial
+\section{Aufbau on trial}
+
+\begin{frame}{The prosecution}
+  \begin{paperclaim}
+    ``the aufbau principle, by assuming the existence of unchanging stationary individual electronic states, violates the
+    Pauli exclusion principle. Only the many-electron system as a whole possesses stationary states.'' (p.\ 448)
+  \end{paperclaim}
+  \vskip0.2cm
+  \begin{columns}[T]
+    \column{0.32\textwidth}
+    \onslide<2->{\begin{plainpanel}\centering\cgold{Exhibit A}\\[2pt]\small one-electron quantum numbers are not conserved\end{plainpanel}}
+    \column{0.32\textwidth}
+    \onslide<3->{\begin{plainpanel}\centering\cgold{Exhibit B}\\[2pt]\small the adiabatic argument behind ``building up''\end{plainpanel}}
+    \column{0.32\textwidth}
+    \onslide<4->{\begin{plainpanel}\centering\cgold{Exhibit C}\\[2pt]\small the 3d/4s paradox\end{plainpanel}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Exhibit A: $[\hat l_{1z},1/r_{12}]\neq0$}
+  $\hat l_{1z}=-i(x_1\partial_{y_1}-y_1\partial_{x_1})$, \quad
+  $\partial_{y_1}r_{12}^{-1}=-\dfrac{y_1-y_2}{r_{12}^3}$, \quad $\partial_{x_1}r_{12}^{-1}=-\dfrac{x_1-x_2}{r_{12}^3}$
+  {\large
+  \begin{align*}
+    \uncover<2->{\hat l_{1z}\,r_{12}^{-1}}&\uncover<2->{=-i\,\frac{-x_1(y_1-y_2)+y_1(x_1-x_2)}{r_{12}^3}}\\
+    &\uncover<3->{=-i\,\frac{\canc<4->{-x_1y_1}+x_1y_2+\canc<4->{y_1x_1}-y_1x_2}{r_{12}^3}}\\
+    &\uncover<5->{=-i\,\frac{x_1y_2-x_2y_1}{r_{12}^3}\ \crose{\neq0}}
+  \end{align*}}
+  \onslide<6->{\centering\small first-order operator: $[\hat l_{1z},V]f=(\hat l_{1z}V)f$ \quad$\Rightarrow$\quad $l_{1z}$ is not a constant of motion\par}
+\end{frame}
+
+\begin{frame}{\ldots but the total is conserved}
+  {\large
+  \begin{align*}
+    \hat l_{2z}\,r_{12}^{-1}&=-i\,\frac{x_2y_1-x_1y_2}{r_{12}^3}\quad\cmuted{(\partial_{y_2}r_{12}^{-1}=+\tfrac{y_1-y_2}{r_{12}^3})}\\
+    \uncover<2->{(\hat l_{1z}+\hat l_{2z})\,r_{12}^{-1}}&\uncover<2->{=-i\,\frac{(x_1y_2-x_2y_1)+(x_2y_1-x_1y_2)}{r_{12}^3}=\hlg<3->{0}}
+  \end{align*}}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \onslide<4->{
+    \begin{keyresult}
+      $[\Hop,\hat{\mathbf L}]=0$, \ $[\Hop,\hat S^2]=0$,\\ but $[\Hop,\hat{\mathbf l}_i]\neq0$
+    \end{keyresult}}
+    \column{0.46\textwidth}
+    \onslide<5->{\small $\hat{\mathbf L}$ rotates both electrons together (keeps $r_{12}$);
+      $\hat{\mathbf l}_1$ rotates one (changes $r_{12}$).\\ \tick\ \cmuted{T13, SymPy on an arbitrary $f$}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Exhibit B: the adiabatic theorem}
+  \begin{paperclaim}
+    Bohr assumed stationary states survive ``addition of an electron and a proton''; this rests on Ehrenfest's adiabatic
+    principle, which ``does not apply to aperiodic systems'' (p.\ 448)
+  \end{paperclaim}
+  {\begin{align*}
+    \uncover<2->{\Psi(t)}&\uncover<2->{=\textstyle\sum_nc_n(t)\,e^{i\theta_n(t)}\psi_n(t),\qquad\theta_n=-\int_0^tE_n\,\dd t'}\\
+    \uncover<3->{\dot c_m}&\uncover<3->{=-\textstyle\sum_nc_n\braket{\psi_m}{\dot\psi_n}e^{i(\theta_n-\theta_m)},\qquad
+      \braket{\psi_m}{\dot\psi_n}=\frac{\mel{\psi_m}{\dot{\Hop}}{\psi_n}}{E_n-E_m}}
+  \end{align*}}
+  \onslide<4->{\small slow $\dot{\Hop}$, finite gaps $\Rightarrow$ the system stays in the \emph{continuously connected} eigenstate.
+    \cgold{But}: adding a particle changes the Hilbert space (no continuous path), and the conserved labels are
+    $L,S$ of the \emph{whole} system, never one-electron labels.}
+\end{frame}
+
+\begin{frame}{Exhibit C: the 3d/4s paradox}
+  \begin{paperclaim}
+    4s lies slightly above 3d when both are populated, so 4s is ionised first; ``however, 4s orbital is also populated
+    first, because it offers less repulsion with a 3d electron than that between two 3d electrons'' (p.\ 448)
+  \end{paperclaim}
+  \begin{assume}[Average of configuration]
+    one-electron energies $h_d,h_s$; one average repulsion per pair type: $\bar J_{dd},\ \bar J_{ds},\ J_{ss}$
+  \end{assume}
+  {\large
+  \[
+    E(d^{n_d}s^{n_s})=n_dh_d+n_sh_s+\tbinom{n_d}{2}\bar J_{dd}+n_dn_s\bar J_{ds}+\tbinom{n_s}{2}J_{ss}
+  \]}
+\end{frame}
+
+\begin{frame}{3d/4s: the algebra}
+  {\begin{align*}
+    E(d^ns^2)&=nh_d+2h_s+\tbinom n2\bar J_{dd}+2n\bar J_{ds}+J_{ss}\\
+    \uncover<2->{E(d^{n+1}s)}&\uncover<2->{=(n+1)h_d+h_s+\tbinom{n+1}2\bar J_{dd}+(n+1)\bar J_{ds}}\\
+    \uncover<3->{\Delta\equiv E(d^{n+1}s)-E(d^ns^2)}&\uncover<3->{=h_d-h_s+n\bar J_{dd}+(1-n)\bar J_{ds}-J_{ss}}
+      \uncover<3->{\quad\cmuted{\tbinom{n+1}2-\tbinom n2=n}}\\
+    \uncover<4->{\varepsilon_d=E(d^ns^2)-E(d^{n-1}s^2)}&\uncover<4->{=h_d+(n-1)\bar J_{dd}+2\bar J_{ds}}\\
+    \uncover<5->{\varepsilon_s=E(d^ns^2)-E(d^ns^1)}&\uncover<5->{=h_s+n\bar J_{ds}+J_{ss}}
+  \end{align*}}
+  \onslide<6->{
+  \begin{keyresult}
+    \centering $\Delta=(\varepsilon_d-\varepsilon_s)+\bigl(\bar J_{dd}-\bar J_{ds}\bigr)$ \qquad\cmuted{(T12; Lean \texttt{three\_d\_four\_s})}
+  \end{keyresult}}
+\end{frame}
+
+\begin{frame}{3d/4s: reading the identity}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \begin{itemize}
+      \item compact 3d, diffuse 4s $\Rightarrow$ $\bar J_{dd}\gg\bar J_{ds}$
+      \item<2-> even with $\varepsilon_d<\varepsilon_s$: \ $\Delta>0$ if $\bar J_{dd}-\bar J_{ds}>\varepsilon_s-\varepsilon_d$ \\
+        \cgold{$d^ns^2$ wins}: 4s ``fills first''
+      \item<3-> from $d^ns^2$: Koopmans IPs $-\varepsilon_s<-\varepsilon_d$ \\ \cgold{4s leaves first}
+    \end{itemize}
+    \column{0.45\textwidth}
+    \onslide<4->{
+    \begin{tikzpicture}[scale=1.0]
+      \draw[-{Stealth[length=4pt]},noirmuted] (-0.3,-0.2) -- (-0.3,2.9) node[above,font=\scriptsize]{energy};
+      \draw[level,noircyan] (0,1.6) -- (1.2,1.6) node[right,font=\scriptsize]{$\varepsilon_s=-0.90$};
+      \draw[level,noirgold] (0,1.0) -- (1.2,1.0) node[right,font=\scriptsize]{$\varepsilon_d=-1.50$};
+      \node[font=\scriptsize,text=noirmuted,align=left,anchor=west] at (-0.2,0.2) {example ($n=2$):\\ $\bar J_{dd}=0.8$, $\bar J_{ds}=0.1$};
+      \node[font=\small,text=noirgreen,anchor=west] at (-0.2,-0.55) {$\Delta=-0.6+0.7=+0.10$};
+    \end{tikzpicture}}
+  \end{columns}
+  \vskip0.2cm
+  \onslide<5->{\centering\small orbital energies belong to a \emph{configuration}: the building-up and removal orders need not agree\par}
+\end{frame}
+
+\begin{frame}{Verdict on the aufbau critique}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \cgreen{right}
+    \begin{itemize}
+      \item one-electron quantum numbers are model labels (Exhibit A)
+      \item<2-> orbital energies depend on the configuration (Exhibit C)
+      \item<3-> non-aufbau orderings are real (VO(oep), quantum dots, LiF dissociation, the radicals ahead)
+    \end{itemize}
+    \column{0.48\textwidth}
+    \onslide<4->{\crose{overstated}}
+    \begin{itemize}
+      \item<4-> an aufbau-filled \emph{determinant} is fully antisymmetric: within the orbital model it does not ``violate'' Pauli
+      \item<5-> ``obsolescence'' of aufbau and Hund's rule: both still hold for almost all atoms
+    \end{itemize}
+    \onslide<6->{\warnpill}
+  \end{columns}
+\end{frame}
