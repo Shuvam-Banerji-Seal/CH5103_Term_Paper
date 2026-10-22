@@ -27,4 +27,4 @@
 - [x] [ADDED-CYCLE-2] slide audit vs paper (5 Haiku auditors) — 29 findings, all dispositioned (plans/audit-findings.md)
 - [x] [ADDED-CYCLE-2] slides: symbol strips + step explanations, frame count kept at 136, CLEAN build
 - [x] [ADDED-CYCLE-2] FINDINGS: "obsolescence" quote (p. 455), TriMB quartet imprecision, T1b, t11c_check
-- [ ] [ADDED-CYCLE-2] GitHub Pages site (site/ + Actions workflow) — in progress
+- [x] [ADDED-CYCLE-2] GitHub Pages site (site/ + Actions workflow) — deployed, verified live (no console errors, 0 KaTeX errors, viewer renders both decks)
