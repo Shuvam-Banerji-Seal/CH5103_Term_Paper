@@ -1,5 +1,6 @@
 # Build the CH5103 beamer deck (LuaLaTeX, Noir theme).
 #   make           build build/main.pdf and copy it to ch5103-presentation.pdf
+#   make handout   one page per frame (overlays collapsed) -> ch5103-handout.pdf
 #   make assets    regenerate screenshots, plot data and JS/SVG diagrams first
 #   make check     list every warning / bad box in the last build (expects "CLEAN")
 #   make clean     remove build/
@@ -7,7 +8,7 @@ UV      ?= uv
 THREADS ?= $(shell nproc)
 PY       = OMP_NUM_THREADS=$(THREADS) $(UV) run --project $(CURDIR)/.. python -I
 
-.PHONY: all pdf assets screenshots data diagrams check clean
+.PHONY: all pdf handout assets screenshots data diagrams check clean
 
 all: pdf
 
@@ -15,6 +16,10 @@ pdf:
 	latexmk main.tex
 	cp build/main.pdf ch5103-presentation.pdf
 	@python3 -I scripts/check_log.py
+
+handout:
+	latexmk handout.tex
+	cp build/handout.pdf ch5103-handout.pdf
 
 assets: screenshots data diagrams
 

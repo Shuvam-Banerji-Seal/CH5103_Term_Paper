@@ -9,12 +9,13 @@
       \multicolumn{2}{@{}l}{\cgold{\ttfamily CH5103\_Term\_Paper/}}\\
       \ttfamily\ \ paper/ & \cmuted{the review (PDF)}\\
       \ttfamily\ \ derivations/ & \cmuted{18 LaTeX sections}\\
-      \ttfamily\ \ verification/ & \cmuted{T1--T15 scripts, logs}\\
+      \ttfamily\ \ verification/ & \cmuted{T1--T15 scripts, logs, results/}\\
       \ttfamily\ \ \ \ lean\_proofs/ & \cmuted{Lean 4 + Mathlib (T17)}\\
       \ttfamily\ \ assets/ & \cmuted{figures, captions (JSONL)}\\
       \ttfamily\ \ presentation/ & \cmuted{this deck}\\
       \ttfamily\ \ docs/ & \cmuted{findings, test matrix}\\
-      \ttfamily\ \ plans/ & \cmuted{working log}\\
+      \ttfamily\ \ plans/ & \cmuted{working log, audit}\\
+      \ttfamily\ \ site/ & \cmuted{web page (GitHub Pages)}\\
       \ttfamily\ \ pyproject.toml, uv.lock & \cmuted{pinned environment}\\
       \ttfamily\ \ Makefile & \cmuted{one command per artefact}
     \end{tabular}
@@ -23,7 +24,7 @@
     \begin{plainpanel}
       \ttfamily\footnotesize
       make sync\ \ \ \ \ \ \ \cmuted{\# uv, locked env}\\
-      make verify\ \ \ \ \ \cmuted{\# T1--T15}\\
+      make verify\ \ \ \ \ \cmuted{\# T1--T15 > results/}\\
       make verify-dft\ \cmuted{\# T11, T11c}\\
       make lean\ \ \ \ \ \ \ \cmuted{\# T17}\\
       make derivations\\
@@ -41,6 +42,7 @@
     test & what & method & result\\
     \midrule
     T1 & spin functions, Fig.\ 1 combinations, sign erratum & SymPy & \okpill\\
+    T1b & sign erratum again: $\hat S^2$ on numerical tensors & NumPy & \okpill\\
     T2 & $2e/2o$ Hamiltonian vs full CI (5 random sets) & PySCF FCI & \okpill\\
     T3 & $K_{pq}\ge0$, $J_{pq}\ge K_{pq}$ & RHF/6-31G H$_2$O & \okpill\\
     T4 & He $2\,^3S/2\,^1S$: virial, less screening & exact 2-electron & \okpill\\
@@ -51,11 +53,13 @@
     T9 & Ovchinnikov/Lieb spins; spin alternation & exact diagonalisation & \okpill\\
     \bottomrule
   \end{tabular}
+  \symbolstrip{SymPy: exact symbolic algebra \quad PySCF: quantum-chemistry package \quad FCI: full configuration interaction (exact in the basis)
+    \quad RHF: restricted HF \quad 6-31G, STO-3G: basis sets \quad exact diagonalisation: all eigenstates of a model Hamiltonian}
 \end{frame}
 
 \begin{frame}{The test matrix (2/2)}
   \centering\small
-  \renewcommand{\arraystretch}{1.12}
+  \renewcommand{\arraystretch}{1.02}
   \begin{tabular}{llll}
     \toprule
     test & what & method & result\\
@@ -63,8 +67,8 @@
     T9b & gap $\propto U$ vs $\propto U^2$ & exact diagonalisation & \okpill\\
     T10 & S--T gap $=$ HOMO difference & SymPy & \okpill\\
     T11a & ROHF stationarity, canonicalisation & ROHF/6-31G* & \okpill\\
-    T11b & distonic anion, B3LYP & UB3LYP $\Delta$SCF & \badpill\\
-    T11c & distonic anions/acids, CAM-B3LYP & UKS $\Delta$SCF & \okpill\\
+    T11b & distonic anion, B3LYP & UB3LYP $\Delta$SCF & \pill{noirrose}{fail}\\
+    T11c & distonic anions/acids, two functionals & UKS $\Delta$SCF; \texttt{t11c\_check.py} & \okpill\\
     T12 & 3d/4s identity & SymPy & \okpill\\
     T13 & $[\hat l_1,r_{12}^{-1}]\neq0$, $[\hat L,r_{12}^{-1}]=0$ & SymPy & \okpill\\
     T14 & Yamaguchi projection & BS-UHF dimer & \okpill\\
@@ -72,29 +76,37 @@
     T17 & 17 algebraic theorems & Lean 4 + Mathlib & \okpill\\
     \bottomrule
   \end{tabular}
-  \vskip0.15cm
-  {\scriptsize\cmuted{T11b ``fails'' honestly: B3LYP misses the crossover by 0.07 eV; T11c explains why}}
+  \vskip0.1cm
+  {\scriptsize\cmuted{T11b fails as recorded: B3LYP misses the crossover by 0.06--0.07 eV; T11c shows the outcome depends on the functional.
+    T16 (citations checked by hand against publisher records) has no script.}}
+  \symbolstrip{$\Delta$SCF: energy difference of two separate SCF calculations \quad UKS: unrestricted Kohn--Sham DFT \quad
+    MP2: second-order perturbation theory \quad BS-UHF: broken-symmetry unrestricted HF}
 \end{frame}
 
-\begin{frame}[fragile]{Inside T4: helium solved exactly}{verification/t03\_t05\_hund\_virial\_h2.py (excerpt, unedited)}
+\begin{frame}[fragile]{Inside T4: helium, exact in a 16s7p4d basis}{verification/t03\_t05\_hund\_virial\_h2.py (excerpt, unedited)}
   \inputminted[fontsize=\tiny,firstline=42,lastline=62]{python}{../verification/t03_t05_hund_virial_h2.py}
-  {\footnotesize symmetric $C$ $\leftrightarrow$ singlet, antisymmetric $C$ $\leftrightarrow$ triplet (Part III)}
+  \symbolstrip{symmetric $C$ $\leftrightarrow$ singlet, antisymmetric $C$ $\leftrightarrow$ triplet (Part III) \quad \texttt{C[p,q]}: coefficient of $\phi_p(1)\phi_q(2)$
+    \quad \texttt{h}, \texttt{T}, \texttt{V}: one-electron, kinetic, nuclear matrices \quad \texttt{eri}: $(pq|rs)$ \quad \texttt{B}: basis of (anti)symmetric pairs
+    \quad \texttt{Tex}, \texttt{Vne}, \texttt{Vee}: virial components}
 \end{frame}
 
 \begin{frame}[fragile]{Inside T11a: ROHF Fock blocks}{verification/t11\_rohf\_and\_distonic.py (excerpt)}
   \inputminted[fontsize=\scriptsize,firstline=14,lastline=24]{python}{../verification/t11_rohf_and_distonic.py}
-  \vskip0.1cm
   \inputminted[fontsize=\scriptsize,firstline=51,lastline=54]{python}{../verification/t11_rohf_and_distonic.py}
-  \vskip0.1cm
   {\small UHF Fock matrices from the ROHF densities, then the blocks the stationarity table says must vanish}
+  \symbolstrip{\texttt{Fa}, \texttt{Fb}: $\mathbf F^\alpha,\mathbf F^\beta$ in the MO basis \quad \texttt{c}, \texttt{o}, \texttt{v}: core, open, virtual
+    indices \quad \texttt{g\_*}: blocks that must vanish \quad \texttt{n\_*}: blocks free to be non-zero}
 \end{frame}
 
 \begin{frame}[fragile]{Inside T17: Lean proves the less-screening logic}{verification/lean\_proofs/Ch5103/Identities.lean (excerpt)}
-  \inputminted[fontsize=\scriptsize,firstline=72,lastline=83]{lean4}{../verification/lean_proofs/Ch5103/Identities.lean}
+  \inputminted[fontsize=\scriptsize,firstline=72,lastline=77]{lean4}{../verification/lean_proofs/Ch5103/Identities.lean}
+  \inputminted[fontsize=\scriptsize,firstline=79,lastline=83]{lean4}{../verification/lean_proofs/Ch5103/Identities.lean}
   \onslide<2->{
   \begin{checked}[Axiom audit]
     \texttt{\#print axioms}, all 17 theorems: only \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}
   \end{checked}}
+  \symbolstrip{\texttt{dT}, \texttt{dVne}, \texttt{dVee}, \texttt{dE}: triplet minus singlet \quad \texttt{hvir}: virial theorem for both states
+    \quad \texttt{linarith}: proves linear inequalities automatically \quad axioms: the standard three of Lean's logic}
 \end{frame}
 
 \begin{frame}{What the tests caught in our own work}
@@ -113,6 +125,6 @@
     \begin{keyresult}
       every failure was diagnosed before the test changed, and each is logged in \texttt{plans/tests.md}
     \end{keyresult}}
-    \onslide<7->{\small\cmuted{writing the test first is what turned ``I believe'' into ``checked''}}
+    \onslide<7->{\small\cmuted{a check that is able to fail is what turns ``I believe'' into ``checked''}}
   \end{columns}
 \end{frame}

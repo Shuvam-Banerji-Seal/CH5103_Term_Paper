@@ -5,7 +5,7 @@
   \[
     \Hop_{\text{mol}}\,\Psi=E\,\Psi
   \]
-  \vskip-0.2cm
+  \vskip-0.5cm
   \[
     \Hop_{\text{mol}}=
     \underbrace{-\sum_A\frac{\nabla_A^2}{2M_A}}_{\onslide<2->{\cmuted{\text{nuclear KE}}}}
@@ -14,24 +14,29 @@
     \underbrace{+\sum_{i<j}\frac{1}{r_{ij}}}_{\onslide<5->{\crose{\text{e--e repulsion}}}}
     \underbrace{+\sum_{A<B}\frac{Z_AZ_B}{R_{AB}}}_{\onslide<6->{\cmuted{\text{n--n repulsion}}}}
   \]
-  \vskip0.2cm
-  \begin{center}
-  \begin{tikzpicture}[scale=1.15]
-    \fill[noirgold] (0,0) circle (0.13) node[below=3pt,font=\scriptsize,text=noirgold]{$A$};
-    \fill[noirgold] (4,0) circle (0.13) node[below=3pt,font=\scriptsize,text=noirgold]{$B$};
-    \fill[noircyan] (1.3,1.2) circle (0.07) node[above,font=\scriptsize,text=noircyan]{$i$};
-    \fill[noircyan] (2.9,1.0) circle (0.07) node[above,font=\scriptsize,text=noircyan]{$j$};
-    \onslide<4->{\draw[noirgold,dashed] (0,0) -- (1.3,1.2) node[midway,left,font=\tiny]{$r_{iA}$};}
-    \onslide<5->{\draw[noirrose] (1.3,1.2) -- (2.9,1.0) node[midway,above,font=\tiny]{$r_{ij}$};}
-    \onslide<6->{\draw[noirmuted,dashed] (0,0) -- (4,0) node[midway,below,font=\tiny]{$R_{AB}$};}
-  \end{tikzpicture}
-  \end{center}
+  \begin{columns}[c]
+    \column{0.42\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+      \fill[noirgold] (0,0) circle (0.13) node[below=3pt,font=\scriptsize,text=noirgold]{$A$};
+      \fill[noirgold] (4,0) circle (0.13) node[below=3pt,font=\scriptsize,text=noirgold]{$B$};
+      \fill[noircyan] (1.3,1.2) circle (0.07) node[above,font=\scriptsize,text=noircyan]{$i$};
+      \fill[noircyan] (2.9,1.0) circle (0.07) node[above,font=\scriptsize,text=noircyan]{$j$};
+      \onslide<4->{\draw[noirgold,dashed] (0,0) -- (1.3,1.2) node[midway,left,font=\tiny]{$r_{iA}$};}
+      \onslide<5->{\draw[noirrose] (1.3,1.2) -- (2.9,1.0) node[midway,above,font=\tiny]{$r_{ij}$};}
+      \onslide<6->{\draw[noirmuted,dashed] (0,0) -- (4,0) node[midway,below,font=\tiny]{$R_{AB}$};}
+    \end{tikzpicture}
+    \column{0.55\textwidth}
+    \explain<2->{kinetic energy is $-\tfrac12\nabla^2$ (second derivatives): curvature of $\Psi$ costs energy}
+    \explain<4->{attraction: every electron $i$ to every nucleus $A$ of charge $Z_A$, falling off as $1/r$}
+    \explain<5->{repulsion: every \emph{pair} of electrons once ($i<j$ avoids double counting)}
+  \end{columns}
+  \symbolstrip{$\Psi$: total wavefunction of all electrons and nuclei \quad $E$: total energy \quad
+    $A,B$: nuclei, $i,j$: electrons \quad $M_A$: nuclear mass (units of $m_e$) \quad $Z_A$: nuclear charge \quad
+    $r_{iA},r_{ij},R_{AB}$: distances \quad atomic units $\hbar=m_e=e=1$}
 \end{frame}
 
-\begin{frame}{Born--Oppenheimer: freeze the nuclei}
-  \begin{assume}
-    $M_A\gg m_e=1$: electrons adjust instantly to nuclear positions; treat $\{\mathbf R_A\}$ as parameters.
-  \end{assume}
+\begin{frame}{Born--Oppenheimer: freeze the nuclei}{assume $M_A\gg m_e=1$: electrons adjust instantly; nuclear positions $\{\mathbf R_A\}$ are parameters}
   \begin{enumerate}
     \item<2-> drop the nuclear kinetic energy \hfill $-\sum_A\nabla_A^2/2M_A\to0$
     \item<3-> nuclear repulsion becomes a constant \hfill $V_{nn}(\mathbf R)$
@@ -42,24 +47,27 @@
     \boxed{\;\Hop=\sum_{i=1}^{N}\hat h(i)+\sum_{i<j}\frac1{r_{ij}},\qquad
     \hat h(i)=-\tfrac12\nabla_i^2-\sum_A\frac{Z_A}{r_{iA}}\;}
   \]}
-  \onslide<5->{\centering\small $\hat h$ acts on one electron at a time;
-    \crose{$1/r_{ij}$ couples every pair}: that coupling is what this whole paper is about.\par}
-  \onslide<6->{\centering\small \cmuted{Note: $\Hop$ contains no spin. Spin will enter only through the Pauli principle.}\par}
+  \vskip-0.15cm
+  \explain<2->{a proton is $1836\times$ heavier than an electron, so on the electrons' time scale the nuclei stand still}
+  \explain<4->{$\hat h(i)$ = everything that involves electron $i$ \emph{alone}; $1/r_{ij}$ couples electrons in pairs and is the hard part}
+  \symbolstrip{$\mathbf R_A$: position of nucleus $A$ \quad $V_{nn}$: nuclear repulsion (a number once nuclei are fixed) \quad
+    $N$: number of electrons \quad $\hat h(i)$: one-electron (``core'') Hamiltonian \quad
+    $\Hop$ has no spin operator: spin enters only via the Pauli principle}
 \end{frame}
 
-\begin{frame}{The variational principle}{why ``lower energy'' means ``better wavefunction''}
-  {\small\cviolet{Assume:} exact eigenstates $\Hop\Psi_n=E_n\Psi_n$, orthonormal, complete, $E_0\le E_1\le\cdots$}
-  {\large\begin{align*}
-    \stepno{1}\ \tilde\Psi&=\textstyle\sum_n c_n\Psi_n,\qquad \sum_n|c_n|^2=1 &&\cmuted{\text{expand any trial function}}\\
+\begin{frame}{The variational principle}{assume exact eigenstates $\Hop\Psi_n=E_n\Psi_n$: orthonormal, complete, $E_0\le E_1\le\cdots$}
+  {\begin{align*}
+    \stepno{1}\ \tilde\Psi&=\textstyle\sum_n c_n\Psi_n,\qquad \sum_n|c_n|^2=1
+      &&\why{any function is a mix of eigenstates (completeness)}\\
     \uncover<2->{\stepno{2}\ \langle\tilde\Psi|\Hop|\tilde\Psi\rangle}&\uncover<2->{=\textstyle\sum_{m,n}c_m^*c_n\,E_n\langle\Psi_m|\Psi_n\rangle}
-      &&\uncover<2->{\cmuted{\text{$\Hop$ acts on $\Psi_n$}}}\\
-    &\uncover<3->{=\textstyle\sum_n|c_n|^2E_n} &&\uncover<3->{\cmuted{\langle\Psi_m|\Psi_n\rangle=\delta_{mn}}}\\
-    \uncover<4->{\stepno{3}}&\uncover<4->{\ge\textstyle\sum_n|c_n|^2E_0=E_0} &&\uncover<4->{\cmuted{E_n\ge E_0}}
+      &&\uncover<2->{\why{insert both sums; $\Hop\Psi_n=E_n\Psi_n$}}\\
+    &\uncover<3->{=\textstyle\sum_n|c_n|^2E_n} &&\uncover<3->{\why{orthonormality: only $m=n$ terms survive}}\\
+    \uncover<4->{\stepno{3}}&\uncover<4->{\ge\textstyle\sum_n|c_n|^2E_0=E_0} &&\uncover<4->{\why{each $E_n\ge E_0$; then use $\sum|c_n|^2=1$}}
   \end{align*}}
-  \onslide<5->{
-  \begin{keyresult}
-    $E[\tilde\Psi]\ge E_0$ for every normalised $\tilde\Psi$; Hartree--Fock and CI rest on it.
-  \end{keyresult}}
+  \onslide<5->{\centering\cgreen{$E[\tilde\Psi]\ge E_0$ for every normalised $\tilde\Psi$}: a lower energy is a better wavefunction\par}
+  \symbolstrip{$\tilde\Psi$: any trial wavefunction \quad $c_n$: (complex) expansion coefficients \quad
+    $\braket fg=\int f^*g\,\dd\tau$: overlap integral over all coordinates \quad $\mel f{\Hop}g=\int f^*\Hop g\,\dd\tau$ \quad
+    $\delta_{mn}$: 1 if $m=n$, else 0}
 \end{frame}
 
 \begin{frame}{Orbitals: the independent-electron picture}
@@ -68,23 +76,22 @@
     \begin{assume}[Independent-particle model]
       replace $\sum_{i<j}1/r_{ij}$ by an \emph{average} field felt by each electron
     \end{assume}
-    \onslide<2->{\[
-      \hat f\,\varphi_p=\varepsilon_p\,\varphi_p\qquad\text{(one-electron problem)}
-    \]}
-    \onslide<3->{LCAO: expand in atom-centred functions
-    \[
-      \varphi_p(\mathbf r)=\sum_\mu c_{\mu p}\,\chi_\mu(\mathbf r)
-    \]}
-    \onslide<4->{\small orbital = one-electron wavefunction; its \emph{energy} $\varepsilon_p$ and its \emph{occupation} build the configuration.}
+    \smallskip
+    \onslide<2->{one-electron problem: \quad $\hat f\,\varphi_p=\varepsilon_p\,\varphi_p$\par\smallskip}
+    \onslide<3->{LCAO, atom-centred functions: \quad $\varphi_p(\mathbf r)=\sum_\mu c_{\mu p}\,\chi_\mu(\mathbf r)$\par}
+    \explain<2->{each electron feels the \emph{averaged} field of the others; occupations build the configuration}
     \column{0.42\textwidth}
     \centering
-    \begin{tikzpicture}[scale=1.25]
+    \begin{tikzpicture}[scale=1.0]
       \draw[-{Stealth[length=4pt]},noirmuted] (-0.2,-0.1) -- (-0.2,3.2) node[above,font=\scriptsize]{$\varepsilon$};
       \orblevel{0.8}{0.2}{$\varphi_1$}\orblevel{0.8}{0.9}{$\varphi_2$}\orblevel{0.8}{1.6}{$\varphi_3$}\orblevel{0.8}{2.5}{$\varphi_4$}
       \onslide<4->{\elup{0.8}{0.2}\eldn{0.8}{0.2}\elup{0.8}{0.9}\eldn{0.8}{0.9}\elup{0.8}{1.6}}
       \onslide<4->{\node[font=\tiny,text=noirgold,anchor=west] at (1.6,1.6) {SOMO};}
     \end{tikzpicture}
   \end{columns}
+  \symbolstrip{$\hat f$: Fock (mean-field) operator \quad $\varphi_p$: spatial orbital $p$ \quad $\varepsilon_p$: its orbital energy \quad
+    $\chi_\mu$: atom-centred basis function (atomic orbital) \quad $c_{\mu p}$: LCAO coefficient \quad
+    \textcolor{noirrose}{$\uparrow$}\,\textcolor{noirblue}{$\downarrow$}: spin up ($\alpha$) / down ($\beta$) \quad SOMO: singly occupied MO}
 \end{frame}
 
 \begin{frame}{Box 1: ``Much ado about orbitals''}
@@ -92,25 +99,26 @@
     \column{0.55\textwidth}
     \begin{paperclaim}
       ``The reality is that an orbital is a mathematical construct, an approximate, non-unique solution
-      to the Schr\"odinger equation.''
+      to the Schr\"odinger equation.'' (p.\ 448)
     \end{paperclaim}
     \onslide<2->{
     \begin{plainpanel}
       \small
-      \cgold{Non-unique:} any unitary mixing of occupied orbitals leaves the determinant (and every
-      observable) unchanged. \\[3pt]
-      \cgold{Approximate:} orbitals exist only inside the independent-particle model.
+      \cgold{Non-unique:} unitary mixing of occupied orbitals leaves the determinant and every
+      observable unchanged.\par
+      \cgold{Approximate:} orbitals are defined within the independent-particle (orbital) model.
     \end{plainpanel}}
     \column{0.4\textwidth}
     \raggedright
     \onslide<3->{
     \begin{plainpanel}
       \small
-      The 1999 \emph{Nature} report of ``direct observation of d-orbital holes'' in Cu$_2$O started a debate:
+      A 1999 \emph{Nature} report on ``the direct observation of copper's d-orbitals'' (p.\ 448) started a debate:
       \emph{can an orbital be observed?}\par\smallskip
       \cmuted{What is observable is the density $\rho(\mathbf r)$, and orbital \emph{occupations}.}
     \end{plainpanel}}
   \end{columns}
-  \vskip0.2cm
-  \onslide<4->{\centering\small\cgold{Keep this in mind: it returns when ROHF orbital energies turn out to be arbitrary.}\par}
+  \onslide<4->{\centering\small\cgold{Keep this in mind: it returns when ROHF orbital orderings depend on a convention.}\par}
+  \symbolstrip{unitary mixing: replacing the occupied orbitals by orthonormal combinations of themselves \quad
+    $\rho(\mathbf r)$: electron density, the probability of finding an electron at $\mathbf r$ (measurable)}
 \end{frame}

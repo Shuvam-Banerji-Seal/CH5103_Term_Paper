@@ -1,0 +1,21 @@
+T11c results parsed from logs/t11c*.log
+  system      functional    IE_T   IE_CS  D(T-CS) SOMO rank  <S2>_T  source
+  shortacid   b3lyp       9.498   8.092   +1.406         0   2.009  t11c.log
+  shortacid   camb3lyp    9.670   8.249   +1.421         0   2.007  t11c.log
+  shortanion  b3lyp       4.012   3.939   +0.072         3   2.011  t11c.log
+  shortanion  camb3lyp    4.182   4.545   -0.363         3   2.011  t11c.log
+  tempoacid   b3lyp       8.853   7.569   +1.285         0   2.007  t11c_resume3.log
+  tempoacid   camb3lyp    8.976   7.747   +1.229         0   2.007  t11c_resume3.log
+  tempoanion  b3lyp       3.978   3.912   +0.067         2   2.010  t11c.log
+  tempoanion  camb3lyp    4.120   4.416   -0.296         3   2.011  t11c_resume.log
+checks
+  [ok] all 8 (system, functional) runs present
+  [ok] Delta = IE_T - IE_CS for every run (to 0.002 eV)
+  [ok] triplet products are clean triplets (|<S2> - 2| < 0.05)
+  [ok] acids: SOMO is the alpha-HOMO (aufbau) for both functionals
+  [ok] anions: SOMO lies below the alpha-HOMO (non-aufbau) for both functionals
+  [ok] acids oxidise to the closed shell (Delta > 0) for both functionals
+  [ok] CAM-B3LYP: anions oxidise to the triplet diradical (Delta < 0), i.e. the pH switch is reproduced
+  [info] B3LYP anions: Delta = +0.072, +0.067 eV (> 0: B3LYP misses the switch; reported as a finding, not a failure of this check)
+  [ok] presentation/data/distonic.csv matches the logs (to 0.001 eV)
+T11c PASS

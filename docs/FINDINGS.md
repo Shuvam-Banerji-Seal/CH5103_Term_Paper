@@ -7,14 +7,15 @@ The full derivations are in [`derivations/derivations.pdf`](../derivations/deriv
 test IDs (T1…T17) refer to [`VERIFICATION.md`](VERIFICATION.md).
 
 **Summary.** The physics holds up wherever it could be tested. There is one mathematical error and one
-citation error. A few statements are overstated. The review's central chemical claim (the energetics of
-oxidising a distonic radical anion) is only partly reproduced by our model calculation.
+citation error. A few statements are overstated or imprecise. The review's central chemical claim (oxidising a
+distonic radical anion gives a diradical, switchable by pH) is reproduced with the range-separated CAM-B3LYP
+functional but not with B3LYP, so it is functional-dependent.
 
 ## Confirmed
 
 | Claim (page) | Evidence |
 |---|---|
-| The triplet M_S = ±1 components are single determinants; the open-shell singlet needs two (p. 441). | Symbolic expansion (T1); Lean `sum_is_triplet`, `diff_is_singlet` (T17). |
+| The triplet M_S = ±1 components are single determinants; the open-shell singlet needs two (p. 441). | Symbolic expansion (T1); Ŝ² applied to numerical two-electron tensors (T1b); Lean `sum_is_triplet`, `diff_is_singlet` (T17). |
 | Hund's rule: the high-spin state is stabilised by stronger electron–nucleus attraction ("less screening"), not by lower e–e repulsion (p. 442). | Exact He 1s2s calculation (T4): the triplet has **higher** V_ee (+0.0185 E_h) and lower V_ne (−0.0772 E_h). Virial ratio = 2.000000. Matches Hongo et al. 2004, Table I (carbon). Lean `less_screening`, `frozen_orbitals_violate_virial`. |
 | Static correlation grows as the orbital interaction weakens (H₂ dissociation, twisted ethylene; Fig. 2) (p. 442). | Closed-form H₂ minimal-basis limits vs PySCF to 4×10⁻¹⁶ E_h (T5); two-orbital gap model (T6). |
 | Kinetic exchange: ionic configurations mix only into the singlet (p. 442). | Spin-symmetry proof and extended-Hubbard dimer, analytic vs full CI (T7). |
@@ -29,6 +30,8 @@ oxidising a distonic radical anion) is only partly reproduced by our model calcu
 
 1. **Sign error, p. 441.** The open-shell singlet is printed as ½(D_iii **+** D_iv). That combination is
    the M_S = 0 **triplet**. The singlet is ½(D_iv − D_iii). (The product form on the line above is correct.)
+   Confirmed three independent ways: symbolic expansion (T1), Ŝ² applied to the printed determinants as
+   numerical tensors (T1b: ⟨S²⟩ = 2 for the printed sum, 0 for the difference), and Lean (T17).
 2. **Citation year.** Katriel & Pauncz, *Adv. Quantum Chem.* 10, 143–185 is from **1977**, not 1975
    ([doi:10.1016/S0065-3276(08)60580-8](https://doi.org/10.1016/S0065-3276(08)60580-8)).
 
@@ -39,8 +42,15 @@ oxidising a distonic radical anion) is only partly reproduced by our model calcu
 - **"The aufbau principle violates the Pauli principle."** This is rhetorical. An aufbau-filled
   determinant is fully antisymmetric. The real issue is that orbital energies from different
   configurations cannot be compared (§13).
-- **"Aufbau and Hund's rule are obsolete" (conclusion).** Too strong. Hund's rule holds for nearly all
-  atoms; the review's exceptions involve special topologies or charge effects.
+- **"the obsolescence of qualitative rules, such as aufbau principle and Hund's multiplicity rule"
+  (conclusion, p. 455).** Too strong. Both remain useful rules of thumb for atomic ground states, with
+  known exceptions (e.g. Cr and Cu for aufbau); the review's counter-examples involve special topologies
+  or charge effects. (An earlier version of this file paraphrased the review as calling the rules
+  "obsolete"; that word is not the review's.)
+- **TriMB called a triplet, p. 444.** The review says m-xylylene (MX) and 1,3,5-trimethylenebenzene
+  (TriMB) "have nondisjoint NBMOs with strong ferromagnetic spin coupling and resulting triplet ground
+  states". MX is a triplet, but TriMB has three unpaired electrons: Ovchinnikov's rule and exact
+  diagonalisation (T9) both give S = 3/2, a quartet.
 - **ROHF canonicalisation.** The ordering is indeed convention-dependent. But for common radicals
   (H₂NO, NO₂, CH₃, allyl) a SOMO/HOMO flip needs a mixing weight slightly outside the usual [0, 1]
   range (A* ≈ 1.04) (T11a).
@@ -65,12 +75,14 @@ radical geometry to the triplet diradical (T) or the closed-shell singlet (CS). 
 
 - **Orbital inversion and its removal on protonation:** reproduced with both functionals.
 - **Energetic switch (anion oxidised to a diradical, acid to a closed shell):** reproduced with the
-  range-separated CAM-B3LYP. B3LYP misses it by ~0.07 eV, and lowers the closed-shell product
+  range-separated CAM-B3LYP. B3LYP misses it by 0.06–0.07 eV (T11b: +0.06 eV; T11c: +0.07 eV), and lowers the closed-shell product
   disproportionately (0.61 vs 0.17 eV). Delocalisation error is a plausible cause, but this is untested.
 - **Same for the review's own system:** TEMPO-4-carboxylate oxidises to the diradical at CAM-B3LYP
   (−0.30 eV).
 - **Control:** the protonated TEMPO acid prefers the closed shell at both levels (+1.29 / +1.23 eV), so the
   pH switch is reproduced for TEMPO-4-carboxylate too (all 8 runs complete).
+- **Checked from the logs:** `verification/t11c_check.py` re-reads every T11c result line and asserts each
+  statement above (output in `verification/results/t11c_check.txt`).
 
 ## Not checked
 

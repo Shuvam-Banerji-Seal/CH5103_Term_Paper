@@ -3,104 +3,109 @@
 
 \begin{frame}{The integrals we need}
   \begin{columns}[c]
-    \column{0.58\textwidth}
-    {\large
-    \begin{align*}
-      h_{pq}&=\int\varphi_p(\mathbf r)\,\hat h\,\varphi_q(\mathbf r)\,\dd\mathbf r\\
-      \uncover<2->{\eri pqrs}&\uncover<2->{=\iint\frac{\varphi_p(1)\varphi_q(1)\,\varphi_r(2)\varphi_s(2)}{r_{12}}\,\dd\mathbf r_1\dd\mathbf r_2}\\
-      \uncover<3->{J_{pq}}&\uncover<3->{=\eri ppqq}\qquad \uncover<4->{K_{pq}=\eri pqpq}
+    \column{0.6\textwidth}
+    {\begin{align*}
+      h_{pq}&=\int\varphi_p(\mathbf r)\,\hat h\,\varphi_q(\mathbf r)\,\dd\mathbf r &&\why{one electron}\\
+      \uncover<2->{\eri pqrs}&\uncover<2->{=\iint\frac{\varphi_p(1)\varphi_q(1)\,\varphi_r(2)\varphi_s(2)}{r_{12}}\,\dd\mathbf r_1\dd\mathbf r_2} &&\uncover<2->{\why{two electrons}}\\
+      \uncover<3->{J_{pq}}&\uncover<3->{=\eri ppqq} &&\uncover<3->{\why{Coulomb}}\\
+      \uncover<4->{K_{pq}}&\uncover<4->{=\eri pqpq} &&\uncover<4->{\why{exchange}}
     \end{align*}}
-    \onslide<5->{\small chemists' notation; real orbitals $\Rightarrow$ $\eri pqrs=\eri qprs=\eri rspq=\cdots$ (8-fold)}
-    \column{0.38\textwidth}
+    \explain<2->{$\eri pqrs$: electron 1 sits in the ``charge'' $\varphi_p\varphi_q$, electron 2 in $\varphi_r\varphi_s$; they repel as $1/r_{12}$}
+    \explain<3->{$J$: two ordinary charge clouds $|\pa|^2$ and $|\pb|^2$ repelling: classical electrostatics}
+    \explain<4->{$K$: no classical analogue; it comes from antisymmetry (the swapped term $B$) and is the overlap density $\pa\pb$ repelling itself}
+    \column{0.36\textwidth}
     \centering
-    \begin{tikzpicture}[scale=1.0]
+    \begin{tikzpicture}[scale=0.95]
       \onslide<3->{
       \shade[inner color=noircyan!70,outer color=noirbg] (0,1.6) circle (0.7);
       \shade[inner color=noirrose!70,outer color=noirbg] (2.2,1.6) circle (0.7);
       \draw[noirgold,{Stealth[length=4pt]}-{Stealth[length=4pt]}] (0.5,1.6) -- (1.7,1.6);
-      \node[font=\scriptsize,text=noirfg] at (1.1,2.55) {$J$: cloud $|\pa|^2$ repels cloud $|\pb|^2$};}
+      \node[font=\scriptsize,text=noirfg] at (1.1,2.5) {$J$: $|\pa|^2$ repels $|\pb|^2$};}
       \onslide<4->{
       \shade[inner color=noirviolet!80,outer color=noirbg] (1.1,-0.2) ellipse (1.1 and 0.45);
-      \node[font=\scriptsize,text=noirfg,align=center] at (1.1,-1.0) {$K$: overlap density $\pa\pb$\\repels itself};}
+      \node[font=\scriptsize,text=noirfg,align=center] at (1.1,-0.95) {$K$: overlap density $\pa\pb$\\repels itself};}
     \end{tikzpicture}
   \end{columns}
+  \symbolstrip{$\hat h$: one-electron Hamiltonian (kinetic + nuclear attraction) \quad $h_{pq}$: its matrix element; $h_p\equiv h_{pp}$ = energy of one electron in $\varphi_p$
+    without the others \quad $\dd\mathbf r$: volume element \quad $r_{12}=|\mathbf r_1-\mathbf r_2|$ \quad chemists' notation $\eri pqrs$: first pair = electron 1}
 \end{frame}
 
-\begin{frame}{Two elementary integrals}{orthonormality does most of the work}
-  \begin{assume}
-    real orthonormal orbitals $\braket{\varphi_p}{\varphi_q}=\delta_{pq}$; \ $\hat h(1)$ acts only on electron 1
-  \end{assume}
-  {\large
-  \begin{align*}
+\begin{frame}{Two elementary integrals}{assume real orthonormal orbitals, $\braket{\varphi_p}{\varphi_q}=\delta_{pq}$; $\hat h(1)$ acts only on electron 1}
+  {\begin{align*}
     \mel{\varphi_p(1)\varphi_q(2)}{\hat h(1)}{\varphi_r(1)\varphi_s(2)}
-      &=\underbrace{\mel{\varphi_p}{\hat h}{\varphi_r}}_{h_{pr}}\ \underbrace{\braket{\varphi_q}{\varphi_s}}_{\delta_{qs}}\\
+      &=\underbrace{\mel{\varphi_p}{\hat h}{\varphi_r}}_{h_{pr}}\ \underbrace{\braket{\varphi_q}{\varphi_s}}_{\delta_{qs}}
+      &&\why{the $\dd\mathbf r_1$ and $\dd\mathbf r_2$ integrals separate}\\
     \uncover<2->{\mel{\varphi_p(1)\varphi_q(2)}{\hat h(2)}{\varphi_r(1)\varphi_s(2)}}
-      &\uncover<2->{=\delta_{pr}\,h_{qs}}\\
+      &\uncover<2->{=\delta_{pr}\,h_{qs}} &&\uncover<2->{\why{same, roles swapped}}\\
     \uncover<3->{\mel{\varphi_p(1)\varphi_q(2)}{r_{12}^{-1}}{\varphi_r(1)\varphi_s(2)}}
-      &\uncover<3->{=\eri prqs}
+      &\uncover<3->{=\eri prqs} &&\uncover<3->{\why{$1/r_{12}$ ties them: no splitting}}
   \end{align*}}
-  \onslide<4->{\centering\small\cmuted{electron 1 carries $p,r$; electron 2 carries $q,s$}\par}
+  \explain<4->{bookkeeping rule: electron 1 carries the indices $p,r$ (bra, ket), electron 2 carries $q,s$}
+  \symbolstrip{$\braket fg=\int f\,g\,\dd\mathbf r$ for real orbitals \quad $\mel f{\hat O}g=\int f\,\hat O\,g\,\dd\mathbf r$ \quad
+    $\delta_{qs}=1$ if $q=s$, else 0 \quad bra $\langle\cdot|$: left function, ket $|\cdot\rangle$: right function}
 \end{frame}
 
 \begin{frame}{Triplet energy, step by step (1/2)}
-  $\Phi_T=\tfrac1{\sqrt2}(\ccyan A-\crose B)$, \quad $\Hop=\hat h(1)+\hat h(2)+r_{12}^{-1}$, \quad spin part normalised $\Rightarrow$ integrates to 1
-  \vskip0.2cm
-  \cgold{One-electron part}
-  {\large
-  \begin{align*}
-    \mel{A}{\hat h(1)+\hat h(2)}{A}&=h_{aa}\cdot1+1\cdot h_{bb}=h_a+h_b\\
-    \uncover<2->{\mel{B}{\hat h(1)+\hat h(2)}{B}}&\uncover<2->{=h_{bb}+h_{aa}}\\
-    \uncover<3->{\mel{A}{\hat h(1)+\hat h(2)}{B}}&\uncover<3->{=h_{ab}\underbrace{\delta_{ba}}_{0}+\underbrace{\delta_{ab}}_{0}h_{ba}=0}\\
+  $\Psi_T=\underbrace{\tfrac1{\sqrt2}(\ccyan A-\crose B)}_{\Phi_T\ (\text{space})}\,\Theta_{1,M}$, \quad
+  $\Hop=\hat h(1)+\hat h(2)+r_{12}^{-1}$ (no spin) $\Rightarrow$ $E_T=\mel{\Phi_T}{\Hop}{\Phi_T}\braket{\Theta}{\Theta}$, with $\braket\Theta\Theta=1$
+  \vskip0.15cm
+  \cgold{One-electron part} \quad \cmuted{($\tfrac12$ from $(\tfrac1{\sqrt2})^2$; four terms: $AA$, $BB$, $-AB$, $-BA$)}
+  {\begin{align*}
+    \mel{A}{\hat h(1)+\hat h(2)}{A}&=h_{aa}\cdot1+1\cdot h_{bb}=h_a+h_b &&\why{$p=r=a$, $q=s=b$}\\
+    \uncover<2->{\mel{B}{\hat h(1)+\hat h(2)}{B}}&\uncover<2->{=h_{bb}+h_{aa}} &&\uncover<2->{\why{orbitals swapped}}\\
+    \uncover<3->{\mel{A}{\hat h(1)+\hat h(2)}{B}}&\uncover<3->{=h_{ab}\underbrace{\delta_{ba}}_{0}+\underbrace{\delta_{ab}}_{0}h_{ba}=0} &&\uncover<3->{\why{orthogonality kills it}}\\
     \uncover<4->{\tfrac12\bigl[(h_a+h_b)+(h_a+h_b)-0-0\bigr]}&\uncover<4->{=\boxed{h_a+h_b}}
   \end{align*}}
+  \symbolstrip{$\Psi_T$: full triplet wavefunction (space $\times$ spin) \quad $\Phi_T$: its spatial part \quad
+    $A=\pa(1)\pb(2)$, $B=\pb(1)\pa(2)$ \quad $\Theta_{1,M}$: any triplet spin function; the result is the same for $M=0,\pm1$}
 \end{frame}
 
 \begin{frame}{Triplet energy, step by step (2/2)}
-  \cgold{Two-electron part}
-  {\large
-  \begin{align*}
-    \mel{A}{r_{12}^{-1}}{A}&=\eri aabb=J_{ab} &&\cmuted{p,r=a;\ q,s=b}\\
-    \uncover<2->{\mel{B}{r_{12}^{-1}}{B}}&\uncover<2->{=\eri bbaa=J_{ab}}\\
-    \uncover<3->{\mel{A}{r_{12}^{-1}}{B}}&\uncover<3->{=\eri abba=K_{ab}} &&\uncover<3->{\cmuted{p=a,r=b;\ q=b,s=a}}\\
-    \uncover<4->{\tfrac12\bigl[J+J-K-K\bigr]}&\uncover<4->{=J_{ab}-K_{ab}}
+  \cgold{Two-electron part} \quad \cmuted{(same four terms, now with $1/r_{12}$)}
+  {\begin{align*}
+    \mel{A}{r_{12}^{-1}}{A}&=\eri aabb=J_{ab} &&\why{$p,r=a$; $q,s=b$: two charge clouds}\\
+    \uncover<2->{\mel{B}{r_{12}^{-1}}{B}}&\uncover<2->{=\eri bbaa=J_{ab}} &&\uncover<2->{\why{same clouds, labels swapped}}\\
+    \uncover<3->{\mel{A}{r_{12}^{-1}}{B}}&\uncover<3->{=\eri abba=K_{ab}} &&\uncover<3->{\why{$p=a,r=b$; $q=b,s=a$: overlap densities}}\\
+    \uncover<4->{\tfrac12\bigl[J+J\hlr<5->{-K-K}\bigr]}&\uncover<4->{=J_{ab}-K_{ab}} &&\uncover<4->{\why{the minus of $A-B$}}
   \end{align*}}
   \onslide<5->{
   \begin{keyresult}
-    \centering $\displaystyle E_T=h_a+h_b+J_{ab}-K_{ab}$
+    \centering $\displaystyle E_T=h_a+h_b+J_{ab}-K_{ab}$ \quad\small (the cross terms carry the sign of the combination)
   \end{keyresult}}
+  \symbolstrip{$\eri abba=\eri abab=K_{ab}$ for real orbitals (8-fold symmetry) \quad $J_{ab}\ge K_{ab}\ge0$ (proved in Part VI)}
 \end{frame}
 
 \begin{frame}{Open-shell singlet and the gap}
-  $\Phi_{\OSS}=\tfrac1{\sqrt2}(\ccyan A+\crose B)$: identical steps, but the cross terms enter with $+$
-  {\large
-  \begin{align*}
-    \uncover<2->{E_{\OSS}}&\uncover<2->{=h_a+h_b+\tfrac12\bigl[J+J\hlg<3>{+K+K}\bigr]}\\
-    &\uncover<3->{=h_a+h_b+J_{ab}+K_{ab}}\\[4pt]
-    \uncover<4->{E_{\OSS}-E_T}&\uncover<4->{=(J_{ab}+K_{ab})-(J_{ab}-K_{ab})=\boxed{2K_{ab}}}
+  $\Psi_{\OSS}=\tfrac1{\sqrt2}(\ccyan A+\crose B)\,\Theta_{0,0}$: identical steps, but the cross terms enter with $+$
+  {\begin{align*}
+    \uncover<2->{E_{\OSS}}&\uncover<2->{=h_a+h_b+\tfrac12\bigl[J+J\hlg<3>{+K+K}\bigr]} &&\uncover<2->{\why{the $+$ of $A+B$}}\\
+    &\uncover<3->{=h_a+h_b+J_{ab}+K_{ab}}\\[2pt]
+    \uncover<4->{E_{\OSS}-E_T}&\uncover<4->{=(J_{ab}+K_{ab})-(J_{ab}-K_{ab})=\boxed{2K_{ab}}} &&\uncover<4->{\why{$h$ and $J$ cancel}}
   \end{align*}}
   \onslide<5->{
   \centering
-  \begin{tikzpicture}[scale=1.0]
+  \begin{tikzpicture}[scale=0.9]
     \draw[level,noirrose] (0,0) -- (1.4,0) node[right,font=\small,text=noirrose]{$E_T=h_a+h_b+J-K$};
-    \draw[level,noirblue] (0,1.2) -- (1.4,1.2) node[right,font=\small,text=noirblue]{$E_{\OSS}=h_a+h_b+J+K$};
-    \draw[{Stealth[length=4pt]}-{Stealth[length=4pt]},noirgold] (0.7,0.08) -- (0.7,1.12) node[midway,left,font=\small,text=noirgold]{$2K$};
+    \draw[level,noirblue] (0,1.1) -- (1.4,1.1) node[right,font=\small,text=noirblue]{$E_{\OSS}=h_a+h_b+J+K$};
+    \draw[{Stealth[length=4pt]}-{Stealth[length=4pt]},noirgold] (0.7,0.08) -- (0.7,1.02) node[midway,left,font=\small,text=noirgold]{$2K$};
   \end{tikzpicture}\par}
+  \symbolstrip{same orbitals in both states (``frozen orbitals'') \quad the whole singlet--triplet splitting is carried by the exchange integral $K_{ab}$}
 \end{frame}
 
 \begin{frame}{The closed shells and their couplings}
   \begin{columns}[T]
-    \column{0.48\textwidth}
-    \cgold{Diagonal}
-    {\large
-    \begin{align*}
+    \column{0.46\textwidth}
+    \cgold{Diagonal} \cmuted{(both electrons in one orbital)}
+    {\begin{align*}
       E_{\text i}&=2h_a+J_{aa}\\
       \uncover<2->{E_{\text{ii}}}&\uncover<2->{=2h_b+J_{bb}}
     \end{align*}}
-    \onslide<3->{\cgold{i\,--\,ii}: one-electron terms die ($\delta_{ab}=0$)
+    \explain<2->{two electrons in $\pa$: $2h_a$, plus one repulsion $J_{aa}$ of the cloud $|\pa|^2$ with itself}
+    \onslide<3->{\cgold{i\,--\,ii}: one-electron terms vanish ($\delta_{ab}=0$)
     \[
       \mel{\pa\pa}{r_{12}^{-1}}{\pb\pb}=\eri abab=K_{ab}
     \]}
-    \column{0.5\textwidth}
+    \column{0.52\textwidth}
     \onslide<4->{\cgold{i\,--\,OSS}}
     {\small
     \begin{align*}
@@ -109,45 +114,49 @@
       \uncover<6->{\mel{\pa\pa}{r_{12}^{-1}}{A}}&\uncover<6->{=\eri aaab=\mel{\pa\pa}{r_{12}^{-1}}{B}}\\
       \uncover<7->{\Rightarrow}&\uncover<7->{=\sqrt2\,\bigl(h_{ab}+\eri aaab\bigr)}
     \end{align*}}
+    \explain<5->{$\hat h(1)$ term: $h_{aa}\braket{\pa}{\pb}=0$; $\hat h(2)$ term: $\braket{\pa}{\pa}h_{ab}=h_{ab}$}
   \end{columns}
+  \symbolstrip{$\Phi_{\text i}=\pa(1)\pa(2)$: closed shell i (spin part $\Theta_{0,0}$) \quad $\Phi_{\OSS}=\tfrac1{\sqrt2}(A+B)$ \quad
+    states of different $S$ never couple (their spin parts are orthogonal)}
 \end{frame}
 
 \begin{frame}{The full two-electron, two-orbital Hamiltonian}
   \centering
   basis $\{\Phi_{\text i},\Phi_{\text{ii}},\Phi_{\OSS}\}$ (singlets) \quad $+$ \quad the triplet on its own
-  {\large
-  \[
+  {\[
     \mathbf H_S=\begin{pmatrix}
       2h_a+J_{aa} & K_{ab} & \sqrt2\,(h_{ab}+\eri aaab)\\
       K_{ab} & 2h_b+J_{bb} & \sqrt2\,(h_{ab}+\eri bbba)\\
       \cdot & \cdot & h_a+h_b+J_{ab}+K_{ab}
     \end{pmatrix},\qquad E_T=h_a+h_b+J_{ab}-K_{ab}
   \]}
-  \onslide<2->{\small orbitals of different symmetry ($\sigma_g/\sigma_u$, a symmetric diradical's NBMOs) $\Rightarrow$
-    $h_{ab}=\eri aaab=\eri bbba=0$: the OSS decouples}
-  \vskip0.2cm
+  \explain{diagonalising $\mathbf H_S$ gives the three exact singlet energies of this model; the matrix is symmetric ($\cdot$ = mirror entries)}
+  \onslide<2->{\small orbitals of different symmetry (e.g.\ $\sigma_g$/$\sigma_u$ of H$_2$) $\Rightarrow$
+    $h_{ab}=\eri aaab=\eri bbba=0$: the OSS decouples\par}
   \onslide<3->{
   \begin{checked}[T2: brute force]
     5 random integral sets (positive-definite kernel) $\to$ PySCF full CI: singlet and triplet roots
     reproduce these closed forms to $2\times10^{-14}\,\Eh$.
   \end{checked}}
+  \symbolstrip{$\mathbf H_S$: Hamiltonian matrix in the singlet configurations \quad full CI: exact diagonalisation in all determinants \quad
+    $\Eh$: hartree ($27.211$ eV)}
 \end{frame}
 
 \begin{frame}{Hund's rule at frozen orbitals}
   \begin{columns}[c]
     \column{0.55\textwidth}
-    \begin{paperclaim}
-      Hund (1925): ``of the different multiplets resulting from different configurations of electrons in
+    \begin{paperclaim}[The review states Hund's rule (p.\ 442)]
+      ``of the different multiplets resulting from different configurations of electrons in
       degenerate orbitals of an atom those with greatest multiplicity have the lowest energy''
     \end{paperclaim}
     \onslide<2->{With the \emph{same} orbitals in both states:
     \[
       E_T-E_{\OSS}=-2K_{ab}<0\quad\text{if }K_{ab}>0
     \]}
-    \onslide<3->{\small\cgold{Two things to prove:} $K\ge0$ \ (next section), and whether ``same orbitals'' is legitimate (it is not).}
+    \onslide<3->{\small\cgold{Two things to prove:} $K\ge0$ \ (next part), and whether ``same orbitals'' is legitimate (it is not).}
     \column{0.4\textwidth}
     \centering
-    \begin{tikzpicture}[scale=1.3]
+    \begin{tikzpicture}[scale=1.2]
       \draw[level] (-0.4,0) -- (0.4,0); \draw[level] (0.8,0) -- (1.6,0);
       \elup{0}{0}\elup{1.2}{0}
       \node[font=\scriptsize,text=noirrose] at (0.6,-0.45) {lower: $J-K$};
@@ -156,4 +165,6 @@
       \node[font=\scriptsize,text=noirblue] at (0.6,0.85) {higher: $J+K$};
     \end{tikzpicture}
   \end{columns}
+  \symbolstrip{multiplicity $2S+1$: 3 for the triplet, 1 for the singlet \quad Hund's rule (1925) was found empirically from atomic spectra;
+    the wording quoted is the review's, citing the IUPAC Gold Book}
 \end{frame}

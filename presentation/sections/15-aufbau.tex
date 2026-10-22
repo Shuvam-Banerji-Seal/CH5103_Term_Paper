@@ -15,36 +15,44 @@
     \column{0.32\textwidth}
     \onslide<4->{\begin{plainpanel}\centering\cgold{Exhibit C}\\[2pt]\small the 3d/4s paradox\end{plainpanel}}
   \end{columns}
+  \symbolstrip{aufbau (German ``building up''): fill orbitals in order of energy, two electrons each \quad stationary state: eigenstate of $\Hop$,
+    unchanged in time apart from a phase \quad conserved: its quantum number commutes with $\Hop$}
 \end{frame}
 
 \begin{frame}{Exhibit A: $[\hat l_{1z},1/r_{12}]\neq0$}
   $\hat l_{1z}=-i(x_1\partial_{y_1}-y_1\partial_{x_1})$, \quad
   $\partial_{y_1}r_{12}^{-1}=-\dfrac{y_1-y_2}{r_{12}^3}$, \quad $\partial_{x_1}r_{12}^{-1}=-\dfrac{x_1-x_2}{r_{12}^3}$
-  {\large
-  \begin{align*}
-    \uncover<2->{\hat l_{1z}\,r_{12}^{-1}}&\uncover<2->{=-i\,\frac{-x_1(y_1-y_2)+y_1(x_1-x_2)}{r_{12}^3}}\\
-    &\uncover<3->{=-i\,\frac{\canc<4->{-x_1y_1}+x_1y_2+\canc<4->{y_1x_1}-y_1x_2}{r_{12}^3}}\\
-    &\uncover<5->{=-i\,\frac{x_1y_2-x_2y_1}{r_{12}^3}\ \crose{\neq0}}
+  \explain{chain rule on $r_{12}^{-1}=[(x_1-x_2)^2+(y_1-y_2)^2+(z_1-z_2)^2]^{-1/2}$}
+  {\begin{align*}
+    \uncover<2->{\hat l_{1z}\,r_{12}^{-1}}&\uncover<2->{=-i\,\frac{-x_1(y_1-y_2)+y_1(x_1-x_2)}{r_{12}^3}} &&\uncover<2->{\why{insert both derivatives}}\\
+    &\uncover<3->{=-i\,\frac{\canc<4->{-x_1y_1}+x_1y_2+\canc<4->{y_1x_1}-y_1x_2}{r_{12}^3}} &&\uncover<3->{\why{multiply out}}\\
+    &\uncover<5->{=-i\,\frac{x_1y_2-x_2y_1}{r_{12}^3}\ \crose{\neq0}} &&\uncover<5->{\why{only the cross terms survive}}
   \end{align*}}
   \onslide<6->{\centering\small first-order operator: $[\hat l_{1z},V]f=(\hat l_{1z}V)f$ \quad$\Rightarrow$\quad $l_{1z}$ is not a constant of motion\par}
+  \symbolstrip{$\hat l_{1z}$: $z$-angular momentum of electron 1 alone ($\hbar=1$) \quad $r_{12}$: distance between electrons 1 and 2 \quad
+    $[\hat A,\hat B]=\hat A\hat B-\hat B\hat A$ \quad $f$: any test function \quad first-order: $\hat l_{1z}(Vf)=(\hat l_{1z}V)f+V\hat l_{1z}f$}
 \end{frame}
 
 \begin{frame}{\ldots but the total is conserved}
-  {\large
   \begin{align*}
-    \hat l_{2z}\,r_{12}^{-1}&=-i\,\frac{x_2y_1-x_1y_2}{r_{12}^3}\quad\cmuted{(\partial_{y_2}r_{12}^{-1}=+\tfrac{y_1-y_2}{r_{12}^3})}\\
+    \hat l_{2z}\,r_{12}^{-1}&=-i\,\frac{x_2y_1-x_1y_2}{r_{12}^3} &&\why{same steps; $\partial_{y_2}r_{12}^{-1}=+\tfrac{y_1-y_2}{r_{12}^3}$ flips the sign}\\
     \uncover<2->{(\hat l_{1z}+\hat l_{2z})\,r_{12}^{-1}}&\uncover<2->{=-i\,\frac{(x_1y_2-x_2y_1)+(x_2y_1-x_1y_2)}{r_{12}^3}=\hlg<3->{0}}
-  \end{align*}}
+      &&\uncover<2->{\why{equal and opposite}}
+  \end{align*}
   \begin{columns}[c]
     \column{0.5\textwidth}
     \onslide<4->{
     \begin{keyresult}
-      $[\Hop,\hat{\mathbf L}]=0$, \ $[\Hop,\hat S^2]=0$,\\ but $[\Hop,\hat{\mathbf l}_i]\neq0$
+      atom (central field, spin-free $\Hop$): $[\Hop,\hat{\mathbf L}]=0$, \ $[\Hop,\hat S^2]=0$,
+      but $[\Hop,\hat{\mathbf l}_i]\neq0$
     \end{keyresult}}
     \column{0.46\textwidth}
     \onslide<5->{\small $\hat{\mathbf L}$ rotates both electrons together (keeps $r_{12}$);
-      $\hat{\mathbf l}_1$ rotates one (changes $r_{12}$).\\ \tick\ \cmuted{T13, SymPy on an arbitrary $f$}}
+      $\hat{\mathbf l}_1$ rotates one (changes $r_{12}$). In a molecule even $\hat{\mathbf L}$ is lost; $\hat S^2$ survives.\\
+      \tick\ \cmuted{T13, SymPy on an arbitrary $f$}}
   \end{columns}
+  \symbolstrip{$\hat{\mathbf L}=\sum_i\hat{\mathbf l}_i$: total orbital angular momentum \quad $\hat S^2$: total spin squared \quad
+    central field: the nuclear attraction depends only on $|\mathbf r_i|$}
 \end{frame}
 
 \begin{frame}{Exhibit B: the adiabatic theorem}
@@ -53,49 +61,57 @@
     principle, which ``does not apply to aperiodic systems'' (p.\ 448)
   \end{paperclaim}
   {\begin{align*}
-    \uncover<2->{\Psi(t)}&\uncover<2->{=\textstyle\sum_nc_n(t)\,e^{i\theta_n(t)}\psi_n(t),\qquad\theta_n=-\int_0^tE_n\,\dd t'}\\
-    \uncover<3->{\dot c_m}&\uncover<3->{=-\textstyle\sum_nc_n\braket{\psi_m}{\dot\psi_n}e^{i(\theta_n-\theta_m)},\qquad
+    \uncover<2->{\Psi(t)}&\uncover<2->{=\textstyle\sum_nc_n(t)\,e^{i\theta_n(t)}\psi_n(t),\qquad\theta_n=-\int_0^tE_n\,\dd t'}
+      &&\uncover<2->{\why{expand in snapshot eigenstates}}\\
+    \uncover<3->{\dot c_m}&\uncover<3->{=-\textstyle\sum_nc_n\braket{\psi_m}{\dot\psi_n}e^{i(\theta_n-\theta_m)},\quad
       \braket{\psi_m}{\dot\psi_n}=\frac{\mel{\psi_m}{\dot{\Hop}}{\psi_n}}{E_n-E_m}}
+      &&\uncover<3->{\why{insert in $i\dot\Psi=\Hop\Psi$, project on $\psi_m$}}
   \end{align*}}
   \onslide<4->{\small slow $\dot{\Hop}$, finite gaps $\Rightarrow$ the system stays in the \emph{continuously connected} eigenstate.
     \cgold{But}: adding a particle changes the Hilbert space (no continuous path), and the conserved labels are
     $L,S$ of the \emph{whole} system, never one-electron labels.}
+  \symbolstrip{$\psi_n(t)$, $E_n(t)$: eigenstates/energies of $\Hop$ at time $t$ \quad $c_n$: amplitudes \quad $\theta_n$: dynamic phase \quad
+    dot: time derivative \quad off-diagonal coupling: differentiate $\Hop\psi_n=E_n\psi_n$ and project ($m\neq n$)}
 \end{frame}
 
 \begin{frame}{Exhibit C: the 3d/4s paradox}
   \begin{paperclaim}
-    4s lies slightly above 3d when both are populated, so 4s is ionised first; ``however, 4s orbital is also populated
-    first, because it offers less repulsion with a 3d electron than that between two 3d electrons'' (p.\ 448)
+    in neutral atoms 4s lies slightly above 3d when both are populated, so 4s is ionised first; ``however, 4s orbital is
+    also populated first, because it offers less repulsion with a 3d electron than that between two 3d electrons''
+    \dots\ ``re-evaluated in the new configurations'' (p.\ 448)
   \end{paperclaim}
   \begin{assume}[Average of configuration]
-    one-electron energies $h_d,h_s$; one average repulsion per pair type: $\bar J_{dd},\ \bar J_{ds},\ J_{ss}$
+    one-electron energies $h_d,h_s$; one average repulsion per pair type: $\bar J_{dd},\ \bar J_{ds},\ J_{ss}$;
+    each electron pays $h$ once, each of the $\tbinom n2=n(n-1)/2$ pairs pays its $J$ once
   \end{assume}
-  {\large
-  \[
-    E(d^{n_d}s^{n_s})=n_dh_d+n_sh_s+\tbinom{n_d}{2}\bar J_{dd}+n_dn_s\bar J_{ds}+\tbinom{n_s}{2}J_{ss}
-  \]}
+  \vskip0.1cm
+  \centering $E(d^{n_d}s^{n_s})=n_dh_d+n_sh_s+\tbinom{n_d}{2}\bar J_{dd}+n_dn_s\bar J_{ds}+\tbinom{n_s}{2}J_{ss}$\par
+  \symbolstrip{$d^{n_d}s^{n_s}$: $n_d$ electrons in 3d, $n_s$ in 4s \quad $h$: kinetic $+$ nuclear $+$ core terms
+    \quad $\bar J$: repulsion averaged over spin/orbital arrangements (exchange folded in)}
 \end{frame}
 
 \begin{frame}{3d/4s: the algebra}
-  {\begin{align*}
-    E(d^ns^2)&=nh_d+2h_s+\tbinom n2\bar J_{dd}+2n\bar J_{ds}+J_{ss}\\
-    \uncover<2->{E(d^{n+1}s)}&\uncover<2->{=(n+1)h_d+h_s+\tbinom{n+1}2\bar J_{dd}+(n+1)\bar J_{ds}}\\
+  \begin{align*}
+    E(d^ns^2)&=nh_d+2h_s+\tbinom n2\bar J_{dd}+2n\bar J_{ds}+J_{ss} &&\why{$n_d=n$, $n_s=2$}\\
+    \uncover<2->{E(d^{n+1}s)}&\uncover<2->{=(n+1)h_d+h_s+\tbinom{n+1}2\bar J_{dd}+(n+1)\bar J_{ds}} &&\uncover<2->{\why{move one 4s electron to 3d}}\\
     \uncover<3->{\Delta\equiv E(d^{n+1}s)-E(d^ns^2)}&\uncover<3->{=h_d-h_s+n\bar J_{dd}+(1-n)\bar J_{ds}-J_{ss}}
-      \uncover<3->{\quad\cmuted{\tbinom{n+1}2-\tbinom n2=n}}\\
-    \uncover<4->{\varepsilon_d=E(d^ns^2)-E(d^{n-1}s^2)}&\uncover<4->{=h_d+(n-1)\bar J_{dd}+2\bar J_{ds}}\\
-    \uncover<5->{\varepsilon_s=E(d^ns^2)-E(d^ns^1)}&\uncover<5->{=h_s+n\bar J_{ds}+J_{ss}}
-  \end{align*}}
+      &&\uncover<3->{\why{$\tbinom{n+1}2-\tbinom n2=n$}}\\
+    \uncover<4->{\varepsilon_d=E(d^ns^2)-E(d^{n-1}s^2)}&\uncover<4->{=h_d+(n-1)\bar J_{dd}+2\bar J_{ds}} &&\uncover<4->{\why{remove a 3d electron}}\\
+    \uncover<5->{\varepsilon_s=E(d^ns^2)-E(d^ns^1)}&\uncover<5->{=h_s+n\bar J_{ds}+J_{ss}} &&\uncover<5->{\why{remove a 4s electron}}
+  \end{align*}
   \onslide<6->{
   \begin{keyresult}
     \centering $\Delta=(\varepsilon_d-\varepsilon_s)+\bigl(\bar J_{dd}-\bar J_{ds}\bigr)$ \qquad\cmuted{(T12; Lean \texttt{three\_d\_four\_s})}
   \end{keyresult}}
+  \symbolstrip{$\Delta>0$: $d^ns^2$ is lower \quad $\varepsilon_d,\varepsilon_s$: orbital energies \emph{in} $d^ns^2$, as frozen-orbital removal
+    energies (Koopmans)}
 \end{frame}
 
 \begin{frame}{3d/4s: reading the identity}
   \begin{columns}[c]
     \column{0.52\textwidth}
     \begin{itemize}
-      \item compact 3d, diffuse 4s $\Rightarrow$ $\bar J_{dd}\gg\bar J_{ds}$
+      \item compact 3d, diffuse 4s suggests $\bar J_{dd}>\bar J_{ds}$ \cmuted{(a heuristic, not derived)}
       \item<2-> even with $\varepsilon_d<\varepsilon_s$: \ $\Delta>0$ if $\bar J_{dd}-\bar J_{ds}>\varepsilon_s-\varepsilon_d$ \\
         \cgold{$d^ns^2$ wins}: 4s ``fills first''
       \item<3-> from $d^ns^2$: Koopmans IPs $-\varepsilon_s<-\varepsilon_d$ \\ \cgold{4s leaves first}
@@ -106,12 +122,14 @@
       \draw[-{Stealth[length=4pt]},noirmuted] (-0.3,-0.2) -- (-0.3,2.9) node[above,font=\scriptsize]{energy};
       \draw[level,noircyan] (0,1.6) -- (1.2,1.6) node[right,font=\scriptsize]{$\varepsilon_s=-0.90$};
       \draw[level,noirgold] (0,1.0) -- (1.2,1.0) node[right,font=\scriptsize]{$\varepsilon_d=-1.50$};
-      \node[font=\scriptsize,text=noirmuted,align=left,anchor=west] at (-0.2,0.2) {example ($n=2$):\\ $\bar J_{dd}=0.8$, $\bar J_{ds}=0.1$};
+      \node[font=\scriptsize,text=noirmuted,align=left,anchor=west] at (-0.2,0.2) {illustrative numbers ($n=2$):\\ $\bar J_{dd}=0.8$, $\bar J_{ds}=0.1$};
       \node[font=\small,text=noirgreen,anchor=west] at (-0.2,-0.55) {$\Delta=-0.6+0.7=+0.10$};
     \end{tikzpicture}}
   \end{columns}
   \vskip0.2cm
   \onslide<5->{\centering\small orbital energies belong to a \emph{configuration}: the building-up and removal orders need not agree\par}
+  \symbolstrip{compact: small mean radius, so two 3d electrons sit close together \quad diffuse: spread out \quad IP: ionisation potential \quad
+    numbers in $E_{\mathrm h}$, chosen only to show the mechanism}
 \end{frame}
 
 \begin{frame}{Verdict on the aufbau critique}
@@ -121,14 +139,18 @@
     \begin{itemize}
       \item one-electron quantum numbers are model labels (Exhibit A)
       \item<2-> orbital energies depend on the configuration (Exhibit C)
-      \item<3-> non-aufbau orderings are real (VO(oep), quantum dots, LiF dissociation, the radicals ahead)
+      \item<3-> non-aufbau occupations are observed via measurable properties (VO(oep), quantum dots, LiF dissociation,
+        the radicals ahead)
     \end{itemize}
     \column{0.48\textwidth}
     \onslide<4->{\crose{overstated}}
     \begin{itemize}
       \item<4-> an aufbau-filled \emph{determinant} is fully antisymmetric: within the orbital model it does not ``violate'' Pauli
-      \item<5-> ``obsolescence'' of aufbau and Hund's rule: both still hold for almost all atoms
+      \item<5-> ``obsolescence'' of aufbau and Hund's rule: both remain useful rules of thumb for atomic ground states,
+        with known exceptions (e.g.\ Cr, Cu)
     \end{itemize}
     \onslide<6->{\warnpill}
   \end{columns}
+  \symbolstrip{VO(oep): a vanadyl porphyrin whose unpaired electron is not in the highest occupied orbital \quad
+    model label: a quantum number that is exact only for one electron in a central field}
 \end{frame}

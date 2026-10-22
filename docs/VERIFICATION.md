@@ -7,12 +7,15 @@ or by a Lean proof in [`verification/lean_proofs/`](../verification/lean_proofs)
 
 ```bash
 make sync         # uv sync --project .   (Python 3.12, pinned in uv.lock)
-make verify       # fast suite, ~3 min on 2 threads
-make verify-dft   # T11/T11c: DFT geometry optimisations, ~1-2 h
+make verify       # fast suite, a few minutes; output saved to verification/results/<script>.txt
+make verify-dft   # T11/T11c: DFT geometry optimisations, several hours on 16 cores
 make lean         # Lean 4.29.1 + Mathlib v4.29.1 (downloads the Mathlib cache, ~5 GB)
 ```
 
-Each Python test prints a final `PASS`/`FAIL` line. Run a single test with
+Each Python test prints a final `PASS`/`FAIL` line; `make verify` stores the full output of every script in
+[`verification/results/`](../verification/results). The DFT logs live in
+[`verification/logs/`](../verification/logs), and `t11c_check.py` (part of `make verify`) re-reads them and
+prints PASS/FAIL without re-running any DFT. Run a single test with
 `OMP_NUM_THREADS=$(nproc) uv run --project . python -I verification/<script>.py`.
 
 **Environment notes**
@@ -25,6 +28,7 @@ Each Python test prints a final `PASS`/`FAIL` line. Run a single test with
 | ID | Script | What it checks | Derivation § | Status |
 |---|---|---|---|---|
 | T1 | `t01_spin_and_determinants.py` | S², S_z eigenfunctions; Fig. 1 combinations; sign erratum | 1, 2 | PASS |
+| T1b | `t01b_sign_error_numeric.py` | sign erratum re-checked independently: Ŝ² applied to the printed determinants as numerical two-electron tensors | 2 | PASS |
 | T2 | `t02_two_orbital_hamiltonian.py` | 2e/2o singlet matrix + E_T vs full CI (5 random integral sets, max dev 2×10⁻¹⁴); Koopmans/UHF relations | 3, 10, 11 | PASS |
 | T3 | `t03_t05_hund_virial_h2.py` | K_pq ≥ 0, J_pq ≥ K_pq for water MOs | 4 | PASS |
 | T4 | ″ | He 2³S/2¹S, exact 2-electron in a 16s7p4d basis, virial scaling, less screening | 5 | PASS |
@@ -37,11 +41,12 @@ Each Python test prints a final `PASS`/`FAIL` line. Run a single test with
 | T10 | `t10_t12_t13_symbolic.py` | S–T gap = HOMO-energy difference | 10 | PASS |
 | T11a | `t11_rohf_and_distonic.py` | ROHF stationarity blocks; canonicalisation dependence | 12 | PASS |
 | T11b | ″ | distonic radical anion ΔSCF, pH switch (B3LYP) | 11 | FAIL: no crossover (+0.06 eV); diagnosed by T11c |
-| T11c | `t11c_distonic_functionals.py` | functional (B3LYP/CAM-B3LYP) and separation dependence | 11 | PASS at CAM-B3LYP (anions −0.36 / −0.30 eV, acids +1.42 / +1.23 eV); all 8 runs done |
+| T11c | `t11c_distonic_functionals.py` | functional (B3LYP/CAM-B3LYP) and separation dependence | 11 | PASS at CAM-B3LYP (anions −0.36 / −0.30 eV, acids +1.42 / +1.23 eV); all 8 runs done; asserted from the logs by `t11c_check.py` |
 | T12 | `t10_t12_t13_symbolic.py` | 3d/4s algebra | 13 | PASS |
 | T13 | ″ | [l₁, 1/r₁₂] ≠ 0, [L, 1/r₁₂] = 0 | 14 | PASS |
 | T14 | `t06_t09_models.py` | Yamaguchi projection on BS-UHF Hubbard dimer | 16 | PASS |
 | T15 | `t09b_t15_correlation.py` | same-spin vs opposite-spin correlation (MP2, He) | 5 | PASS |
+| T16 | (by hand) | citation checks against publisher records: Katriel–Pauncz 1977 (review says 1975), Lieb 1989, Hongo et al. 2004 | 17 | done, no script |
 | T17 | `lean_proofs/Ch5103/Identities.lean` | 17 theorems, standard axioms only (`propext`, `Classical.choice`, `Quot.sound`) | several | PASS |
 
 ## Failures found during development

@@ -3,7 +3,7 @@
 #   make figures       re-extract figures + captions from the paper PDF into assets/
 #   make formulae      build assets/formulae.pdf
 #   make derivations   build derivations/derivations.pdf
-#   make verify        run the fast verification suite (T1-T10, T12-T15, T9b)
+#   make verify        run the fast suite (T1, T1b, T2-T10, T9b, T12-T15; T11c checked from its logs) -> verification/results/
 #   make verify-dft    run the DFT tests T11/T11c (slow: geometry optimisations)
 #   make lean          fetch the Mathlib cache and check the Lean proofs
 #   make all           sync figures formulae derivations verify lean
@@ -34,9 +34,9 @@ derivations:
 	  -outdir=../build/derivations main.tex && cp ../build/derivations/derivations.pdf derivations.pdf
 
 verify:
-	@cd verification && for t in t01_spin_and_determinants t02_two_orbital_hamiltonian \
-	  t03_t05_hund_virial_h2 t06_t09_models t09b_t15_correlation t10_t12_t13_symbolic; do \
-	  echo "== $$t"; $(PY) $$t.py | tail -1; done
+	@cd verification && mkdir -p results && for t in t01_spin_and_determinants t01b_sign_error_numeric t02_two_orbital_hamiltonian \
+	  t03_t05_hund_virial_h2 t06_t09_models t09b_t15_correlation t10_t12_t13_symbolic t11c_check; do \
+	  echo "== $$t"; $(PY) $$t.py > results/$$t.txt 2>&1; tail -1 results/$$t.txt; done
 
 verify-dft:
 	cd verification && $(PY) -u t11_rohf_and_distonic.py > logs/t11.log 2>&1

@@ -40,3 +40,17 @@ one basis, vertical energies only, gas phase.
   Ehrenfest 1917, Pauli 1925.
 - Distonic test: no adiabatic energies, no solvent, no correlated wavefunction benchmark.
 - Experimental claims about specific molecules (Figs 7–9, 11–17) were not re-checked.
+
+## Cycle 2 (slide annotation, audit, website)
+- **Sign error re-confirmed by a third, independent method** (T1b): Ŝ² applied as an operator to numerical
+  two-electron tensors built from the printed determinants. The printed sum has ⟨S²⟩ = 2 (triplet).
+- **Slide audit against the paper:** five Haiku auditors, 29 findings, each re-checked by hand. No mathematical
+  error in the slides. One slide error fixed (Fig. 7(b) direction: light switches the trans singlet to the cis
+  triplet). New imprecision found in the paper: TriMB is called a "triplet" (p. 444) but has S = 3/2.
+  The FINDINGS paraphrase "obsolete" was replaced by the review's own words, "the obsolescence of" (p. 455).
+- **T11c checked from its logs** by `t11c_check.py` (8/8 runs; mutation-tested).
+- **Slides:** every derivation step now has a short reason; each slide defines its symbols in a strip at the
+  foot. Frame count unchanged (136). A latent layout bug was found while doing this: 11 frames began with a
+  `{…}` group that beamer read as the frame subtitle; all fixed. Build: no warnings, no bad boxes.
+- Tests: 21 entries (T1–T17 with T1b, T9b, T11a–c; T16 by hand). 19 PASS, T16 done by hand, T11b known-failing
+  and diagnosed by T11c.

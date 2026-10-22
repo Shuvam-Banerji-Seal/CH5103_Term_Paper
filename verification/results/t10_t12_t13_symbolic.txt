@@ -1,0 +1,9 @@
+T10: E_S - E_T = eps_b(S) - eps_b(T) = 2K: True
+T12: E(d^(n+1)s) - E(d^n s^2) = -J_ss + Jbar_dd*n - Jbar_ds*n + Jbar_ds + h_d - h_s
+     = (eps_d - eps_s) + (Jdd - Jds): True; eps_d form True; eps_s form True
+     ion analogue E(d^n s) - E(d^(n-1) s^2) = Delta(n-1): True
+     example: eps_d=-1.500 eps_s=-0.900 Delta=0.100  (eps_d<eps_s and Delta>0 => d^n s^2 lower)
+T13: [l_1z, 1/r12] f = I*(-x1*y2 + x2*y1)*f(x1, y1, z1, x2, y2, z2)/(x1**2 - 2*x1*x2 + x2**2 + y1**2 - 2*y1*y2 + y2**2 + z1**2 - 2*z1*z2 + z2**2)**(3/2)
+     [L_k, 1/r12] f = 0 for k=x,y,z: True
+     [l_1^2, 1/r12] != 0: True
+T10,T12,T13 PASS

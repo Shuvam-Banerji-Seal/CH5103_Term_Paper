@@ -1,4 +1,4 @@
-# Master TODO (final, cycle 1) — status taken from tests.md
+# Master TODO (cycle 2) — status taken from tests.md
 - [x] T1 spin eigenfunctions & Fig.1 combos (D1,D2) — PASS; sign erratum confirmed
 - [x] T2 2e/2o matrix vs FCI, random integrals (D3,D12,D13) — PASS (max dev 2e-14)
 - [x] T3 K>=0, J>=K (D4) — PASS (water MOs)
@@ -22,3 +22,9 @@
 - [x] T17 [ADDED-CYCLE-1] Lean 4/Mathlib, 17 theorems — PASS (standard axioms only)
 - [x] Derivations LaTeX compiles; no undefined references (2 sub-6pt overfull boxes remain, cosmetic)
 - [x] [ADDED-CYCLE-1] Beamer presentation — builds from scratch with zero warnings/bad boxes
+- [x] [ADDED-CYCLE-2] T1b independent numerical re-check of the sign error — PASS
+- [x] [ADDED-CYCLE-2] t11c_check.py: T11c PASS/FAIL from the logs — PASS (mutation-tested)
+- [x] [ADDED-CYCLE-2] slide audit vs paper (5 Haiku auditors) — 29 findings, all dispositioned (plans/audit-findings.md)
+- [x] [ADDED-CYCLE-2] slides: symbol strips + step explanations, frame count kept at 136, CLEAN build
+- [x] [ADDED-CYCLE-2] FINDINGS: "obsolescence" quote (p. 455), TriMB quartet imprecision, T1b, t11c_check
+- [ ] [ADDED-CYCLE-2] GitHub Pages site (site/ + Actions workflow) — in progress

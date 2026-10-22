@@ -47,6 +47,24 @@
 \newcommand<>{\hlg}[1]{\alt#2{\textcolor{noirgreen}{#1}}{#1}}
 \newcommand<>{\canc}[1]{\alt#2{\cancel{#1}}{#1}}
 
+% ------------------------------------------------------------------ explanations
+% \why{...}            short italic note for the right-hand column of an align (what this step did)
+% \explain<n>{...}     one-line explanation, revealed in sync with step n (no extra overlays)
+% \symbolstrip{...}    glossary of the symbols on this frame, pinned above the footline;
+%                      it also reserves its own vertical space so it can never cover content
+\newcommand{\why}[1]{\text{\scriptsize\noirgaramond\itshape\color{noirexpl}#1}}
+\newcommand<>{\explain}[1]{\onslide#2{\par\vskip1pt{\scriptsize\noirgaramond\itshape\color{noirexpl}%
+  \raisebox{0.1ex}{\tikz\fill[noirexpl] (0,0) -- (0.12,0.06) -- (0,0.12) -- cycle;}\ #1\par}}}
+\newcommand{\symbolstrip}[1]{%
+  \par\vskip0.5cm%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,inner xsep=5pt,inner ysep=2.5pt,fill=noirpanel,rounded corners=1.5pt,
+          text width=\dimexpr\paperwidth-1.4cm\relax,align=left,font=\tiny,text=noirfg]
+      at ($(current page.south west)+(0.6cm,0.58cm)$)
+      {\textcolor{noirgold}{\noirgaramond\scshape symbols}\quad #1};
+  \end{tikzpicture}%
+}
+
 % step label shown at the left of a derivation line
 \newcommand{\stepno}[1]{\makebox[1.4em][l]{\textcolor{noirmuted}{\scriptsize\noirgaramond(#1)}}}
 

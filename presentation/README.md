@@ -1,18 +1,21 @@
 # Presentation
 
 A beamer deck on Gryn'ova, Coote & Corminboeuf, *WIREs Comput. Mol. Sci.* **2015**, 5, 440:
-134 frames (593 pages with overlays), in 19 parts. It runs from the molecular Hamiltonian to the
+134 numbered frames (591 pages with overlays), in 19 parts. It runs from the molecular Hamiltonian to the
 review's sign error, then through our verification and a claim-by-claim verdict.
 
-**Output:** [`ch5103-presentation.pdf`](ch5103-presentation.pdf)
+**Output:** [`ch5103-presentation.pdf`](ch5103-presentation.pdf) (with every build step, for presenting) and
+[`ch5103-handout.pdf`](ch5103-handout.pdf) (one page per frame, for reading). Both can be viewed in the
+browser on the [project site](https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/slides.html).
 
 ## Layout
 
 ```
 presentation/
 ├── main.tex                 preamble + \input of every section, in order
+├── handout.tex              main.tex in beamer's handout mode (overlays collapsed)
 ├── latexmkrc                LuaLaTeX, out-of-tree build/, theme/ on TEXINPUTS
-├── Makefile                 make / make assets / make check
+├── Makefile                 make / make handout / make assets / make check
 ├── theme/
 │   ├── beamerthemeNoir.sty  black theme: calligraphic titles, Libertinus, progress-bar footline
 │   └── noir-macros.sty      notation, overlay helpers (\hl, \canc, ...), boxes, pgfplots style
@@ -23,7 +26,7 @@ presentation/
 │   └── diagrams-svg/        intermediate SVGs
 ├── diagrams-src/            JavaScript generators (node) -> SVG -> PDF (rsvg-convert)
 ├── data/                    CSV data plotted with pgfplots
-└── scripts/                 make_screenshots.py, make_data.py, check_log.py
+└── scripts/                 make_screenshots.py, make_data.py, check_log.py, render_frames.py
 ```
 
 The review's own figures are read from `../assets/figures/` through `\graphicspath`.
@@ -32,6 +35,7 @@ The review's own figures are read from `../assets/figures/` through `\graphicspa
 
 ```bash
 make            # latexmk (LuaLaTeX) -> ch5103-presentation.pdf, then the log check
+make handout    # one page per frame -> ch5103-handout.pdf
 make assets     # optional: regenerate screenshots, plot data (PySCF) and JS diagrams
 ```
 
@@ -39,7 +43,11 @@ You need TeX Live with LuaLaTeX, `minted` (with `latexminted`), and the fonts Li
 TeX Gyre Chorus and JetBrains Mono. `make assets` also needs `uv`, `node` and `rsvg-convert`.
 
 `make check` lists every warning, bad box and missing glyph in `build/main.log`. The deck builds
-with none (`CLEAN`).
+with none (`CLEAN`). To look at frames without opening the PDF, `scripts/render_frames.py OUTDIR DPI "title" ...`
+renders the last overlay of every frame whose title contains one of the given strings.
+
+Overlays that *replace* each other (`\only<2>` then `\only<3>`) carry `| handout:0` on all but the last
+alternative, so the handout shows one version instead of all of them stacked.
 
 ## Design
 
@@ -53,6 +61,11 @@ with none (`CLEAN`).
   change colour on cue (`\hl<n>`).
 - **Colour-coded boxes:** claims from the paper (gold), assumptions (violet), results (green),
   verification (cyan), errata (rose).
+- **Explained steps:** every derivation line carries a short reason in blue italics (`\why{}` in an
+  `align*` column, or `\explain<n>{}` below a display), and each frame defines its notation in a
+  *symbols* strip pinned above the footline (`\symbolstrip{}`).
+- **Beamer pitfall:** a frame whose body begins with a `{…}` group gets that group as its *subtitle*.
+  Start such frames with the content itself (no outer braces) or give the subtitle explicitly.
 
 ## Content sources
 

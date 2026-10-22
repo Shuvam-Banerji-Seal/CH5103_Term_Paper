@@ -1,0 +1,11 @@
+T9b: E(S=1) - E(S=0) at half filling vs U (t=1); fitted exponent p in gap ~ U^p for small U
+  CBD: gaps [0.000154 0.000609 0.002376] -> exponent 1.97; sign singlet lower; disjoint=True
+  TME: gaps [6.20e-05 2.44e-04 9.31e-04] -> exponent 1.95; sign singlet lower; disjoint=True
+  TMM: gaps [-0.016427 -0.032374 -0.062847] -> exponent 0.97; sign triplet lower; disjoint=False
+  MX: gaps [-0.006145 -0.012086 -0.023383] -> exponent 0.96; sign triplet lower; disjoint=False
+T15a: MP2/cc-pVTZ (frozen core) correlation split
+  H2O: E_ss=-0.06352 E_os=-0.19801 ratio=0.321; per-pair ratio=0.428
+  N2: E_ss=-0.09581 E_os=-0.27796 ratio=0.345; per-pair ratio=0.431
+  C2H4: E_ss=-0.07092 E_os=-0.26473 ratio=0.268; per-pair ratio=0.321
+T15b: He 1^1S: HF=-2.861674 Ecorr=-0.04205; 2^3S: ROHF=-2.174245 Ecorr=-0.00098; same-spin/opposite-spin pair ratio=0.023
+T9b,T15 PASS

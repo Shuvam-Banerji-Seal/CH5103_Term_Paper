@@ -12,8 +12,11 @@
       electron behind, while upon addition new electron enters the former LUMO; essentially, SOMO does not participate
       in these processes.'' (p.\ 449)
     \end{paperclaim}
-    \onslide<2->{\small the fingerprint is \cgold{redox}: products are \cgold{diradicals}, not closed shells}
+    \onslide<2->{\small the fingerprint is \cgold{redox}: products are \cgold{polyradicals} (diradicals in the simplest case),
+      not closed shells}
   \end{columns}
+  \symbolstrip{SOMO: singly occupied MO \quad HOMO: here the highest \emph{doubly} occupied MO \quad LUMO: lowest unoccupied MO \quad
+    quasi-closed shell: SOMO below one or more doubly occupied MOs \quad redox: electron removal (oxidation) or addition (reduction)}
 \end{frame}
 
 \begin{frame}{UHF orbital energies of $s^1h^2$ (1/2)}
@@ -22,19 +25,24 @@
     $\varepsilon_k=E_N-E_{N-1}^{(k)}$ (Koopmans)
   \end{assume}
   configuration: \ $s\alpha,\ h\alpha,\ h\beta$ \quad pairs: $(s\alpha,h\alpha)$ same spin, $(s\alpha,h\beta)$, $(h\alpha,h\beta)$
-  {\large
   \begin{align*}
-    \uncover<2->{E_N}&\uncover<2->{=h_s+2h_h+\underbrace{(J_{hs}-K_{hs})}_{s\alpha,h\alpha}+\underbrace{J_{hs}}_{s\alpha,h\beta}+\underbrace{J_{hh}}_{h\alpha,h\beta}}\\
-    \uncover<3->{\varepsilon_h^\alpha=E_N-E(s\alpha,h\beta)}&\uncover<3->{=h_h+J_{hh}+J_{hs}-K_{hs}}\\
+    \uncover<2->{E_N}&\uncover<2->{=h_s+2h_h+\underbrace{(J_{hs}-K_{hs})}_{s\alpha,h\alpha}+\underbrace{J_{hs}}_{s\alpha,h\beta}+\underbrace{J_{hh}}_{h\alpha,h\beta}}
+      &&\uncover<2->{\why{each pair: $J$; same-spin pair: also $-K$}}\\
+    \uncover<3->{\varepsilon_h^\alpha=E_N-E(s\alpha,h\beta)}&\uncover<3->{=h_h+J_{hh}+J_{hs}-K_{hs}}
+      &&\uncover<3->{\why{$h\alpha$ leaves with its two pairs}}\\
     \uncover<4->{\varepsilon_h^\beta=E_N-E(s\alpha,h\alpha)}&\uncover<4->{=h_h+J_{hh}+J_{hs}}
-  \end{align*}}
+      &&\uncover<4->{\why{$h\beta$ has no same-spin partner: no $K$}}
+  \end{align*}
+  \symbolstrip{$s$: SOMO, $h$: HOMO \quad $h_s,h_h$: one-electron energies \quad $J_{hs}=\eri hhss$: Coulomb \quad $K_{hs}=\eri hssh\ge0$: exchange \quad
+    UHF: unrestricted HF ($\alpha$ and $\beta$ orbitals may differ; frozen and equal here) \quad $E(\cdot)$: energy of the $N-1$ electron ion}
 \end{frame}
 
 \begin{frame}{UHF orbital energies of $s^1h^2$ (2/2)}
-  {\begin{align*}
-    \varepsilon_s^\alpha=E_N-E(h\alpha,h\beta)&=h_s+2J_{hs}-K_{hs}\\
+  \begin{align*}
+    \varepsilon_s^\alpha=E_N-E(h\alpha,h\beta)&=h_s+2J_{hs}-K_{hs} &&\why{$s\alpha$ leaves: pairs with $h\alpha$ ($J-K$), $h\beta$ ($J$)}\\
     \uncover<2->{\varepsilon_s^\beta\ (\text{empty; add }s\beta)}&\uncover<2->{=h_s+J_{ss}+2J_{hs}-K_{hs}}
-  \end{align*}}
+      &&\uncover<2->{\why{$E_{N+1}-E_N$: new pairs with $s\alpha$, $h\alpha$, $h\beta$ (same spin)}}
+  \end{align*}
   \begin{columns}[c]
     \column{0.52\textwidth}
     \onslide<3->{
@@ -47,6 +55,8 @@
     \centering
     \onslide<3->{\includegraphics[width=0.78\linewidth]{scheme03_donor_HOMO_spin_polarization.png}}
   \end{columns}
+  \symbolstrip{$\varepsilon_k^\sigma$: Koopmans energy of orbital $k$ with spin $\sigma$ \quad occupied: $E_N-E_{N-1}$; empty: $E_{N+1}-E_N$ \quad
+    $J_{ss}$: repulsion of two electrons in $s$ (large, on-site) \quad Scheme 3: donor HOMO split by the radical's spin}
 \end{frame}
 
 \begin{frame}{When does the SOMO drop below the HOMO?}
@@ -54,8 +64,8 @@
   {\large
   \begin{align*}
     \varepsilon_s^\alpha<\varepsilon_h^\alpha
-      &\iff h_s+2J_{hs}\canc<2->{-K_{hs}}<h_h+J_{hh}+J_{hs}\canc<2->{-K_{hs}}\\
-      &\uncover<3->{\iff h_s+J_{hs}<h_h+J_{hh}}
+      &\iff h_s+2J_{hs}\canc<2->{-K_{hs}}<h_h+J_{hh}+J_{hs}\canc<2->{-K_{hs}} &&\why{insert the two $\alpha$ energies}\\
+      &\uncover<3->{\iff h_s+J_{hs}<h_h+J_{hh}} &&\uncover<3->{\why{cancel $-K_{hs}$ and one $J_{hs}$}}
   \end{align*}}
   \onslide<4->{\small radical orbital: its energy plus repulsion with \emph{one} $h$ electron, vs.\ $h$'s energy plus its \emph{self}-repulsion}
   \vskip0.3cm
@@ -67,6 +77,8 @@
     \onslide<6->{\begin{paperclaim}``spatially separated stable radical center and molecular fragment serving as a source of
       high-energy doubly occupied orbitals'' (p.\ 454)\end{paperclaim}}
   \end{columns}
+  \symbolstrip{conversion: SOMO--HOMO conversion, i.e.\ $\varepsilon_s^\alpha<\varepsilon_h^\alpha$ \quad $J_{hh}$: self-repulsion of the HOMO pair \quad
+    stable radical: low-lying, well-protected SOMO (e.g.\ a nitroxide)}
 \end{frame}
 
 \begin{frame}{The redox fingerprint, derived}
@@ -83,11 +95,13 @@
     \onslide<5->{\cgold{reduction}}
     \begin{itemize}
       \item<5-> into $s\beta$ at $\varepsilon_s^\beta$, or into $l$ at $\varepsilon_l$
-      \item<6-> diradical $s^1h^2l^1$ iff $\varepsilon_l<h_s+J_{ss}+2J_{hs}-K_{hs}$
+      \item<6-> at frozen orbitals: diradical $s^1h^2l^1$ iff $\varepsilon_l<h_s+J_{ss}+2J_{hs}-K_{hs}$
       \item<7-> \crose{a separate condition}: SOMO--HOMO conversion alone does not imply it
     \end{itemize}
     \onslide<8->{\small\cmuted{the large on-site $J_{ss}$ is what pushes $\varepsilon_s^\beta$ up}}
   \end{columns}
+  \symbolstrip{Koopmans: the electron leaves from (or enters) the orbital with the cheapest $\pm\varepsilon$ \quad $l$: former LUMO \quad
+    $2K_{sh}$: the singlet--triplet gap of Part V \quad nondegenerate SOMOs: the two singly occupied orbitals differ in energy}
 \end{frame}
 
 \begin{frame}{ROHF: are these orbital energies even real?}
@@ -102,11 +116,14 @@
     \text{rotation }p\leftrightarrow q:\ \delta\mathbf D^\sigma=\kappa(\ket p\bra q+\ket q\bra p)}
   \]}
   \onslide<3->{\small\cmuted{a rotation changes $\mathbf D^\sigma$ only if exactly one of $p,q$ is occupied in spin $\sigma$}}
+  \symbolstrip{ROHF: restricted open-shell HF (one set of spatial orbitals) \quad $\mathbf D^\sigma$: spin-$\sigma$ density matrix \quad
+    $\mathbf F^\sigma=\partial E/\partial\mathbf D^\sigma$: Fock matrix \quad $\kappa$: small rotation angle \quad canonicalisation: the choice
+    of matrix whose eigenvectors define the orbitals}
 \end{frame}
 
 \begin{frame}{ROHF stationarity, rotation by rotation}
   \centering
-  \renewcommand{\arraystretch}{1.3}
+  \renewcommand{\arraystretch}{1.08}
   \begin{tabular}{llll}
     \toprule
     rotation & changes $\mathbf D^\alpha$? & changes $\mathbf D^\beta$? & condition\\
@@ -117,13 +134,14 @@
     \onslide<4->{within $c$, $o$ or $v$} & \onslide<4->{no} & \onslide<4->{no} & \onslide<4->{\crose{none: $\delta E\equiv0$}}\\
     \bottomrule
   \end{tabular}
-  \vskip0.25cm
+  \vskip0.1cm
   \onslide<5->{
   \begin{keyresult}
     diagonal blocks are \emph{arbitrary}: any $A\mathbf F^\alpha+(1-A)\mathbf F^\beta$ gives the same energy and density,
     but different orbital energies
   \end{keyresult}}
-  \onslide<6->{\small\tick\ \cmuted{T11a: required blocks $<10^{-7}$, others $\sim0.1$ (H$_2$NO, NO$_2$, CH$_3$, allyl); PySCF's Roothaan Fock uses exactly these off-diagonal blocks}}
+  \onslide<6->{\footnotesize\tick\ \cmuted{T11a: required blocks $<10^{-7}$, others $\sim0.1$ (H$_2$NO, NO$_2$, CH$_3$, allyl); PySCF's Roothaan Fock uses exactly these off-diagonal blocks}}
+  \symbolstrip{$F^\sigma_{pq}$: Fock element between spaces $p,q$ \quad $\delta E\equiv0$: the energy is blind to that rotation \quad $A$: any real weight}
 \end{frame}
 
 \begin{frame}{How arbitrary? H$_2$NO, ROHF/6-31G*}
@@ -150,6 +168,8 @@
     \end{itemize}
     \onslide<4->{\warnpill\ \small the review is right in principle; for ordinary radicals the standard choices do not flip}
   \end{columns}
+  \symbolstrip{H$_2$NO: aminoxyl, the smallest nitroxide \quad $\mathbf R_{oo}$: open--open block of the ROHF effective Fock matrix \quad
+    $A^*$: weight where SOMO and HOMO cross \quad $E_{\mathrm h}$: hartree}
 \end{frame}
 
 \begin{frame}{Hence: trust observables}
@@ -167,6 +187,8 @@
   \end{tikzpicture}
   \vskip0.3cm
   \onslide<3->{\small this is exactly the test we ran on a distonic radical anion (a few slides ahead)}
+  \symbolstrip{a posteriori: after the fact, from measured or computed total energies \quad invariant: the same for every canonicalisation \quad
+    electron affinity: energy released on adding an electron}
 \end{frame}
 
 \begin{frame}{Inorganic precedents (Scheme 2)}
@@ -183,6 +205,8 @@
     \end{itemize}
     \onslide<4->{\small also reported: quantum dots, the LiF dissociation curve}
   \end{columns}
+  \symbolstrip{VO(oep): vanadyl octaethylporphyrin \quad the unpaired electron sits in a vanadium d orbital, below the porphyrin's highest
+    filled $\pi$ orbital \quad oep: octaethylporphyrin}
 \end{frame}
 
 \begin{frame}{A TEMPO-dithiolate on platinum (Figure 11)}
@@ -200,6 +224,8 @@
       \item<4-> (b) a ditempo metalladithiolene: oxidation-generated biradicals couple to a bicyclic product
     \end{itemize}
   \end{columns}
+  \symbolstrip{tempodt: TEMPO-substituted dithiolate ligand \quad tBubpy: di-\emph{tert}-butyl-bipyridine \quad NHOMO: next-highest occupied MO
+    \quad CV: cyclic voltammetry \quad ESR: electron spin resonance}
 \end{frame}
 
 \begin{frame}{Spin-polarised donors (Figures 12, 13)}
@@ -214,16 +240,18 @@
     \onslide<3->{\small \cgold{NNN} (1-pyrrolyl): donor HOMO disjoint from SOMO/NHOMO. \cgold{$\beta$NN} (3-pyrrolyl): donor HOMO and NHOMO
       nondisjoint; their combination rises above the SOMO.}
   \end{columns}
+  \symbolstrip{NN: nitronyl nitroxide radical \quad TTF: tetrathiafulvalene \quad BQ: benzoquinone \quad donor: electron-rich group that is oxidised first
+    \quad disjoint: no shared atoms (Part X)}
 \end{frame}
 
 \begin{frame}{Conducting magnets (Scheme 4, Figure 14, Scheme 5)}
   \begin{columns}[c]
     \column{0.5\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{scheme04_conductivity_magnetism.png}
+    \includegraphics[width=0.9\linewidth]{scheme04_conductivity_magnetism.png}
     \vskip0.1cm
-    \only<2-3>{\includegraphics[width=0.8\linewidth]{scheme05_conducting_magnets_ETBN_ESBN.png}}
-    \only<4->{\includegraphics[width=0.95\linewidth]{fig14_oxidation_induced_ferromagnetic_coupling.png}}
+    \only<2-3| handout:0>{\includegraphics[width=0.8\linewidth]{scheme05_conducting_magnets_ETBN_ESBN.png}}
+    \only<4->{\includegraphics[width=0.8\linewidth]{fig14_oxidation_induced_ferromagnetic_coupling.png}}
     \column{0.47\textwidth}
     \small
     \begin{itemize}
@@ -233,6 +261,8 @@
       \item<4-> Fig.\ 14: several radicals on one donor; oxidation gives a strongly ferromagnetic high-spin system
     \end{itemize}
   \end{columns}
+  \symbolstrip{itinerant: free to move through the crystal (carries current) \quad localised spin: stays on the radical (carries magnetism)
+    \quad magnetoresistance: resistance that changes with magnetic field \quad ETBN, ESBN: radical-substituted TTF-type donors}
 \end{frame}
 
 \begin{frame}{Other radicals, and a pH sensor (Figure 15)}
@@ -247,6 +277,8 @@
       \item<2-> \cgold{(b)} anthracene--$p$-phenylene--oxoverdazyl (AnOV): high-spin oxidation products
     \end{itemize}
   \end{columns}
+  \symbolstrip{phenol: Ar--OH; deprotonated, the phenolate is a strong donor \quad oxoverdazyl: a stable nitrogen-rich radical \quad
+    high spin: parallel unpaired electrons}
 \end{frame}
 
 \begin{frame}{Distonic radical anions (Figure 16)}
@@ -257,11 +289,13 @@
     \column{0.59\textwidth}
     \begin{paperclaim}
       a stabilised radical plus an anionic group not $\pi$-conjugated to it: the anion's HOMO lies above the SOMO;
-      ``if the anion is protonated, the aufbau orbital occupation is restored'', switchable ``via changing pH''; on oxidation
-      the conversion ``yield[s] diradical species preferentially over the closed-shell zwitterion'' (p.\ 452--453)
+      ``if the anion is protonated, the aufbau orbital occupation is restored'', switchable ``via changing pH''; on oxidation it
+      ``has been shown computationally to yield diradical species preferentially over the closed-shell zwitterion'' (p.\ 452--453)
     \end{paperclaim}
-    \onslide<2->{\small \cgold{testable}: compute both oxidised states, with and without the proton}
+    \onslide<2->{\small \cgold{testable} (and so far computational): compute both oxidised states, with and without the proton}
   \end{columns}
+  \symbolstrip{distonic: charge and radical on different atoms \quad not $\pi$-conjugated: no shared $\pi$ system between them \quad
+    zwitterion: closed shell carrying $+$ and $-$ charges}
 \end{frame}
 
 \begin{frame}{Our test: two radicals, two protonation states, two functionals}{T11/T11c: UB3LYP/6-31G* geometries, vertical oxidation at 6-31+G*}
@@ -287,9 +321,11 @@
     \begin{itemize}
       \item<1-> acids: closed shell by $1.2$--$1.4$ eV, SOMO $=$ HOMO
       \item<2-> anions, CAM-B3LYP: \cgreen{diradical} by $0.36$ and $0.30$ eV
-      \item<3-> anions, B3LYP: misses by $\sim0.07$ eV
+      \item<3-> anions, B3LYP: misses by $0.06$--$0.07$ eV
     \end{itemize}
   \end{columns}
+  \symbolstrip{$E_T$: oxidised diradical (triplet) \quad $E_{\text{CS}}$: oxidised closed shell \quad vertical: same geometry as the radical \quad
+    $+$ in 6-31$+$G*: diffuse functions for anions \quad CAM-B3LYP: range-separated (more HF exchange at long range)}
 \end{frame}
 
 \begin{frame}{What the test says}
@@ -309,6 +345,8 @@
       \item<6-> delocalisation error is a plausible cause (not tested)
     \end{itemize}
   \end{columns}
+  \symbolstrip{delocalisation error: approximate functionals over-stabilise charge spread over many atoms; range separation reduces it \quad
+    functional-sensitive: the sign depends on the method}
 \end{frame}
 
 \begin{frame}{Non-aufbau by electron addition (Figure 17)}
@@ -323,7 +361,10 @@
         molecular metal
       \item<2-> \cgold{(b)} galvinoxyl in P3HT/PCBM: its LUMO mediates singlet$\to$triplet crossing of polaron pairs via exchange,
         preventing recombination and raising photovoltaic efficiency
-      \item<3-> self-doping: in TTFCOO$^-$NH$_4^+$ the SOMO of TTF$^{+\bullet}$ is not the highest occupied orbital
+      \item<3-> self-doping: in TTFCOO$^-$NH$_4^+$ the SOMO of the TTF$^{+\bullet}$ unit is not the highest occupied orbital,
+        according to calculations on a model tetramer
     \end{itemize}
   \end{columns}
+  \symbolstrip{P3HT/PCBM: polymer/fullerene solar-cell blend \quad polaron pair: an electron and a hole on neighbouring chains \quad
+    self-doping: radicals formed inside the crystal without an external dopant}
 \end{frame}

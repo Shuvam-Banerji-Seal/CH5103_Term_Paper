@@ -16,25 +16,24 @@
     \includegraphics[width=0.95\linewidth]{fig03_high_low_spin_polyradicals.png}
     {\scriptsize\cmuted{Fig.\ 3: high- and low-spin polyradicals}}
   \end{columns}
+  \symbolstrip{NBMO: non-bonding MO, orbital energy equal to that of an isolated $p$ orbital \quad disjoint: the two NBMOs share no atom \quad
+    CBD cyclobutadiene, TME tetramethyleneethane, TMM trimethylenemethane, MX $m$-xylylene, TriMB 1,3,5-trimethylenebenzene}
 \end{frame}
 
-\begin{frame}{Hückel theory and the zero-sum rule}
+\begin{frame}{Hückel theory and the zero-sum rule}{assume (Hückel) one $p_\pi$ per carbon; $H_{ii}=\alpha$, $H_{ij}=\beta$ if bonded, else 0; zero overlap}
   \begin{columns}[c]
-    \column{0.55\textwidth}
-    \begin{assume}[Hückel]
-      one $p_\pi$ per carbon; $H_{ii}=\alpha$, $H_{ij}=\beta$ if bonded, else 0; zero overlap
-    \end{assume}
-    {\large
-    \begin{align*}
+    \column{0.56\textwidth}
+    {\begin{align*}
       \mathbf H=\alpha\mathbf 1+\beta\mathbf A,\quad E&=\alpha+x\beta\ \Rightarrow\ \mathbf A\mathbf c=x\,\mathbf c\\
       \uncover<2->{\text{NBMO: }E=\alpha}&\uncover<2->{\Leftrightarrow\ \mathbf A\mathbf c=\mathbf 0}\\
       \uncover<3->{\text{row }i:\quad}&\uncover<3->{\textstyle\sum_{j\in\mathcal N(i)}c_j=0}
     \end{align*}}
+    \explain<3->{subtract $\alpha$, divide by $\beta$; NBMO means $x=0$; row $i$ of $\mathbf A\mathbf c$ adds the coefficients of $i$'s neighbours}
     \onslide<4->{\cgold{for every atom, the NBMO coefficients of its neighbours sum to zero}}
     \column{0.4\textwidth}
     \centering
     \onslide<5->{
-    \begin{tikzpicture}[scale=1.2]
+    \begin{tikzpicture}[scale=1.15]
       \draw[noirmuted,line width=1.2pt] (0,0) -- (1,0.6) -- (2,0);
       \foreach \x/\y/\c/\col in {0/0/0.707/noirrose,2/0/-0.707/noirblue}{
         \fill[\col,opacity=0.55] (\x,\y) circle ({0.42*abs(\c)});}
@@ -45,40 +44,45 @@
       \node[font=\scriptsize,text=noirmuted] at (1,-1.1) {allyl NBMO: centre sees $c_1+c_3=0$};
     \end{tikzpicture}}
   \end{columns}
+  \symbolstrip{\textbf{here $\alpha,\beta$ are Hückel energies, not spin}: $\alpha$ = energy of a $p_\pi$ electron on one carbon, $\beta<0$ = coupling of bonded neighbours
+    \quad $\mathbf A$: adjacency matrix ($A_{ij}=1$ if $i,j$ bonded) \quad $\mathbf c$: MO coefficients \quad $\mathcal N(i)$: neighbours of atom $i$}
 \end{frame}
 
 \begin{frame}{Alternant hydrocarbons: the pairing theorem}
   star every other atom; bonds only join starred ($\mathcal A$) to unstarred ($\mathcal B$):
-  {\large
-  \[
+  {\[
     \mathbf A=\begin{pmatrix}\mathbf 0&\mathbf B\\\mathbf B^{\mathsf T}&\mathbf 0\end{pmatrix}
   \]}
-  {\large
-  \begin{align*}
-    \uncover<2->{\mathbf A\binom{\mathbf u}{\mathbf v}=x\binom{\mathbf u}{\mathbf v}}&\uncover<2->{\ \Leftrightarrow\ \mathbf B\mathbf v=x\mathbf u,\quad\mathbf B^{\mathsf T}\mathbf u=x\mathbf v}\\
+  \explain{zero diagonal blocks: no bond joins two starred atoms or two unstarred atoms}
+  {\begin{align*}
+    \uncover<2->{\mathbf A\binom{\mathbf u}{\mathbf v}=x\binom{\mathbf u}{\mathbf v}}&\uncover<2->{\ \Leftrightarrow\ \mathbf B\mathbf v=x\mathbf u,\quad\mathbf B^{\mathsf T}\mathbf u=x\mathbf v}
+      &&\uncover<2->{\why{multiply the blocks}}\\
     \uncover<3->{\mathbf A\binom{\mathbf u}{-\mathbf v}}&\uncover<3->{=\binom{-\mathbf B\mathbf v}{\mathbf B^{\mathsf T}\mathbf u}=\binom{-x\mathbf u}{x\mathbf v}=\hlg<4->{-x}\binom{\mathbf u}{-\mathbf v}}
+      &&\uncover<3->{\why{flip the sign on one set}}
   \end{align*}}
   \onslide<4->{\centering levels come in $\pm x$ pairs, mirrored about $\alpha$ \quad\cmuted{(Lean: \texttt{pairing})}\par}
+  \symbolstrip{alternant: atoms can be split into two sets with bonds only between the sets (no odd rings) \quad $\mathbf u,\mathbf v$: coefficients on the starred and unstarred
+    atoms \quad $\mathbf B$: bonds from starred to unstarred \quad $\mathsf T$: transpose}
 \end{frame}
 
 \begin{frame}{How many NBMOs?}
   \begin{columns}[c]
     \column{0.56\textwidth}
-    {\large
-    \begin{align*}
+    {\begin{align*}
       \operatorname{rank}\mathbf A&=2\operatorname{rank}\mathbf B\\
       \uncover<2->{}&\uncover<2->{\le2\min(n_A,n_B)}\\
       \uncover<3->{\#\text{NBMO}=N-\operatorname{rank}\mathbf A}&\uncover<3->{\ge|n_A-n_B|}
     \end{align*}}
-    \onslide<4->{\small sharper (Longuet-Higgins): $\operatorname{rank}\mathbf B\le T$, the largest set of disjoint bonds
-      (best Kekul\'e structure) $\Rightarrow$ \ $\#\text{NBMO}\ge N-2T$}
+    \explain<3->{each nonzero level of $\mathbf B$ gives a $\pm x$ pair; a rank can never exceed the smaller side; $N=n_A+n_B$}
+    \onslide<4->{\small sharper (Longuet-Higgins): $\operatorname{rank}\mathbf B\le T$, the size of a maximum matching
+      (largest set of bonds sharing no atom) $\Rightarrow$ \ $\#\text{NBMO}\ge N-2T$}
     \column{0.4\textwidth}
     \onslide<5->{
     \begin{erratum}[Careful: only a bound]
       square cyclobutadiene: $N=4$, $T=2$, so $N-2T=0$, yet it has \emph{two} NBMOs
     \end{erratum}}
     \onslide<5->{\centering
-    \begin{tikzpicture}[scale=1.0]
+    \begin{tikzpicture}[scale=0.9]
       \draw[noirmuted,line width=1pt] (0,0) rectangle (1.3,1.3);
       \draw[noirgold,line width=2.2pt] (0,0) -- (1.3,0); \draw[noirgold,line width=2.2pt] (0,1.3) -- (1.3,1.3);
       \foreach \p in {(0,0),(1.3,0),(1.3,1.3),(0,1.3)} \fill[noirfg] \p circle (0.05);
@@ -86,37 +90,44 @@
     \end{tikzpicture}\par}
     \onslide<6->{\small\cmuted{T8 caught our own wrong assumption here.}}
   \end{columns}
+  \symbolstrip{rank: number of nonzero eigenvalues \quad \#NBMO: number of zero eigenvalues ($x=0$) \quad $n_A,n_B$: sizes of the starred and unstarred sets \quad
+    $N$: number of $\pi$ atoms}
 \end{frame}
 
 \begin{frame}{Tetramethyleneethane: solving the zero-sum equations}
   \begin{columns}[c]
-    \column{0.4\textwidth}
+    \column{0.38\textwidth}
     \centering
     \begin{tikzpicture}[scale=0.95]
       \draw[noirmuted,line width=1pt] (-0.6,0) -- (0.6,0) (-0.6,0) -- (-1.3,1) (-0.6,0) -- (-1.3,-1) (0.6,0) -- (1.3,1) (0.6,0) -- (1.3,-1);
       \foreach \p/\l/\a in {(-0.6,0)/1/below,(0.6,0)/2/below,(-1.3,1)/3/left,(-1.3,-1)/4/left,(1.3,1)/5/right,(1.3,-1)/6/right}
         \fill[noirfg] \p circle (0.05) node[\a,font=\scriptsize]{\l};
     \end{tikzpicture}
-    \column{0.56\textwidth}
+    \column{0.58\textwidth}
     {\begin{align*}
       \text{atom 3:}\ c_1&=0 &\uncover<2->{\text{atom 5:}\ c_2}&\uncover<2->{=0}\\
       \uncover<3->{\text{atom 1:}\ c_2+c_3+c_4}&\uncover<3->{=0\Rightarrow c_4=-c_3}\\
       \uncover<4->{\text{atom 2:}\ c_1+c_5+c_6}&\uncover<4->{=0\Rightarrow c_6=-c_5}
     \end{align*}}
+    \explain{atom 3 has one neighbour (atom 1), so the rule forces $c_1=0$; likewise atom 5 forces $c_2=0$}
     \onslide<5->{\[
       \varphi_a=\tfrac1{\sqrt2}(\chi_3-\chi_4),\qquad\varphi_b=\tfrac1{\sqrt2}(\chi_5-\chi_6)
     \]}
     \onslide<6->{\centering\cgreen{no common atom: disjoint}\par}
   \end{columns}
+  \symbolstrip{$c_i$: NBMO coefficient on atom $i$ \quad $\chi_i$: the $p_\pi$ atomic orbital on carbon $i$ \quad two free parameters ($c_3$, $c_5$) $\Rightarrow$
+    two NBMOs \quad $\tfrac1{\sqrt2}$: normalisation}
 \end{frame}
 
 \begin{frame}{Disjoint pairs, drawn by our JavaScript}{lobe area $\propto|c_i|^2$; \crose{rose} $+$, \cblue{blue} $-$}
   \centering
   \includegraphics[width=0.53\textwidth]{diagrams/nbmo_tme.pdf}\hfill
   \includegraphics[width=0.44\textwidth]{diagrams/nbmo_cbd.pdf}
-  \vskip0.25cm
+  \vskip0.2cm
   \onslide<2->{\small JS code: Hückel matrix $\to$ Jacobi diagonalisation $\to$ rotate the degenerate pair to minimise
     $\sum_ia_i^2b_i^2$ $\to$ SVG $\to$ PDF}
+  \symbolstrip{$a_i,b_i$: coefficients of $\pa,\pb$ on atom $i$ \quad degenerate NBMOs can be mixed freely; we pick the mixture that overlaps least \quad
+    $\sum_ia_i^2b_i^2=0$: no atom carries both orbitals}
 \end{frame}
 
 \begin{frame}{Trimethylenemethane cannot be made disjoint}
@@ -131,33 +142,33 @@
     \onslide<5->{\centering\crose{nondisjoint, for every choice of basis}\par}
     \column{0.47\textwidth}
     \centering
-    \only<5>{\includegraphics[width=\linewidth]{diagrams/nbmo_tmm.pdf}}
+    \only<5| handout:0>{\includegraphics[width=\linewidth]{diagrams/nbmo_tmm.pdf}}
     \only<6->{\includegraphics[width=0.9\linewidth]{diagrams/nbmo_mx.pdf}\par
       {\scriptsize\cmuted{$m$-xylylene: also nondisjoint}}}
   \end{columns}
+  \symbolstrip{atoms: centre 0, terminals 1--3 \quad support of a vector: the atoms where it is nonzero \quad
+    ``for every basis'': no rotation of the two NBMOs can separate them}
 \end{frame}
 
-\begin{frame}{Why disjoint means $K_{ab}=0$}
-  \begin{assume}[Zero differential overlap (ZDO)]
-    $\eri\mu\nu\lambda\sigma=\delta_{\mu\nu}\delta_{\lambda\sigma}\,\gamma_{\mu\lambda}$, \ $\gamma$ = Coulomb repulsion between atoms $\mu,\lambda$
-  \end{assume}
-  {\large
-  \begin{align*}
-    K_{ab}=\eri abab&=\textstyle\sum_{\mu\nu\lambda\sigma}a_\mu b_\nu a_\lambda b_\sigma\,\eri\mu\nu\lambda\sigma\\
-    \uncover<2->{}&\uncover<2->{=\textstyle\sum_{\mu\lambda}(a_\mu b_\mu)(a_\lambda b_\lambda)\,\gamma_{\mu\lambda}}\\
-    \uncover<3->{\text{disjoint }(a_\mu b_\mu=0\ \forall\mu):\ K_{ab}}&\uncover<3->{=\hlg<3->{0}}\\
-    \uncover<4->{\text{Hubbard }(\gamma_{\mu\lambda}=U\delta_{\mu\lambda}):\ K_{ab}}&\uncover<4->{=U\textstyle\sum_\mu a_\mu^2b_\mu^2}
+\begin{frame}{Why disjoint means $K_{ab}=0$}{assume zero differential overlap (ZDO): $\eri\mu\nu\lambda\sigma=\delta_{\mu\nu}\delta_{\lambda\sigma}\,\gamma_{\mu\lambda}$}
+  {\begin{align*}
+    K_{ab}=\eri abab&=\textstyle\sum_{\mu\nu\lambda\sigma}a_\mu b_\nu a_\lambda b_\sigma\,\eri\mu\nu\lambda\sigma &&\why{insert $\pa=\sum a_\mu\chi_\mu$, $\pb=\sum b_\nu\chi_\nu$}\\
+    \uncover<2->{}&\uncover<2->{=\textstyle\sum_{\mu\lambda}(a_\mu b_\mu)(a_\lambda b_\lambda)\,\gamma_{\mu\lambda}} &&\uncover<2->{\why{ZDO keeps only $\nu=\mu$, $\sigma=\lambda$}}\\
+    \uncover<3->{\text{disjoint }(a_\mu b_\mu=0\ \forall\mu):\ K_{ab}}&\uncover<3->{=\hlg<3->{0}} &&\uncover<3->{\why{every product vanishes}}\\
+    \uncover<4->{\text{Hubbard }(\gamma_{\mu\lambda}=U\delta_{\mu\lambda}):\ K_{ab}}&\uncover<4->{=U\textstyle\sum_\mu a_\mu^2b_\mu^2} &&\uncover<4->{\why{on-site repulsion only}}
   \end{align*}}
   \onslide<5->{\centering\small TMM: $\min\sum a^2b^2=\tfrac16$ \quad MX: $\tfrac1{16}$ \quad (Python \emph{and} JavaScript agree)\par}
+  \symbolstrip{ZDO: products of two different atomic orbitals are treated as zero \quad $\gamma_{\mu\lambda}$: repulsion between an electron on atom $\mu$ and one on atom
+    $\lambda$ \quad $\gamma$ is positive definite, so nondisjoint $\Rightarrow K_{ab}>0$}
 \end{frame}
 
 \begin{frame}{The test: how the gap grows with\ $U$}{T9b: exact Hubbard diagonalisation, $t=1$}
   \begin{columns}[c]
     \column{0.58\textwidth}
     \begin{tikzpicture}
-      \begin{loglogaxis}[noirplot,width=7.6cm,height=5.0cm,xmin=0.04,xmax=4.5,
+      \begin{loglogaxis}[noirplot,width=7.6cm,height=4.8cm,xmin=0.04,xmax=4.5,
           xlabel={$U/t$},ylabel={$|E_T-E_S|$},ymajorgrids,
-          legend style={at={(0.5,-0.3)},anchor=north,legend columns=2}]
+          legend style={at={(0.5,-0.32)},anchor=north,legend columns=2}]
         \addplot[noirrose,very thick,mark=*,mark size=1.2pt] table[x=U,y expr=abs(\thisrow{TMM}),col sep=comma]{data/hubbard_gap.csv};
         \addlegendentry{TMM (triplet)}
         \addplot[noirorange,very thick,mark=*,mark size=1.2pt] table[x=U,y expr=abs(\thisrow{MX}),col sep=comma]{data/hubbard_gap.csv};
@@ -175,4 +186,6 @@
       \item<3-> first-order $K$ vanishes; something second-order picks the singlet\ldots
     \end{itemize}
   \end{columns}
+  \symbolstrip{log--log axes: slope 1 means gap $\propto U$ (first order, $2K$), slope 2 means gap $\propto U^2$ (second order) \quad exact diagonalisation: all
+    determinants of the Hubbard model, no approximation}
 \end{frame}

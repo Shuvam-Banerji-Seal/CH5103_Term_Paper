@@ -3,20 +3,23 @@
 
 \begin{frame}{Spin-state crossover by external stimuli (Figure 7)}
   \begin{columns}[c]
-    \column{0.42\textwidth}
+    \column{0.4\textwidth}
     \centering
-    \includegraphics[height=0.74\textheight]{fig07_spin_crossover_external_stimuli.png}
-    \column{0.55\textwidth}
+    \includegraphics[height=0.7\textheight]{fig07_spin_crossover_external_stimuli.png}
+    \column{0.57\textwidth}
     \footnotesize
     \begin{itemize}
       \item<1-> \cgold{(a) oxidation}: quinone coupler switches two nitroxides between ferro- and antiferromagnetic coupling
-      \item<2-> \cgold{(b) light}: \emph{cis}-azobenzene loses planarity, triplet $\to$ singlet (computed)
+      \item<2-> \cgold{(b) light}: \emph{trans}-azobenzene (antiparallel, singlet) $\to$ \emph{cis}, which loses planarity:
+        triplet (predicted computationally)
       \item<3-> \cgold{(c) light}: \emph{trans}$\to$\emph{cis} alkene brings two TEMPO units close, H-bonded, antiferromagnetic
       \item<4-> \cgold{(d) light}: photo-induced bond formation changes the orbital topology
       \item<5-> \cgold{(e) Zn$^{2+}$}: O--Zn--O superexchange and O$\cdots$O through-space exchange favour antiferromagnetic coupling
       \item<6-> \cgold{(f) $T$ or $B$}: 1,4-phenylenedinitrene, open-shell singlet $\to$ triplet
     \end{itemize}
   \end{columns}
+  \symbolstrip{dots in the figure: \textcolor{noirrose}{rose} $\uparrow$, \textcolor{noirblue}{blue} $\downarrow$ \quad $h\nu$: light \quad
+    TEMPO: a stable nitroxide radical \quad superexchange: coupling of two spins through an intervening atom \quad $T$: temperature, $B$: magnetic field}
 \end{frame}
 
 \begin{frame}{A wording slip in (e)?}
@@ -29,60 +32,54 @@
     \column{0.48\textwidth}
     \onslide<2->{
     \begin{plainpanel}
-      review, p.\ 443: \cgold{disjoint} NBMOs make the singlet \emph{competitive};
-      a \cgold{triplet} preference needs \cgold{nondisjoint} NBMOs ($K>0$)
+      review, p.\ 443: \cgold{disjoint} NBMOs make the singlet \emph{competitive}; its triplet examples (MX, TriMB) are
+      \cgold{nondisjoint}
     \end{plainpanel}}
     \column{0.48\textwidth}
     \onslide<3->{
     \begin{plainpanel}
-      so ``disjoint'' here is probably meant as ``nondisjoint'', or the triplet preference has another origin
+      so ``disjoint'' here probably means ``nondisjoint'', or the triplet preference has another origin
     \end{plainpanel}}
   \end{columns}
-  \vskip0.1cm
-  \onslide<4->{\centering\warnpill\ \small inconsistent wording; \cmuted{original (ref.\ 52) not checked}\par}
+  \onslide<4->{\centering\pill{noirorange}{inconsistent}\ \small wording vs p.\ 443; \cmuted{original (ref.\ 52) not checked}\par}
+  \symbolstrip{disjoint / nondisjoint NBMOs: Part X (no shared atoms $\Rightarrow$ $K\approx0$; shared atoms $\Rightarrow$ $K>0$, triplet favoured)}
 \end{frame}
 
-\begin{frame}{Panel (f), quantitatively: temperature}
-  \begin{assume}
-    open-shell singlet ground state, triplet $\Delta$ above it; Boltzmann statistics; degeneracies 1 and 3
-  \end{assume}
+\begin{frame}{Panel (f), quantitatively: temperature}{assume a singlet ground state, triplet $\Delta$ above; Boltzmann statistics; degeneracies 1 and 3}
   \begin{columns}[c]
     \column{0.5\textwidth}
-    {\large
-    \begin{align*}
-      Z&=1+3e^{-\Delta/k_BT}\\
-      \uncover<2->{p_T}&\uncover<2->{=\frac{3e^{-\Delta/k_BT}}{1+3e^{-\Delta/k_BT}}}\\
-      \uncover<3->{p_T(T\to\infty)}&\uncover<3->{\to\tfrac34}
+    {\begin{align*}
+      Z&=1+3e^{-\Delta/k_BT} &&\why{Boltzmann weights}\\
+      \uncover<2->{p_T}&\uncover<2->{=\frac{3e^{-\Delta/k_BT}}{1+3e^{-\Delta/k_BT}}} &&\uncover<2->{\why{triplet weight $/Z$}}\\
+      \uncover<3->{p_T(T\to\infty)}&\uncover<3->{\to\tfrac34} &&\uncover<3->{\why{$e^{0}=1$: $3/(1+3)$}}
     \end{align*}}
-    \onslide<4->{\small ``increased temperature \dots\ promotes electrons to populate the triplet state'' \okpill}
+    \onslide<4->{\small ``increased temperature \dots\ promotes electrons to populate the triplet state'' (p.\ 445) \okpill}
     \column{0.46\textwidth}
     \onslide<2->{
     \begin{tikzpicture}
-      \begin{axis}[noirplot,width=6.4cm,height=4.8cm,xmin=0,xmax=4,ymin=0,ymax=0.8,
+      \begin{axis}[noirplot,width=5.9cm,height=4.5cm,xmin=0,xmax=4,ymin=0,ymax=0.8,
           xlabel={$k_BT/\Delta$},ylabel={$p_T$},ymajorgrids]
         \addplot[noirrose,very thick,domain=0.02:4,samples=100] {3*exp(-1/x)/(1+3*exp(-1/x))};
         \draw[noirmuted,dashed] (axis cs:0,0.75) -- (axis cs:4,0.75);
       \end{axis}
     \end{tikzpicture}}
   \end{columns}
+  \symbolstrip{$Z$: partition function \quad $k_B$: Boltzmann constant \quad $\Delta=E_T-E_S>0$ \quad degeneracy 3: the triplet's $M_S=-1,0,+1$ \quad
+    $p_T$: fraction of molecules in the triplet}
 \end{frame}
 
-\begin{frame}{Panel (f), quantitatively: magnetic field}
+\begin{frame}{Panel (f), quantitatively: magnetic field}{assume a Zeeman term $g\mu_BBM_S$; the singlet is unaffected; $g\approx2$}
   \begin{columns}[c]
     \column{0.5\textwidth}
-    \begin{assume}
-      Zeeman term $g\mu_BBM_S$; singlet unaffected; $g\approx2$
-    \end{assume}
-    {\large
-    \begin{align*}
-      E_T(M_S)&=\Delta+g\mu_BB\,M_S,\quad M_S=0,\pm1\\
-      \uncover<2->{E_T(-1)=E_S}&\uncover<2->{\ \Leftrightarrow\ B^*=\frac{\Delta}{g\mu_B}}
+    {\begin{align*}
+      E_T(M_S)&=\Delta+g\mu_BB\,M_S &&\why{$M_S=0,\pm1$ split apart}\\
+      \uncover<2->{E_T(-1)=E_S}&\uncover<2->{\ \Leftrightarrow\ B^*=\frac{\Delta}{g\mu_B}} &&\uncover<2->{\why{$\Delta-g\mu_BB=0$}}
     \end{align*}}
     \onslide<3->{\small ``external magnetic field that splits the triplet into microstates, one of which approaches the energy of the
-      ground-state singlet'' \okpill}
+      ground-state singlet'' (p.\ 445) \okpill}
     \column{0.46\textwidth}
     \begin{tikzpicture}
-      \begin{axis}[noirplot,width=6.4cm,height=5.2cm,xmin=0,xmax=1.5,ymin=-0.6,ymax=2.6,
+      \begin{axis}[noirplot,width=6.2cm,height=4.8cm,xmin=0,xmax=1.5,ymin=-0.6,ymax=2.6,
           xlabel={$g\mu_BB/\Delta$},ylabel={$E/\Delta$},ymajorgrids]
         \addplot[noirblue,very thick,domain=0:1.5] {0};
         \only<1->{\addplot[noirrose,very thick,domain=0:1.5] {1+x};
@@ -94,14 +91,16 @@
       \end{axis}
     \end{tikzpicture}
   \end{columns}
+  \symbolstrip{$g$: electron $g$-factor ($\approx2$) \quad $\mu_B$: Bohr magneton \quad $B$: magnetic field \quad $M_S$: spin projection along $B$ \quad
+    the singlet has $M_S=0$ only, so it does not shift}
 \end{frame}
 
 \begin{frame}{Closed shell or diradical? (Figures 8 and 9)}
   \begin{columns}[c]
-    \column{0.4\textwidth}
+    \column{0.38\textwidth}
     \centering
     \includegraphics[width=0.9\linewidth]{fig08_borderline_triplet_closed_shell.png}
-    \column{0.57\textwidth}
+    \column{0.6\textwidth}
     \small
     \begin{itemize}
       \item \cgold{Fig.\ 8}: 1,3-dinitrophenyls with anionic substituents transfer an electron intramolecularly to give
@@ -113,11 +112,14 @@
       \item<3-> \cgold{singlet fission}: one excited singlet shares its excitation with a neighbour; both end in a low triplet
     \end{itemize}
   \end{columns}
+  \symbolstrip{closed shell: all electrons paired \quad diradical: two unpaired electrons \quad biradicaloid: partial diradical character \quad
+    polaron: a charge carrier with its own spin in a polymer}
 \end{frame}
 
 \begin{frame}{Protonation-induced magnetisation (Figure 9)}
   \centering
-  \includegraphics[height=0.64\textheight]{fig09_protonation_induced_magnetization.png}
+  \includegraphics[height=0.6\textheight]{fig09_protonation_induced_magnetization.png}
   \vskip0.1cm
   {\small\cmuted{descriptive part of the review: no mathematics to derive, only claims about specific molecules (not re-checked)}}
+  \symbolstrip{arrows: reactions (H$^+$ added / removed, electrons transferred) \quad dots: unpaired electrons, coloured by spin}
 \end{frame}

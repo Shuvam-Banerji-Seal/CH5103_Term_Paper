@@ -1,0 +1,11 @@
+T+1 aa           S^2=2 Ms=1: True
+T0 (ab+ba)/r2    S^2=2 Ms=0: True
+T-1 bb           S^2=2 Ms=-1: True
+S (ab-ba)/r2     S^2=0 Ms=0: True
+3Psi(+1) = v/sqrt2                           : True
+3Psi(-1) = vi/sqrt2                          : True
+3Psi(0)  = (iii+iv)/2                        : True
+1Psi_OSS = (iv-iii)/2                        : True
+paper's (iii+iv)/2 == OSS ? (expect False)   : False
+1Psi_CS(a^2) = i/sqrt2                       : True
+T1 PASS

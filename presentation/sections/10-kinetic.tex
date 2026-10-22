@@ -7,9 +7,9 @@
     the case of orthogonal atomic orbitals (AOs) to the fact that perturbation yielding ionic configuration is
     allowed only from this state, and not from the triplet.'' (p.\ 442)
   \end{paperclaim}
-  \vskip0.3cm
+  \vskip0.2cm
   \centering
-  \begin{tikzpicture}[scale=1.1]
+  \begin{tikzpicture}[scale=1.05]
     \node[circle,draw=noirgold,fill=noirpanel,minimum size=1.0cm,font=\large] (l) at (0,0) {$l$};
     \node[circle,draw=noirgold,fill=noirpanel,minimum size=1.0cm,font=\large] (r) at (4,0) {$r$};
     \onslide<2->{\draw[{Stealth[length=5pt]}-{Stealth[length=5pt]},noircyan,line width=0.9pt] (l) -- node[above,font=\small,text=noircyan]{hopping $h_{lr}=-t$} (r);}
@@ -17,15 +17,17 @@
     \onslide<4->{\node[font=\small,text=noirviolet] at (2,-0.55) {$V=\eri llrr$};}
     \onslide<5->{\node[font=\small,text=noirgreen] at (2,-1.1) {$k=\eri lrlr\ge0$};}
   \end{tikzpicture}
+  \symbolstrip{$l,r$: orthonormal orbitals localised on the left/right radical centre \quad $t$: hopping (how easily an electron moves between them)
+    \quad $U$: cost of two electrons on one site \quad $V$: repulsion between sites \quad $k$: direct exchange between the sites}
 \end{frame}
 
 \begin{frame}{Step 1: ionic configurations are pure singlets}
   \begin{columns}[c]
-    \column{0.55\textwidth}
+    \column{0.56\textwidth}
     \begin{enumerate}
       \item ionic: both electrons in one orbital, $l(1)l(2)$
-      \item<2-> that spatial part is \cgold{symmetric}
-      \item<3-> antisymmetry $\Rightarrow$ its spin part must be the \cgold{singlet} $\Theta_{0,0}$
+      \item<2-> that spatial part is \cgold{symmetric}: swapping 1 and 2 changes nothing
+      \item<3-> antisymmetry $\Rightarrow$ its spin part must be the antisymmetric \cgold{singlet} $\Theta_{0,0}$
       \item<4-> $\Hop$ is spin-free, so
             $\mel{\text{ionic}}{\Hop}{\text{triplet}}\propto\braket{\Theta_{0,0}}{\Theta_{1,M}}=0$
     \end{enumerate}
@@ -35,7 +37,7 @@
     \end{keyresult}}
     \column{0.4\textwidth}
     \centering
-    \begin{tikzpicture}[scale=1.2]
+    \begin{tikzpicture}[scale=1.15]
       \draw[level] (-0.4,0) -- (0.4,0); \draw[level] (0.9,0) -- (1.7,0);
       \elup{0}{0}\eldn{1.3}{0} \node[font=\scriptsize,text=noirmuted] at (0.65,-0.45) {covalent};
       \draw[level] (-0.4,-1.4) -- (0.4,-1.4); \draw[level] (0.9,-1.4) -- (1.7,-1.4);
@@ -43,33 +45,37 @@
       \onslide<4->{\draw[-{Stealth[length=4pt]},noircyan] (2.0,-0.1) to[bend left=40] node[right,font=\scriptsize]{$-t$} (2.0,-1.3);}
     \end{tikzpicture}
   \end{columns}
+  \symbolstrip{covalent: one electron on each site \quad ionic: both on one site \quad $\Theta_{0,0},\Theta_{1,M}$: singlet / triplet spin functions,
+    orthogonal to each other \quad $\propto$: proportional to}
 \end{frame}
 
 \begin{frame}{Step 2: the matrix}
-  insert the parameters into the $2e/2o$ Hamiltonian ($h_{ll}=h_{rr}=0$, $\eri lllr=0$):
-  {\large
-  \[
+  insert the parameters into the $2e/2o$ Hamiltonian of Part V ($h_{ll}=h_{rr}=0$, $\eri lllr=0$):
+  {\[
     E_T=V-k,\qquad
     \mathbf H_S=\begin{pmatrix}U&k&-\sqrt2t\\k&U&-\sqrt2t\\-\sqrt2t&-\sqrt2t&V+k\end{pmatrix}
     \quad(ll,\ rr,\ \text{cov})
   \]}
+  \explain{diagonal: $2h+J$ becomes $U$ for $ll$, $rr$; $h_l+h_r+J+K$ becomes $V+k$ for cov; coupling $\sqrt2(h_{lr}+\eri lllr)=-\sqrt2t$}
   \onslide<2->{\cgold{Step 3}: symmetry-adapt the ionic pair, $\Phi_{\pm}=\tfrac1{\sqrt2}(ll\pm rr)$}
-  {\large
-  \begin{align*}
-    \uncover<3->{E(\Phi_\pm)}&\uncover<3->{=U\pm k}\\
+  {\begin{align*}
+    \uncover<3->{E(\Phi_\pm)}&\uncover<3->{=U\pm k} &&\uncover<3->{\why{$\tfrac12(U+U\pm2k)$}}\\
     \uncover<4->{\mel{\Phi_\pm}{\Hop}{\text{cov}}}&\uncover<4->{=\tfrac1{\sqrt2}\bigl(-\sqrt2t\mp\sqrt2t\bigr)=\{-2t,\ \hlr<5->{0}\}}
+      &&\uncover<4->{\why{the two couplings add or cancel}}
   \end{align*}}
   \onslide<5->{\centering\small $\Phi_-$ decouples; the ground singlet lives in $\{\text{cov},\Phi_+\}$\par}
+  \symbolstrip{$ll$, $rr$: the two ionic configurations \quad cov: covalent open-shell singlet \quad $\Phi_\pm$: their symmetric and antisymmetric
+    combinations (left--right mirror symmetry)}
 \end{frame}
 
 \begin{frame}{Step 4: solve and expand}
-  {\large
   \begin{align*}
     \begin{pmatrix}V+k&-2t\\-2t&U+k\end{pmatrix}\ \Rightarrow\
-    E_S&=\tfrac12\Bigl[U+V+2k-\sqrt{(U-V)^2+16t^2}\Bigr]\\
-    \uncover<2->{E_S-E_T}&\uncover<2->{=\tfrac12(U-V)+2k-\tfrac12\sqrt{(U-V)^2+16t^2}}\\
+    E_S&=\tfrac12\Bigl[U+V+2k-\sqrt{(U-V)^2+16t^2}\Bigr] &&\why{lower root}\\
+    \uncover<2->{E_S-E_T}&\uncover<2->{=\tfrac12(U-V)+2k-\tfrac12\sqrt{(U-V)^2+16t^2}} &&\uncover<2->{\why{subtract $V-k$}}\\
     \uncover<3->{\cmuted{\sqrt{x^2+16t^2}=x+\tfrac{8t^2}{x}+\cdots}\quad}&\uncover<4->{=\hlg<5->{2k}\;\hlr<5->{-\;\frac{4t^2}{U-V}}+O\!\left(\tfrac{t^4}{(U-V)^3}\right)}
-  \end{align*}}
+      &&\uncover<4->{\why{Taylor, $x=U-V\gg t$}}
+  \end{align*}
   \onslide<5->{
   \begin{columns}[T]
     \column{0.48\textwidth}
@@ -81,13 +87,15 @@
       \crose{$-4t^2/(U-V)$}: kinetic exchange, favours the \crose{singlet}
     \end{plainpanel}
   \end{columns}}
+  \symbolstrip{kinetic exchange: second-order energy gain $|{-2t}|^2/[(V+k)-(U+k)]$ from virtual hopping into $\Phi_+$; the triplet cannot do this \quad
+    $O(\cdot)$: terms of that order and smaller}
 \end{frame}
 
 \begin{frame}{Hubbard dimer: exact versus kinetic exchange}{$V=k=0$: $E_S=\tfrac12\bigl(U-\sqrt{U^2+16t^2}\bigr)$, \ $E_T=0$}
   \begin{columns}[c]
     \column{0.55\textwidth}
     \begin{tikzpicture}
-      \begin{axis}[noirplot,width=7.2cm,height=5.2cm,xmin=0,xmax=0.5,ymin=-1.1,ymax=0.05,
+      \begin{axis}[noirplot,width=7.0cm,height=4.9cm,xmin=0,xmax=0.5,ymin=-1.1,ymax=0.05,
           xlabel={$t/U$},ylabel={$(E_S-E_T)/U$},ymajorgrids,legend pos=south west]
         \addplot[noircyan,very thick,domain=0:0.5,samples=80] {(1-sqrt(1+16*x^2))/2};
         \addlegendentry{exact}
@@ -103,45 +111,50 @@
     \end{itemize}
     \onslide<5->{\small\tick\ \cmuted{T7: symbolic + PySCF FCI ($t{=}1,U{=}6,V{=}1.5,k{=}0.2$)}}
   \end{columns}
+  \symbolstrip{Hubbard dimer: two sites, hopping $t$, on-site repulsion $U$ only \quad $J_{\text{AF}}>0$: antiferromagnetic coupling (antiparallel favoured)
+    \quad $\hat{\mathbf S}_1\cdot\hat{\mathbf S}_2=-\tfrac34$ (singlet), $+\tfrac14$ (triplet)}
 \end{frame}
 
 \begin{frame}{Ionic resonance reverses a spin state (Figure 6)}
   \begin{columns}[c]
-    \column{0.5\textwidth}
+    \column{0.48\textwidth}
     \centering
     \includegraphics[width=0.95\linewidth]{fig06_ionic_resonance_spin_reversal.png}
-    \column{0.47\textwidth}
+    \column{0.5\textwidth}
     \begin{paperclaim}
       ``In the pyridinium analog of MX (V in Figure 6) this contribution exceeds the exchange and Coulomb terms,
-      which formally favor the triplet state of this system with nondisjoint NBMOs.''
+      which formally favor the triplet state of this system with nondisjoint NBMOs.'' (p.\ 444--445)
     \end{paperclaim}
     \onslide<2->{\small low-lying zwitterionic structures = small effective $U-V$\\
       $\Rightarrow$ $4t^2/(U-V)$ grows past $2k$ \;$\Rightarrow$\; singlet}
-    \vskip0.2cm
-    \onslide<3->{\small\cmuted{(a qualitative mapping: the review gives no numbers)}}
+    \onslide<3->{\small\cmuted{(our qualitative mapping: the review gives no numbers)}}
   \end{columns}
+  \symbolstrip{``this contribution'': resonance with closed-shell zwitterionic (ionic) configurations \quad MX: $m$-xylylene \quad
+    NBMO: non-bonding MO (Part X)}
 \end{frame}
 
 \begin{frame}{Delocalised and localised: two views of one state}
-  {\large
   \[
     a,b=\tfrac1{\sqrt2}(l\pm r)\quad\Rightarrow\quad
     a(1)a(2)-b(1)b(2)=l(1)r(2)+r(1)l(2)
-  \]}
-  \vskip0.2cm
+  \]
+  \explain{expand: $\tfrac12[(l+r)(l+r)-(l-r)(l-r)]$; the $ll$ and $rr$ (ionic) terms cancel, the cross terms add}
+  \vskip0.1cm
   \begin{columns}[c]
     \column{0.48\textwidth}
     \begin{plainpanel}
-      \centering\cgold{delocalised view}\\[2pt]
-      two closed-shell configurations of equal weight: ``static correlation''
+      \centering\cgold{delocalised orbitals $a,b$}\\[2pt]
+      two closed-shell configurations of equal weight: static correlation
     \end{plainpanel}
     \column{0.48\textwidth}
     \onslide<2->{
     \begin{plainpanel}
-      \centering\cgold{localised view}\\[2pt]
-      one covalent configuration, no ionic part: ``no ionic character''
+      \centering\cgold{localised orbitals $l,r$}\\[2pt]
+      one covalent configuration with no ionic part
     \end{plainpanel}}
   \end{columns}
-  \vskip0.3cm
-  \onslide<3->{\centering\small same physics, different bookkeeping; the paper's two pictures are compatible\par}
+  \vskip0.2cm
+  \onslide<3->{\centering\small same state, different bookkeeping: the static-correlation and kinetic-exchange descriptions agree\par}
+  \symbolstrip{$a,b$: delocalised (bonding/antibonding-like) orbitals \quad $l,r$: localised site orbitals \quad
+    the unitary rotation between them leaves the two-electron state unchanged}
 \end{frame}

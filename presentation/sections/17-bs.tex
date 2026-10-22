@@ -4,36 +4,41 @@
 \begin{frame}{Cheap methods for diradicals}
   \begin{paperclaim}
     ``relatively `cheap' methods such as unrestricted or broken symmetry formalisms suffer from a number of serious
-    drawbacks, while rigorous methods \dots\ are generally not feasible for systems large enough to be practically
-    valuable.'' (p.\ 443)
+    drawbacks'' (p.\ 443); rigorous methods are too costly for large systems
   \end{paperclaim}
   \begin{columns}[c]
     \column{0.55\textwidth}
-    broken-symmetry (BS) determinant $\ket{a'\bar b'}$, \ $a'$ on centre $l$, $b'$ on $r$, overlap $s=\braket{a'}{b'}$
-    {\large
+    BS determinant $\ket{a'\bar b'}$: $a'$ on $l$, $b'$ on $r$, $s=\braket{a'}{b'}$
     \begin{align*}
       \uncover<2->{\ev{\hat S^2}_{\text{UHF}}}&\uncover<2->{=S_z(S_z+1)+N_\beta-\textstyle\sum_{i\alpha,j\beta}|\braket ij|^2}\\
       \uncover<3->{\ev{\hat S^2}_{\text{BS}}}&\uncover<3->{=0+1-s^2}
-    \end{align*}}
+    \end{align*}
+    \explain<3->{exact for a determinant; BS: $S_z=0$, $N_\beta=1$, one overlap $s$}
     \column{0.4\textwidth}
-    \onslide<4->{\small $s=1$: closed shell, $\ev{\hat S^2}=0$\\ $s=0$: half singlet, half triplet, $\ev{\hat S^2}=1$}\\[4pt]
-    \onslide<5->{\cgold{a single determinant cannot be the open-shell singlet} (Part III)}
+    \onslide<4->{\small $s=1$: closed shell, $\ev{\hat S^2}=0$\\ $s=0$: half singlet, half triplet, $\ev{\hat S^2}=1$\par}
+    \onslide<5->{\small\cgold{a single determinant cannot be the open-shell singlet} (Part III)}
   \end{columns}
+  \symbolstrip{BS: broken symmetry, $\alpha$ and $\beta$ electrons in different spatial orbitals \quad $\bar b'$: $b'$ with $\beta$ spin
+    \quad $S_z$: total $M_S$ \quad $N_\beta$: number of $\beta$ electrons}
 \end{frame}
 
 \begin{frame}{Yamaguchi's projection, derived}
   \begin{assume}
     two-centre Heisenberg model $\hat H=-2J\,\hat{\mathbf S}_1\!\cdot\!\hat{\mathbf S}_2$; BS state $=c_S\Psi_S+c_T\Psi_T$ ($M_S=0$)
   \end{assume}
-  {\large
   \begin{align*}
     \stepno{1}\ \hat{\mathbf S}_1\!\cdot\!\hat{\mathbf S}_2&=\tfrac12\bigl[S(S+1)-\tfrac32\bigr]
-      \ \Rightarrow\ E_T=-\tfrac J2,\ E_S=\tfrac{3J}2,\ E_S-E_T=2J\\
-    \uncover<2->{\stepno{2}\ \ev{\hat S^2}_{\text{BS}}}&\uncover<2->{=2|c_T|^2,\qquad E_{\text{BS}}=|c_S|^2E_S+|c_T|^2E_T}\\
-    \uncover<3->{\stepno{3}\ E_{\text{BS}}-E_T}&\uncover<3->{=|c_S|^2(E_S-E_T)=\bigl(1-\tfrac12\ev{\hat S^2}_{\text{BS}}\bigr)2J}\\
-    \uncover<4->{\stepno{4}\ J}&\uncover<4->{=\dfrac{E_{\text{BS}}-E_{\text{HS}}}{\ev{\hat S^2}_{\text{HS}}-\ev{\hat S^2}_{\text{BS}}}\qquad(\ev{\hat S^2}_{\text{HS}}=2)}
-  \end{align*}}
+      \ \Rightarrow\ E_T=-\tfrac J2,\ E_S=\tfrac{3J}2 &&\why{$\hat S^2=\hat S_1^2+\hat S_2^2+2\hat{\mathbf S}_1\!\cdot\!\hat{\mathbf S}_2$, $\hat S_i^2=\tfrac34$}\\
+    \uncover<2->{\stepno{2}\ \ev{\hat S^2}_{\text{BS}}}&\uncover<2->{=2|c_T|^2,\qquad E_{\text{BS}}=|c_S|^2E_S+|c_T|^2E_T}
+      &&\uncover<2->{\why{$S^2$: 0 and 2; no cross terms}}\\
+    \uncover<3->{\stepno{3}\ E_{\text{BS}}-E_T}&\uncover<3->{=|c_S|^2(E_S-E_T)=\bigl(1-\tfrac12\ev{\hat S^2}_{\text{BS}}\bigr)2J}
+      &&\uncover<3->{\why{$|c_T|^2=1-|c_S|^2$; $E_S-E_T=2J$}}\\
+    \uncover<4->{\stepno{4}\ J}&\uncover<4->{=\dfrac{E_{\text{BS}}-E_{\text{HS}}}{\ev{\hat S^2}_{\text{HS}}-\ev{\hat S^2}_{\text{BS}}}}
+      &&\uncover<4->{\why{solve for $J$; HS $=$ triplet, $\ev{\hat S^2}_{\text{HS}}=2$}}
+  \end{align*}
   \onslide<5->{\centering\small\cmuted{Lean: \texttt{yamaguchi}; sign conventions differ between sources, here $J<0$ is antiferromagnetic}\par}
+  \symbolstrip{Heisenberg model: spins only, coupling $J$ \quad $\hat{\mathbf S}_1,\hat{\mathbf S}_2$: spin-$\tfrac12$ operators of the two centres \quad
+    $c_S,c_T$: amplitudes, $|c_S|^2+|c_T|^2=1$ \quad HS: high-spin determinant (an exact triplet)}
 \end{frame}
 
 \begin{frame}{How good is it? The Hubbard dimer}{T14: self-consistent BS-UHF vs the exact singlet--triplet gap}
@@ -56,4 +61,6 @@
     \end{itemize}
     \onslide<5->{\okpill\ \small ``serious drawbacks'' is fair}
   \end{columns}
+  \symbolstrip{$U$: on-site repulsion \quad $t$: hopping \quad exact $J=\tfrac12(E_S-E_T)$ from the Hubbard dimer (Part VI) \quad
+    weakly coupled: large $U/t$, electrons localised on their centres \quad covalent: small $U/t$, a real bond}
 \end{frame}

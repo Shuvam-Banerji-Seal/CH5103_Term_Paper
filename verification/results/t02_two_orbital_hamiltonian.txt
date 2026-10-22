@@ -1,0 +1,12 @@
+trial 0: singlet eigvals match True, triplet match True, <OSS|H|OSS>-E_T=2K True, K>=0 True
+trial 1: singlet eigvals match True, triplet match True, <OSS|H|OSS>-E_T=2K True, K>=0 True
+trial 2: singlet eigvals match True, triplet match True, <OSS|H|OSS>-E_T=2K True, K>=0 True
+trial 3: singlet eigvals match True, triplet match True, <OSS|H|OSS>-E_T=2K True, K>=0 True
+trial 4: singlet eigvals match True, triplet match True, <OSS|H|OSS>-E_T=2K True, K>=0 True
+Koopmans/UHF orbital-energy relations trial 0: True
+  cation OSS(diag) - T = 2K_hs: True
+Koopmans/UHF orbital-energy relations trial 1: True
+  cation OSS(diag) - T = 2K_hs: True
+Koopmans/UHF orbital-energy relations trial 2: True
+  cation OSS(diag) - T = 2K_hs: True
+T2 PASS

@@ -3,38 +3,41 @@
 
 \begin{frame}{Where can the two electrons be?}{the pair density}
   \begin{columns}[c]
-    \column{0.5\textwidth}
-    {\small $P(\mathbf r_1,\mathbf r_2)=N(N-1)\sum_{\sigma_1\sigma_2}\int|\Psi|^2\,\dd x_3\cdots\dd x_N$}\par\smallskip
-    \onslide<2->{two electrons, spin integrated:}
+    \column{0.52\textwidth}
+    {\small $P(\mathbf r_1,\mathbf r_2)=N(N-1)\sum_{\sigma_1\sigma_2}\int|\Psi|^2\,\dd x_3\cdots\dd x_N$}\par
+    \explain{probability density for ``one electron at $\mathbf r_1$ and another at $\mathbf r_2$''}
+    \onslide<2->{two electrons, spin summed:}
     {\begin{align*}
       \uncover<2->{P_T}&\uncover<2->{=\bigl[\pa(1)\pb(2)-\pb(1)\pa(2)\bigr]^2}\\
       \uncover<3->{P_{\OSS}}&\uncover<3->{=\bigl[\pa(1)\pb(2)+\pb(1)\pa(2)\bigr]^2}
     \end{align*}}
-    \onslide<4->{set $\mathbf r_1=\mathbf r_2=\mathbf r$:
-    \[
-      P_T(\mathbf r,\mathbf r)=\hlr<5->{0},\qquad P_{\OSS}(\mathbf r,\mathbf r)=4\pa^2\pb^2
-    \]}
-    \column{0.45\textwidth}
+    \explain<2->{$N(N-1)=2$ cancels the $(\tfrac1{\sqrt2})^2$; the spin sum gives $\sum|\Theta|^2=1$}
+    \onslide<4->{set $\mathbf r_1=\mathbf r_2=\mathbf r$:\quad
+      $P_T(\mathbf r,\mathbf r)=\hlr<5->{0}$,\quad $P_{\OSS}(\mathbf r,\mathbf r)=4\pa^2\pb^2$\par}
+    \column{0.44\textwidth}
     \onslide<5->{
     \begin{keyresult}[Fermi hole]
-      same-spin electrons are \emph{never} at the same point, exactly; no approximation beyond the form of $\Psi$
+      in the triplet the two electrons are \emph{never} at the same point, for every $M_S$; exact, no approximation beyond the form of $\Psi$
     \end{keyresult}}
-    \onslide<6->{\small\cmuted{The \emph{Coulomb} hole (from $1/r_{12}$ itself) is absent here: it needs configuration mixing, i.e.\ correlation.}}
+    \onslide<6->{\small\cmuted{The \emph{Coulomb} hole (caused by $1/r_{12}$ itself) is absent here: it needs correlation beyond one
+      configuration (dynamic correlation, review p.\ 442).}}
   \end{columns}
+  \symbolstrip{$x_k=(\mathbf r_k,\sigma_k)$ \quad $\int\dd x$: integrate over position, sum over spin \quad
+    $P_T$: pair density of the triplet; $P_{\OSS}$: of the open-shell singlet \quad $[A-B]^2$ vanishes when $\mathbf r_1=\mathbf r_2$ because then $A=B$}
 \end{frame}
 
 \begin{frame}{Seeing the Fermi hole}{two electrons in a 1-D box, orbitals $\sin\pi x$ and $\sin2\pi x$}
   \centering
   \pgfplotsset{colormap={noirmap}{rgb255(0cm)=(0,0,0); rgb255(1cm)=(30,60,110); rgb255(2cm)=(95,212,208); rgb255(3cm)=(233,185,91); rgb255(4cm)=(255,255,255)}}
   \begin{tikzpicture}
-    \begin{axis}[noirplot,name=trip,width=5.5cm,height=5.5cm,view={0}{90},colormap name=noirmap,
+    \begin{axis}[noirplot,name=trip,width=4.95cm,height=4.95cm,view={0}{90},colormap name=noirmap,
         xlabel={$x_1$},ylabel={$x_2$},domain=0:1,y domain=0:1,samples=46,title={\crose{triplet} $P_T(x_1,x_2)$},
         xtick={0,0.5,1},ytick={0,0.5,1},enlargelimits=false]
       \addplot3[surf,shader=interp] {4*(sin(deg(pi*x))*sin(deg(2*pi*y)) - sin(deg(2*pi*x))*sin(deg(pi*y)))^2};
       \draw[noirrose,dashed,line width=0.8pt] (axis cs:0,0) -- (axis cs:1,1);
     \end{axis}
     \onslide<2->{
-    \begin{axis}[noirplot,at={(trip.east)},anchor=west,xshift=1.4cm,width=5.5cm,height=5.5cm,view={0}{90},colormap name=noirmap,
+    \begin{axis}[noirplot,at={(trip.east)},anchor=west,xshift=1.4cm,width=4.95cm,height=4.95cm,view={0}{90},colormap name=noirmap,
         xlabel={$x_1$},domain=0:1,y domain=0:1,samples=46,title={\cblue{singlet} $P_{\OSS}(x_1,x_2)$},
         xtick={0,0.5,1},ytick={0,0.5,1},enlargelimits=false]
       \addplot3[surf,shader=interp] {4*(sin(deg(pi*x))*sin(deg(2*pi*y)) + sin(deg(2*pi*x))*sin(deg(pi*y)))^2};
@@ -43,34 +46,40 @@
   \end{tikzpicture}
   \vskip-0.1cm
   {\small dashed line $x_1=x_2$: \crose{dark all along for the triplet}\onslide<2->{, bright for the singlet}}
+  \symbolstrip{box orbitals $\pa=\sqrt2\sin\pi x$, $\pb=\sqrt2\sin2\pi x$ on $0\le x\le1$ (normalised; prefactor $(\sqrt2)^4=4$) \quad
+    colour $=$ probability density of finding electron 1 at $x_1$ and electron 2 at $x_2$ (black 0, white high)}
 \end{frame}
 
 \begin{frame}{$K_{ab}\ge0$: a three-line proof}
   overlap density \ $\rho(\mathbf r)=\pa(\mathbf r)\pb(\mathbf r)$ \ (real) \quad$\Rightarrow$\quad
   $K_{ab}=\displaystyle\iint\frac{\rho(1)\rho(2)}{r_{12}}$
-  {\large
-  \begin{align*}
+  {\begin{align*}
     \stepno{1}\ \frac1{|\mathbf r|}&=\int\frac{\dd^3k}{(2\pi)^3}\,\frac{4\pi}{k^2}\,e^{i\mathbf k\cdot\mathbf r}
-      &&\cmuted{\text{Fourier form of Coulomb}}\\
+      &&\why{$1/r$ as a sum of plane waves, all with positive weight $4\pi/k^2$}\\
     \uncover<2->{\stepno{2}\ K_{ab}}&\uncover<2->{=\int\frac{\dd^3k}{(2\pi)^3}\frac{4\pi}{k^2}
       \underbrace{\Bigl(\int\rho\,e^{i\mathbf k\cdot\mathbf r_1}\Bigr)}_{\tilde\rho(\mathbf k)^*}
-      \underbrace{\Bigl(\int\rho\,e^{-i\mathbf k\cdot\mathbf r_2}\Bigr)}_{\tilde\rho(\mathbf k)}}\\
+      \underbrace{\Bigl(\int\rho\,e^{-i\mathbf k\cdot\mathbf r_2}\Bigr)}_{\tilde\rho(\mathbf k)}}
+      &&\uncover<2->{\why{insert with $\mathbf r=\mathbf r_1-\mathbf r_2$; integrals separate}}\\
     \uncover<3->{\stepno{3}\ }&\uncover<3->{=\int\frac{\dd^3k}{(2\pi)^3}\,\frac{4\pi}{k^2}\,|\tilde\rho(\mathbf k)|^2\ \hlg<4->{\ge0}}
+      &&\uncover<3->{\why{$\rho$ real $\Rightarrow$ the two factors are complex conjugates}}
   \end{align*}}
-  \onslide<5->{\centering\small equality iff $\pa\pb\equiv0$ \ (no common region of space) \ --- this returns as \emph{disjointness}\par}
+  \explain<4->{a positive weight times a square, integrated: it can never be negative}
+  \onslide<5->{\centering\small equality iff $\pa\pb\equiv0$ \ (no common region of space): this returns as \emph{disjointness}\par}
+  \symbolstrip{$\rho=\pa\pb$: overlap density (integrates to 0, but is not zero pointwise) \quad $\mathbf k$: wave vector, $k=|\mathbf k|$ \quad
+    $\tilde\rho(\mathbf k)=\int\rho(\mathbf r)e^{-i\mathbf k\cdot\mathbf r}\dd\mathbf r$: Fourier transform \quad $|z|^2=z^*z$}
 \end{frame}
 
 \begin{frame}{$J_{ab}\ge K_{ab}$}
   \begin{columns}[c]
     \column{0.6\textwidth}
-    {\large
-    \begin{align*}
-      \stepno{1}\ f&=\pa(1)\pb(2)-\pb(1)\pa(2)\\
-      \uncover<2->{\stepno{2}\ 0}&\uncover<2->{\le\iint\frac{f^2}{r_{12}}}\\
-      &\uncover<3->{=J_{ab}+J_{ab}-K_{ab}-K_{ab}}\\
+    {\begin{align*}
+      \stepno{1}\ f&=\pa(1)\pb(2)-\pb(1)\pa(2) &&\why{$=A-B$}\\
+      \uncover<2->{\stepno{2}\ 0}&\uncover<2->{\le\iint\frac{f^2}{r_{12}}} &&\uncover<2->{\why{$f^2\ge0$ and $1/r_{12}>0$}}\\
+      &\uncover<3->{=J_{ab}+J_{ab}-K_{ab}-K_{ab}} &&\uncover<3->{\why{$f^2=A^2+B^2-2AB$}}\\
       &\uncover<4->{=2(J_{ab}-K_{ab})}
     \end{align*}}
     \onslide<5->{\[\boxed{\,J_{ab}\ge K_{ab}\ge0\,}\]}
+    \explain<5->{so the triplet's repulsion $J-K$ is never negative, and lies below the singlet's $J+K$}
     \column{0.36\textwidth}
     \onslide<6->{
     \begin{checked}[T3]
@@ -78,4 +87,6 @@
     \end{checked}}
     \onslide<7->{\small so $E_T=h_a+h_b+J-K$ really is the lower of the two.}
   \end{columns}
+  \symbolstrip{$\iint A^2/r_{12}=\iint B^2/r_{12}=J_{ab}$ and $\iint AB/r_{12}=K_{ab}$ (the same integrals as in Part V) \quad
+    RHF/6-31G: Hartree--Fock orbitals in a standard Gaussian basis}
 \end{frame}

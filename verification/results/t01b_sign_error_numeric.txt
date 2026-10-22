@@ -1,0 +1,6 @@
+paper:   (1/2)(|iii| + |iv|)               <S^2> = +2.000000000000  eigen-residual = 4.5e-16  antisymmetric = True  -> TRIPLET (S=1)
+correct: (1/2)(|iv| - |iii|)               <S^2> = +0.000000000000  eigen-residual = 0.0e+00  antisymmetric = True  -> SINGLET (S=0)
+|iii| alone                                <S^2> = +1.000000000000  eigen-residual = 1.0e+00  antisymmetric = True  -> mixed, <S2>=1.000
+paper's product form (line 1)              <S^2> = +0.000000000000  eigen-residual = 0.0e+00  antisymmetric = True  -> SINGLET (S=0)
+product form == (1/2)(|iv| - |iii|): True;  == (1/2)(|iii| + |iv|): False
+T1b PASS: the printed '+' combination is the M_S = 0 triplet

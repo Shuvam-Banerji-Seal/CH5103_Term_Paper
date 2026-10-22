@@ -1,0 +1,26 @@
+T6: E_S root True; E_S-E_T = J_d - J_x + K - sqrt(Delta**2 + K**2); c2/c1 = (Delta - sqrt(Delta**2 + K**2))/K; Delta->0: -1; Delta->inf: 0
+T7 analytic: E_S-E_T = U/2 - V/2 + 2*k - sqrt(16*t**2 + (U - V)**2)/2; Hubbard (V=k=0) series: -4*t**2/U
+T7: eig match True, -4t^2/U leading term True, FCI(ext. Hubbard) match True, ED engine True
+T8 Hückel (beta = -1 units: A = adjacency, E = alpha + x beta)
+  CBD (square)           N=4 nA/nB=2/2 #NBMO=2 N-2T=0 |nA-nB|=0 pairing=True zero-sum=True min_theta sum a^2 b^2 = 2.08e-09 -> DISJOINT
+  TMM                    N=4 nA/nB=1/3 #NBMO=2 N-2T=2 |nA-nB|=2 pairing=True zero-sum=True min_theta sum a^2 b^2 = 1.67e-01 -> non-disjoint
+  TME                    N=6 nA/nB=3/3 #NBMO=2 N-2T=2 |nA-nB|=0 pairing=True zero-sum=True min_theta sum a^2 b^2 = 1.36e-33 -> DISJOINT
+  MX (m-xylylene)        N=8 nA/nB=3/5 #NBMO=2 N-2T=2 |nA-nB|=2 pairing=True zero-sum=True min_theta sum a^2 b^2 = 6.25e-02 -> non-disjoint
+  TriMB                  N=9 nA/nB=3/6 #NBMO=3 N-2T=3 |nA-nB|=3 pairing=True zero-sum=True
+  TetraMB (1,2,4,5)      N=10 nA/nB=5/5 #NBMO=2 N-2T=2 |nA-nB|=0 pairing=True zero-sum=True min_theta sum a^2 b^2 = 1.87e-11 -> DISJOINT
+  p-xylylene (Kekule)    N=8 nA/nB=4/4 #NBMO=0 N-2T=0 |nA-nB|=0 pairing=True zero-sum=True
+T9 Hubbard ED (t=1, U=3): ground-state S vs Ovchinnikov S=|nA-nB|/2
+  CBD (square)           S_gs=0.0 S_Ovch=0.0 gap to S+1 = 0.2329 t  match=True
+  TMM                    S_gs=1.0 S_Ovch=1.0 gap to S+1 = 1.9380 t  match=True
+  TME                    S_gs=0.0 S_Ovch=0.0 gap to S+1 = 0.0511 t  match=True
+  MX (m-xylylene)        S_gs=1.0 S_Ovch=1.0 gap to S+1 = 1.2470 t  match=True
+  TriMB                  S_gs=1.5 S_Ovch=1.5 gap to S+1 = 1.5716 t  match=True
+  TetraMB (1,2,4,5)      S_gs=0.0 S_Ovch=0.0 gap to S+1 = 0.0735 t  match=True
+  p-xylylene (Kekule)    S_gs=0.0 S_Ovch=0.0 gap to S+1 = 0.2822 t  match=True
+  pentadienyl spin densities U=0: [ 0.3333 -0.      0.3333 -0.      0.3333]; U=3t: [ 0.4512 -0.1823  0.4621 -0.1823  0.4512]; sum=1.0000; alternating True
+T14 Yamaguchi projection, H = -2J S1.S2 convention, J_exact = (E_S - E_T)/2
+  U/t=  3.0: E_BS=-0.66667 <S2>_BS=0.5556 J_Yam=-0.46154 J_exact=-0.50000 rel.err=-0.077
+  U/t=  6.0: E_BS=-0.33333 <S2>_BS=0.8889 J_Yam=-0.30000 J_exact=-0.30278 rel.err=-0.009
+  U/t= 12.0: E_BS=-0.16667 <S2>_BS=0.9722 J_Yam=-0.16216 J_exact=-0.16228 rel.err=-0.001
+  U/t= 24.0: E_BS=-0.08333 <S2>_BS=0.9931 J_Yam=-0.08276 J_exact=-0.08276 rel.err=-0.000
+T6-T9,T14 PASS

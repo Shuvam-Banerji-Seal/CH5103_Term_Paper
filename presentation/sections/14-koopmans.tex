@@ -11,46 +11,55 @@
   \onslide<2->{\centering three steps: \cgold{Koopmans' theorem} \;$\to$\; \cgold{Janak's theorem} \;$\to$\; \cgold{the gap}\par}
   \vskip0.2cm
   \onslide<3->{\centering\small\cmuted{(which difference, which sign? the review does not say; the derivation will)}\par}
+  \symbolstrip{STG: $E_S-E_T$ \quad HOMO: highest occupied molecular orbital \quad Koopmans: orbital energy $\approx$ minus the ionisation
+    energy (Hartree--Fock) \quad Janak: orbital energy $=$ slope of $E$ with occupation (DFT) \quad ``\dots'' omits ``in excited state DFT for multiplets''}
 \end{frame}
 
 \begin{frame}{Koopmans' theorem}
   \begin{assume}
     single determinant of spin orbitals $\chi_i$; remove $\chi_k$ \emph{without} relaxing the others
   \end{assume}
-  {\large
-  \begin{align*}
-    E_N&=\textstyle\sum_i\langle i|\hat h|i\rangle+\tfrac12\sum_{i,j}\bigl([ii|jj]-[ij|ji]\bigr)\\
-    \uncover<2->{E_N-E_{N-1}^{(k)}}&\uncover<2->{=\langle k|\hat h|k\rangle+\tfrac12\textstyle\sum_j(\ldots)_{kj}+\tfrac12\sum_i(\ldots)_{ik}}\\
-    &\uncover<3->{=\langle k|\hat h|k\rangle+\textstyle\sum_j\bigl([kk|jj]-[kj|jk]\bigr)}\uncover<3->{\ \ \cmuted{(\text{the }j=k\text{ term is }0)}}\\
-    &\uncover<4->{=\varepsilon_k}
+  {\begin{align*}
+    E_N&=\textstyle\sum_i\langle i|\hat h|i\rangle+\tfrac12\sum_{i,j}\bigl([ii|jj]-[ij|ji]\bigr) &&\why{Slater--Condon rules}\\
+    \uncover<2->{E_N-E_{N-1}^{(k)}}&\uncover<2->{=\langle k|\hat h|k\rangle+\tfrac12\textstyle\sum_j(\ldots)_{kj}+\tfrac12\sum_i(\ldots)_{ik}}
+      &&\uncover<2->{\why{keep only terms containing $k$}}\\
+    &\uncover<3->{=\langle k|\hat h|k\rangle+\textstyle\sum_j\bigl([kk|jj]-[kj|jk]\bigr)} &&\uncover<3->{\why{halves equal, $[ab|cd]=[cd|ab]$; $j{=}k$ cancels}}\\
+    &\uncover<4->{=\varepsilon_k} &&\uncover<4->{\why{definition of the Fock eigenvalue}}
   \end{align*}}
   \onslide<5->{\centering\large $\mathrm{IP}_k=E_{N-1}^{(k)}-E_N=-\varepsilon_k$ \quad\small\cmuted{(frozen orbitals)}\par}
+  \symbolstrip{$\chi_i$: spin orbital (space $\times$ spin) \quad $\hat h$: kinetic $+$ nuclear attraction \quad
+    $[ij|kl]=\iint\chi_i^*(1)\chi_j(1)\,r_{12}^{-1}\,\chi_k^*(2)\chi_l(2)$ \quad $[ii|jj]$: Coulomb, $[ij|ji]$: exchange (zero unless same spin) \quad
+    $\varepsilon_k$: orbital energy \quad IP: ionisation potential}
 \end{frame}
 
 \begin{frame}{Janak's theorem}
   \begin{assume}[Kohn--Sham with fractional occupations $n_i$]
     $E=\sum_in_i\langle\psi_i|-\tfrac12\nabla^2|\psi_i\rangle+\int v\rho+E_H[\rho]+E_{xc}[\rho]$, \quad $\rho=\sum_in_i|\psi_i|^2$
   \end{assume}
-  {\large
-  \begin{align*}
-    \frac{\partial E}{\partial n_i}\bigg|_{\text{explicit}}&=\langle\psi_i|-\tfrac12\nabla^2+v+v_H+v_{xc}|\psi_i\rangle=\varepsilon_i\\
+  {\begin{align*}
+    \frac{\partial E}{\partial n_i}\bigg|_{\text{explicit}}&=\langle\psi_i|-\tfrac12\nabla^2+v+v_H+v_{xc}|\psi_i\rangle=\varepsilon_i
+      &&\why{$n_i$ enters $\rho$ linearly; chain rule}\\
     \uncover<2->{\frac{\partial E}{\partial n_i}\bigg|_{\text{via }\psi_j}}&\uncover<2->{=\textstyle\sum_jn_j\varepsilon_j\,
       \partial_{n_i}\langle\psi_j|\psi_j\rangle=\hlg<3->{0}}
+      &&\uncover<2->{\why{$\delta E/\delta\psi_j^*=n_j\varepsilon_j\psi_j$; norms stay 1}}
   \end{align*}}
   \onslide<3->{\centering $\boxed{\partial E/\partial n_i=\varepsilon_i}$ \ for any $E_{xc}$ \quad\small\cmuted{(Janak, Phys.\ Rev.\ B 18, 7165, 1978)}\par}
+  \explain<3->{integer occupations and frozen orbitals turn this slope into a finite difference: Koopmans' theorem again}
+  \symbolstrip{$n_i\in[0,1]$: occupation \quad $\psi_i$: Kohn--Sham orbital \quad $v$: nuclear potential \quad $E_H$, $v_H=\delta E_H/\delta\rho$: Hartree
+    (classical) repulsion \quad $E_{xc}$, $v_{xc}$: exchange--correlation \quad $\rho$: electron density}
 \end{frame}
 
-\begin{frame}{The gap as a HOMO difference}
-  define each state's ``HOMO energy'' as minus the cost of removing the $\pb$ electron, $\pa$ frozen; \ ion: $E_{\text{ion}}=h_a$
-  {\large
-  \begin{align*}
-    \uncover<2->{\varepsilon_b^{T}}&\uncover<2->{=E_T-E_{\text{ion}}=h_b+J_{ab}-K_{ab}}\\
-    \uncover<3->{\varepsilon_b^{\OSS}}&\uncover<3->{=E_{\OSS}-E_{\text{ion}}=h_b+J_{ab}+K_{ab}}\\
-    \uncover<4->{E_{\OSS}-E_T}&\uncover<4->{=\varepsilon^{\OSS}_{\text{HOMO}}-\varepsilon^{T}_{\text{HOMO}}=2K_{ab}}
+\begin{frame}{The gap as a HOMO difference}{HOMO energy of a state $:=$ minus the cost of removing its $\pb$ electron, $\pa$ frozen; \ ion: $E_{\text{ion}}=h_a$}
+  {\begin{align*}
+    \uncover<2->{\varepsilon_b^{T}}&\uncover<2->{=E_T-E_{\text{ion}}=h_b+J_{ab}-K_{ab}} &&\uncover<2->{\why{$E_T=h_a+h_b+J-K$ (Part V)}}\\
+    \uncover<3->{\varepsilon_b^{\OSS}}&\uncover<3->{=E_{\OSS}-E_{\text{ion}}=h_b+J_{ab}+K_{ab}} &&\uncover<3->{\why{$E_{\OSS}=h_a+h_b+J+K$}}\\
+    \uncover<4->{E_{\OSS}-E_T}&\uncover<4->{=\varepsilon^{\OSS}_{\text{HOMO}}-\varepsilon^{T}_{\text{HOMO}}=2K_{ab}} &&\uncover<4->{\why{$E_{\text{ion}}$ cancels}}
   \end{align*}}
   \onslide<5->{
   \begin{keyresult}
-    true at frozen orbitals; the triplet's HOMO is lower (more bound, ``harder'') by $2K$.
-    Like Slater's argument it has no relaxation and no dynamic correlation, as the review notes.\hfill\okpill
+    frozen orbitals: the triplet's HOMO is lower (``harder'') by $2K$, cf.\ Pearson. Review's caveat (ref.\ 20):
+    ``lacks dynamic electron correlation''; relaxation is missing too.\hfill\okpill
   \end{keyresult}}
+  \symbolstrip{$h_a,h_b$: one-electron energies \quad $J_{ab}$: Coulomb, $K_{ab}\ge0$: exchange integral \quad
+    ion: one electron left, in $\pa$ \quad hardness: resistance to losing an electron}
 \end{frame}

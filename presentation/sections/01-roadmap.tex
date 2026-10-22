@@ -24,7 +24,7 @@
       \draw[path] (\x) -- (\y);
   \end{tikzpicture}
   \vskip0.3cm
-  {\small\cmuted{Every equation is derived step by step; every step was checked by SymPy, PySCF or Lean.}}
+  {\small\cmuted{Every equation is derived step by step; every identity used was checked by SymPy, PySCF or Lean.}}
 \end{frame}
 
 \begin{frame}{How to read these slides}
@@ -49,6 +49,9 @@
     \vskip0.2cm
     \centering
     \okpill\ \badpill\ \warnpill\ \partpill
+    \vskip0.2cm
+    \raggedright\small $E=h+J$ \quad \why{blue italic: why this step follows}\\[2pt]
+    \small a \textcolor{noirgold}{\noirgaramond\scshape symbols} strip at the foot of a slide defines its notation
   \end{columns}
   \vskip0.25cm
   \centering{\small Atomic units throughout: $\hbar=m_e=e=4\pi\varepsilon_0=1$, energies in hartree ($\Eh$).}

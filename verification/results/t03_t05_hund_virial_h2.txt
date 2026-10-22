@@ -1,0 +1,12 @@
+T3 water/6-31G MOs: min K_pq = 1.112e-03; all J_pq >= K_pq: True -> True
+He 2^3S: eta*=0.99032 E=-2.175212 (exact -2.175229, err 1.7e-05) <T>=2.175212 <Vne>=-4.618633 <Vee>=0.268208 -V/T=2.000000
+He 2^1S: eta*=0.94484 E=-2.145865 (exact -2.145974, err 1.1e-04) <T>=2.145865 <Vne>=-4.541465 <Vee>=0.249735 -V/T=2.000000
+Delta(T - S): dE=-0.029347 dT=0.029347 dVne=-0.077168 dVee=0.018473  check dE = -dT = (dVne+dVee)/2: -0.029347, -0.029347
+T4 less-screening pattern (dE<0, dVee>0, dVne<0, |dVne|>dVee, virial ok): True
+H atom STO-3G: -0.466582  -> 2E(H) = -0.933164
+R=  1.4: RHF=-1.116714 CI=FCI=-1.137276 T=-0.531808 OSS(1Su+)=-0.169292 J11=0.6746 J22=0.6975 J12=0.6636 K12=0.1813 analytic==pyscf True
+R=  3.0: RHF=-0.885275 CI=FCI=-0.985157 T=-0.900675 OSS(1Su+)=-0.430440 J11=0.5432 J22=0.5734 J12=0.5512 K12=0.2351 analytic==pyscf True
+R=  6.0: RHF=-0.645077 CI=FCI=-0.933402 T=-0.933052 OSS(1Su+)=-0.325013 J11=0.4675 J22=0.4740 J12=0.4706 K12=0.3040 analytic==pyscf True
+R= 20.0: RHF=-0.570861 CI=FCI=-0.933164 T=-0.933164 OSS(1Su+)=-0.208558 J11=0.4123 J22=0.4123 J12=0.4123 K12=0.3623 analytic==pyscf True
+R->inf: CI and T -> 2E(H) ; RHF error = 0.3623 Eh : True
+T3-T5 PASS
