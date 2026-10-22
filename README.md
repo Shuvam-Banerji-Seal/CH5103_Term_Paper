@@ -15,9 +15,13 @@ ordering). This repository contains:
 - **machine-checked Lean 4 / Mathlib proofs** of the algebraic identities;
 - the review's **figures and formulae as reusable assets**.
 
+**Website:** <https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/> has an overview, the findings, the test
+matrix, the figure gallery and an [in-browser slide viewer](https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/slides.html).
+
 **Verdict:** see [`docs/FINDINGS.md`](docs/FINDINGS.md). In short, the theory is sound wherever it
-could be tested. One sign error and one citation error were found, plus some overstated claims. The
-distonic-radical pH switch is reproduced with CAM-B3LYP (both test systems) but not with B3LYP.
+could be tested. One sign error (confirmed three independent ways) and one citation error were found,
+plus some overstated or imprecise claims. The distonic-radical pH switch is reproduced with CAM-B3LYP
+(both test systems) but not with B3LYP.
 
 ## Contents
 
@@ -25,15 +29,16 @@ distonic-radical pH switch is reproduced with CAM-B3LYP (both test systems) but 
 |---|---|
 | [`paper/`](paper) | The review (open access, CC BY-NC-ND; redistributed unmodified) |
 | [`derivations/`](derivations) | LaTeX derivations: 18 sections ([`derivations.pdf`](derivations/derivations.pdf)) |
-| [`presentation/`](presentation) | Beamer deck, 134 frames ([`ch5103-presentation.pdf`](presentation/ch5103-presentation.pdf)) |
+| [`presentation/`](presentation) | Beamer deck, 134 numbered frames, every step explained ([with builds](presentation/ch5103-presentation.pdf), [handout](presentation/ch5103-handout.pdf)) |
 | [`assets/figures/`](assets/figures) | All 17 figures + 5 schemes at 300 dpi |
 | [`assets/figures.jsonl`](assets/figures.jsonl) | Figure/scheme number → file, page, verbatim caption |
 | [`assets/formulae.tex`](assets/formulae.tex) | Key formulae, ready to paste ([PDF](assets/formulae.pdf)) |
-| [`verification/`](verification) | Test scripts (T1–T15), DFT logs, [`lean_proofs/`](verification/lean_proofs) (T17) |
+| [`verification/`](verification) | Test scripts (T1–T15, T1b, `t11c_check.py`), [`results/`](verification/results) of the last run, DFT logs, [`lean_proofs/`](verification/lean_proofs) (T17) |
 | [`scripts/extract_figures.py`](scripts/extract_figures.py) | Regenerates `assets/` from the PDF (byte-identical) |
 | [`docs/FINDINGS.md`](docs/FINDINGS.md) | Claim-by-claim assessment of the review |
 | [`docs/VERIFICATION.md`](docs/VERIFICATION.md) | Test matrix and how to run it |
-| [`plans/`](plans) | Working log: plan, decisions, doubts and their resolutions, full test log |
+| [`plans/`](plans) | Working log: plan, decisions, doubts and their resolutions, full test log, slide audit |
+| [`site/`](site) | The GitHub Pages site; [`scripts/build_site.sh`](scripts/build_site.sh) assembles it, [`.github/workflows/pages.yml`](.github/workflows/pages.yml) deploys it |
 
 ### Derivations at a glance
 
@@ -56,11 +61,12 @@ Requires [uv](https://docs.astral.sh/uv/), a TeX distribution with `latexmk`, an
 
 ```bash
 make sync          # Python 3.12 environment from uv.lock
-make verify        # fast verification suite (prints PASS/FAIL per test)
+make verify        # fast verification suite (PASS/FAIL per test; output saved in verification/results/)
 make derivations   # build derivations/derivations.pdf
 make figures       # re-extract figures + captions from the PDF
 make lean          # Lean 4 proofs (fetches the Mathlib cache)
-make -C presentation   # beamer deck (LuaLaTeX)
+make -C presentation pdf handout   # beamer deck (LuaLaTeX), with builds and as a handout
+scripts/build_site.sh  # assemble the website into _site/ (open _site/index.html via any static server)
 ```
 
 Notes:

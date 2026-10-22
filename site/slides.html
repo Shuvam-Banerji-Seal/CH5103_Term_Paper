@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slides · CH5103 Uncommon Molecular Electronic Configurations</title>
+<meta name="description" content="The CH5103 slide deck on Gryn'ova, Coote & Corminboeuf (2015), viewable in the browser: derivations step by step, verification, and the sign error.">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="Slides · Uncommon Molecular Electronic Configurations">
+<meta property="og:image" content="img/og.jpg">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=EB+Garamond:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+  .viewer { flex: 1; display: flex; flex-direction: column; padding: 14px var(--gutter) 10px; gap: 12px; max-width: 1500px; width: 100%; margin: 0 auto; }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .bar h1 { font-style: italic; color: var(--gold); font-size: 1.5rem; margin-right: auto; }
+  .seg { display: inline-flex; border: 1px solid var(--track); border-radius: 8px; overflow: hidden; }
+  .seg button { font: inherit; font-size: .9rem; padding: 6px 12px; background: var(--panel); color: var(--muted); border: 0; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--gold); color: #000; font-weight: 600; }
+  select, .pg input { font: inherit; font-size: .92rem; background: var(--panel); color: var(--fg); border: 1px solid var(--track); border-radius: 8px; padding: 6px 8px; }
+  select { max-width: min(320px, 100%); }
+  .stage { position: relative; flex: 1; min-height: 240px; display: flex; align-items: center; justify-content: center; background: #050507; border: 1px solid var(--track); border-radius: 12px; overflow: hidden; touch-action: pan-y; }
+  .stage canvas { display: block; max-width: 100%; max-height: 100%; box-shadow: 0 10px 40px rgba(0,0,0,.6); }
+  .stage .msg { position: absolute; color: var(--muted); font-size: 1rem; }
+  .stage .nav-zone { position: absolute; top: 0; bottom: 0; width: 22%; border: 0; background: transparent; cursor: pointer; }
+  .stage .nav-zone.prev { left: 0; } .stage .nav-zone.next { right: 0; }
+  .stage .nav-zone:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+  .controls button.icon { font: inherit; width: 42px; height: 38px; border-radius: 8px; border: 1px solid var(--track); background: var(--panel); color: var(--fg); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .controls button.icon:hover { border-color: var(--gold); color: var(--gold); }
+  .controls button.icon:disabled { opacity: .35; cursor: default; }
+  .controls svg { width: 20px; height: 20px; }
+  .pg { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pg input { width: 4.2em; text-align: center; }
+  .track { height: 3px; background: var(--track); border-radius: 2px; overflow: hidden; }
+  .track i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--gold)); transition: width .15s; }
+  .hint { color: var(--muted); font-size: .85rem; text-align: center; }
+  .viewer:fullscreen { max-width: none; background: #000; padding: 8px; }
+  .viewer:fullscreen .bar, .viewer:fullscreen .hint { display: none; }
+  @media (max-width: 640px) { .bar h1 { font-size: 1.25rem; width: 100%; } .hint { display: none; } }
+  @media (max-aspect-ratio: 1/1) { .viewer:not(:fullscreen) .stage { flex: none; aspect-ratio: 16 / 9; min-height: 0; } }
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Site">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="img/favicon.svg" alt="" width="26" height="26">CH5103</a>
+    <ul>
+      <li class="keep"><a href="index.html">Overview</a></li>
+      <li class="keep"><a href="pdf/ch5103-handout.pdf" id="dl">Download PDF</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="viewer" id="viewer">
+  <div class="bar">
+    <h1>Uncommon Molecular Electronic Configurations</h1>
+    <div class="seg" role="group" aria-label="Version">
+      <button type="button" data-deck="handout" aria-pressed="true" title="One page per slide">Slides</button>
+      <button type="button" data-deck="full" aria-pressed="false" title="Every build step, as presented">With builds</button>
+    </div>
+    <label class="sr" for="jump" style="position:absolute;left:-999px">Jump to section</label>
+    <select id="jump" aria-label="Jump to section"><option value="">Jump to section…</option></select>
+  </div>
+
+  <div class="stage" id="stage">
+    <canvas id="page" aria-label="Slide" role="img"></canvas>
+    <span class="msg" id="msg">Loading slides…</span>
+    <button class="nav-zone prev" type="button" aria-label="Previous slide"></button>
+    <button class="nav-zone next" type="button" aria-label="Next slide"></button>
+  </div>
+  <div class="track" aria-hidden="true"><i id="prog"></i></div>
+
+  <div class="controls">
+    <button class="icon" type="button" id="first" aria-label="First slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 18l-6-6 6-6M7 6v12"/></svg></button>
+    <button class="icon" type="button" id="prev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <span class="pg"><input id="num" type="number" min="1" value="1" aria-label="Page number"> / <span id="total">–</span></span>
+    <button class="icon" type="button" id="next" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button class="icon" type="button" id="last" aria-label="Last slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l6 6-6 6M17 6v12"/></svg></button>
+    <button class="icon" type="button" id="fs" aria-label="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </div>
+  <p class="hint">← → or space to move · F for full screen · “With builds” shows each step as it appears in the talk</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="js/slides.js"></script>
+</body>
+</html>

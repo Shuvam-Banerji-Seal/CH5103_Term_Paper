@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uncommon Molecular Electronic Configurations · CH5103</title>
+<meta name="description" content="A step-by-step rederivation and verification of Gryn'ova, Coote & Corminboeuf, 'Theory and practice of uncommon molecular electronic configurations' (WIREs Comput. Mol. Sci. 2015): derivations, PySCF/SymPy checks, Lean 4 proofs, slides, and a sign error in print.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Uncommon Molecular Electronic Configurations · CH5103">
+<meta property="og:description" content="Derivations, numerical checks and Lean proofs for a 2015 review on open-shell singlets and non-aufbau radicals, and the sign error they found.">
+<meta property="og:image" content="img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/favicon.svg" alt="" width="26" height="26">CH5103</a>
+    <ul>
+      <li><a href="#sign-error">Sign error</a></li>
+      <li><a href="#findings">Findings</a></li>
+      <li><a href="#distonic">Distonic test</a></li>
+      <li><a href="#derivations">Derivations</a></li>
+      <li><a href="#tests">Tests</a></li>
+      <li><a href="#lean">Lean</a></li>
+      <li><a href="#figures">Figures</a></li>
+      <li><a href="#reproduce">Reproduce</a></li>
+      <li class="keep"><a class="cta" href="slides.html">Slides</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="kicker">CH5103 term paper</p>
+    <h1>Uncommon Molecular Electronic Configurations</h1>
+    <p class="sub">Every equation of a 2015 review on open-shell singlets and non-aufbau radicals, derived step by step and
+      checked with symbolic algebra, quantum chemistry and a proof assistant.</p>
+    <p class="cite">G. Gryn'ova, M. L. Coote, C. Corminboeuf, “Theory and practice of uncommon molecular electronic configurations”,
+      <em>WIREs Comput. Mol. Sci.</em> <b>5</b>, 440–459 (2015),
+      <a href="https://doi.org/10.1002/wcms.1233">doi:10.1002/wcms.1233</a> (open access).</p>
+    <div class="buttons">
+      <a class="btn primary" href="slides.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        View the slides</a>
+      <a class="btn" href="pdf/derivations.pdf">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+        Derivations (PDF, 28 pp.)</a>
+      <a class="btn" href="https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+        Source on GitHub</a>
+    </div>
+    <div class="stats" role="list">
+      <div class="stat" role="listitem"><b>136</b><span>slides, each step explained</span></div>
+      <div class="stat" role="listitem"><b>18</b><span>derivation sections</span></div>
+      <div class="stat" role="listitem"><b>21</b><span>numbered checks (T1–T17)</span></div>
+      <div class="stat" role="listitem"><b>17</b><span>Lean 4 theorems, standard axioms only</span></div>
+      <div class="stat" role="listitem"><b>8</b><span>DFT runs on distonic radicals</span></div>
+      <div class="stat alert" role="listitem"><b>1</b><span>sign error in print</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ======================================================== sign error -->
+<section id="sign-error">
+  <div class="wrap">
+    <p class="kicker">The headline result</p>
+    <h2>A sign error on page 441</h2>
+    <div class="grid2">
+      <div>
+        <p class="lede">The review writes the open-shell singlet of two electrons in two orbitals as a sum of the two
+          determinants <i>iii</i> and <i>iv</i> of its Figure 1. That sum is not a singlet: it is the
+          \(M_S=0\) component of the <b>triplet</b>.</p>
+        <div class="boxed erratum"><span class="tag">Erratum, p. 441</span>
+          <div class="eq">\[ \begin{aligned} \text{printed:}&\quad {}^1\Psi_{\text{OSS}}=\tfrac12\bigl(D_{iii}\;{\color{#ff5d8f}+}\;D_{iv}\bigr)\\
+            \text{correct:}&\quad {}^1\Psi_{\text{OSS}}=\tfrac12\bigl(D_{iv}\;{\color{#72dd8f}-}\;D_{iii}\bigr) \end{aligned} \]</div>
+          <p class="small muted" style="margin:0">with \(D_{iii}=|\varphi_a\alpha\ \varphi_b\beta|\) and \(D_{iv}=|\varphi_a\beta\ \varphi_b\alpha|\).
+            The product form printed on the line above is correct; only the determinant expansion has the wrong sign.</p>
+        </div>
+        <div class="boxed check"><span class="tag">Why</span>
+          <p class="small" style="margin:0">Expand both determinants and collect terms, writing \(A=\varphi_a(1)\varphi_b(2)\) and
+            \(B=\varphi_b(1)\varphi_a(2)\):</p>
+          <div class="eq">\[ D_{iii}+D_{iv}=\underbrace{(A-B)}_{\text{space: antisym.}}\underbrace{(\alpha_1\beta_2+\beta_1\alpha_2)}_{\text{spin: sym., }S=1} \]</div>
+          <div class="eq">\[ D_{iv}-D_{iii}=\underbrace{(A+B)}_{\text{space: sym.}}\underbrace{(\beta_1\alpha_2-\alpha_1\beta_2)}_{\text{spin: antisym., }S=0} \]</div>
+        </div>
+      </div>
+      <div>
+        <figure style="margin:0">
+          <div class="shot"><img src="img/sign_error_marked.png" width="996" height="600" loading="lazy"
+            alt="Excerpt from page 441 of the review: the correct product form of the open-shell singlet (boxed in green) and its expansion into determinants iii and iv joined by a plus sign (boxed in red, the plus circled)."></div>
+          <figcaption class="small muted" style="margin-top:8px">Page 441 of the review. Green: the correct product form. Red: the
+            determinant expansion, whose “+” makes it a triplet.</figcaption>
+        </figure>
+        <h3 style="margin-top:22px">Confirmed three independent ways</h3>
+        <ul class="checks">
+          <li><span><b>Symbolic expansion</b> of both determinants in SymPy, then \(\hat S^2\) applied (T1).</span></li>
+          <li><span><b>Numerical operator test</b>: the printed determinants built as two-electron tensors on a grid, \(\hat S^2\) applied
+            directly: \(\langle S^2\rangle=2\) for the printed sum, \(0\) for the difference (T1b).</span></li>
+          <li><span><b>Lean 4 proof</b>: <code>sum_is_triplet</code>, <code>diff_is_singlet</code>,
+            <code>erratum_plus_is_not_singlet</code> (T17).</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================== findings -->
+<section id="findings">
+  <div class="wrap">
+    <p class="kicker">Claim by claim</p>
+    <h2>What holds up</h2>
+    <p class="lede">The physics holds up wherever it could be tested. Besides the sign error there is one citation error,
+      and a few statements are overstated or imprecise. The full assessment is in
+      <a href="https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper/blob/main/docs/FINDINGS.md">docs/FINDINGS.md</a>.</p>
+    <div class="verdicts">
+      <div class="panel verdict">
+        <h3><span class="pill ok">verified</span> Confirmed</h3>
+        <ul>
+          <li>Triplet \(M_S=\pm1\) are single determinants; the open-shell singlet needs two (p. 441).</li>
+          <li>Hund's rule comes from stronger nuclear attraction (“less screening”), not lower repulsion: exact He \(1s2s\) gives
+            \(\Delta V_{ee}=+0.0185\), \(\Delta V_{ne}=-0.0772\ E_h\), virial ratio 2.000000.</li>
+          <li>Static correlation grows as orbital interaction weakens (H₂ dissociation, Fig. 2).</li>
+          <li>Kinetic exchange, disjoint NBMOs, spin alternation and Ovchinnikov's rule (rigorous via Lieb's theorem).</li>
+          <li>The S–T gap as a HOMO-energy difference (frozen orbitals: \(2K\)); the 3d/4s identity; non-conservation of
+            one-electron quantum numbers; ROHF orbital energies depend on canonicalisation.</li>
+        </ul>
+      </div>
+      <div class="panel verdict">
+        <h3><span class="pill bad">error</span> Wrong in print</h3>
+        <ul>
+          <li>The sign of the open-shell singlet, p. 441 (above).</li>
+          <li>Katriel &amp; Pauncz, <em>Adv. Quantum Chem.</em> 10, 143 is from <b>1977</b>, not 1975.</li>
+        </ul>
+        <h3 style="margin-top:18px"><span class="pill warn">qualified</span> Overstated or imprecise</h3>
+        <ul>
+          <li>Same-spin correlation “an order of magnitude” smaller: true for He (ratio 0.023); about 0.3–0.4 per pair for
+            molecular valence shells at MP2.</li>
+          <li>“The obsolescence of” aufbau and Hund's rule (p. 455): both remain useful rules of thumb for atomic ground states.</li>
+          <li>TriMB is called a “triplet” (p. 444); with three unpaired electrons it is a quartet, \(S=\tfrac32\).</li>
+          <li>Fig. 7(e) text ties a triplet preference to <em>disjoint</em> NBMOs, against the review's own rule.</li>
+          <li>ROHF orbital order flips only for a mixing weight \(A^*\approx1.04\), just outside the usual range
+            <span style="white-space:nowrap">\([0,1]\).</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================== distonic -->
+<section id="distonic">
+  <div class="wrap">
+    <p class="kicker">The one claim that needed new computations</p>
+    <h2>Distonic radical anions, tested</h2>
+    <div class="grid2">
+      <div>
+        <p>The review says that in a distonic radical anion the anion's HOMO lies above the SOMO, so oxidation removes an
+          electron from the anion and leaves a <b>diradical</b>, and that protonating the anion restores the normal order: a
+          pH switch. We optimised two such radicals and their conjugate acids (UB3LYP/6-31G*) and computed the
+          vertical oxidation to the triplet diradical and to the closed shell (6-31+G*), with two functionals.</p>
+        <p>\(\Delta=E_T-E_{\text{CS}}<0\) means oxidation gives the diradical. The orbital inversion and its removal by
+          protonation appear with both functionals. The energetic switch appears with the range-separated
+          <b>CAM-B3LYP</b> for both systems; B3LYP misses it by 0.06–0.07 eV. The claim is real but functional-sensitive.</p>
+        <p class="small muted">Values: T11c (<a href="data/results/t11c_check.txt">check output</a>,
+          <a href="data/distonic.csv">CSV</a>). The SOMO lies 2–3 levels below the α-HOMO in every anion and is the α-HOMO in every acid.</p>
+      </div>
+      <div class="panel chart-card">
+        <div class="legend" aria-hidden="true">
+          <span><i style="background:var(--series-b3lyp)"></i>B3LYP</span>
+          <span><i style="background:var(--series-cam)"></i>CAM-B3LYP</span>
+        </div>
+        <svg id="chart" viewBox="0 0 560 350" role="img" aria-labelledby="chart-title chart-desc">
+          <title id="chart-title">Oxidation energy difference E_T minus E_CS, in eV</title>
+          <desc id="chart-desc">Grouped columns for four radicals, B3LYP and CAM-B3LYP. Acids are about +1.2 to +1.4 eV with both
+            functionals. Anions are +0.07 eV with B3LYP and -0.36 and -0.30 eV with CAM-B3LYP.</desc>
+        </svg>
+        <details class="data">
+          <summary>Show the numbers as a table</summary>
+          <div class="table-wrap">
+            <table id="chart-table">
+              <thead><tr><th>radical</th><th class="num">B3LYP (eV)</th><th class="num">CAM-B3LYP (eV)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================== derivations -->
+<section id="derivations">
+  <div class="wrap">
+    <p class="kicker">18 sections, 28 pages</p>
+    <h2>The derivations</h2>
+    <p class="lede">Each section starts from what the review states, lists its assumptions, derives the result line by line
+      and names the test that checks it. <a href="pdf/derivations.pdf">Read the PDF</a> or the
+      <a href="pdf/formulae.pdf">one-page formula sheet</a>.</p>
+    <div class="deriv" id="deriv-grid"></div>
+  </div>
+</section>
+
+<!-- ======================================================== tests -->
+<section id="tests">
+  <div class="wrap">
+    <p class="kicker">Nothing is trusted until it is checked</p>
+    <h2>The test matrix</h2>
+    <p class="lede">Every derived result is tied to a script or a proof. Each script prints its own PASS or FAIL; the outputs of
+      the last full run are linked below. T11b is a recorded failure: it is what led to T11c.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>what it checks</th><th>method</th><th>result</th><th>files</th></tr></thead>
+        <tbody id="test-rows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================== lean -->
+<section id="lean">
+  <div class="wrap">
+    <p class="kicker">Machine-checked</p>
+    <h2>Lean 4 proofs</h2>
+    <div class="lean">
+      <div>
+        <p>The algebraic identities behind the slides are proved in Lean 4.29.1 with Mathlib: 17 theorems, no
+          <code>sorry</code>, and <code>#print axioms</code> lists only <code>propext</code>, <code>Classical.choice</code> and
+          <code>Quot.sound</code>.</p>
+        <p>The example on the right is the logical core of the less-screening explanation of Hund's rule: if the triplet is
+          lower, both states obey the virial theorem and the triplet has the larger electron repulsion, then its kinetic
+          energy is higher and its nuclear attraction is stronger, by more than the extra repulsion.</p>
+        <p class="small muted" id="lean-names"></p>
+      </div>
+      <pre class="code" aria-label="Lean source excerpt"><span class="c">/-- Less screening: if the triplet is lower (ΔE &lt; 0), both states
+    obey the virial theorem and the triplet has the larger e–e
+    repulsion (ΔVee &gt; 0), then ΔT &gt; 0 and ΔVne &lt; 2ΔE &lt; 0. -/</span>
+<span class="k">theorem</span> <span class="t">less_screening</span> (dT dVne dVee dE : ℝ)
+    (hvir : 2 * dT + (dVne + dVee) = 0) (hE : dE = dT + dVne + dVee)
+    (hlow : dE &lt; 0) (hee : 0 &lt; dVee) :
+    0 &lt; dT ∧ dVne &lt; 2 * dE ∧ dVne &lt; 0 ∧ dVee &lt; -dVne := <span class="k">by</span>
+  refine ⟨<span class="k">by</span> linarith, <span class="k">by</span> linarith, <span class="k">by</span> linarith, <span class="k">by</span> linarith⟩</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================== figures -->
+<section id="figures">
+  <div class="wrap">
+    <p class="kicker">Extracted from the open-access PDF</p>
+    <h2>The review's figures</h2>
+    <p class="lede">All 17 figures and 5 schemes at 300 dpi, with their verbatim captions
+      (<a href="data/figures.jsonl">figures.jsonl</a>). © 2015 The Authors, CC BY-NC-ND. Select one to enlarge.</p>
+    <div class="filters" role="group" aria-label="Filter figures">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="figure" aria-pressed="false">Figures</button>
+      <button type="button" data-f="scheme" aria-pressed="false">Schemes</button>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ======================================================== reproduce -->
+<section id="reproduce">
+  <div class="wrap">
+    <p class="kicker">Run it yourself</p>
+    <h2>Reproduce everything</h2>
+    <div class="grid2">
+      <div class="panel">
+        <div class="cmd">
+          <code>make sync</code><span>Python 3.12 environment from <code>uv.lock</code> (uv)</span>
+          <code>make verify</code><span>fast suite, a few minutes; PASS/FAIL per test, output in <code>verification/results/</code></span>
+          <code>make verify-dft</code><span>the DFT tests T11/T11c (hours)</span>
+          <code>make lean</code><span>Lean proofs (fetches the Mathlib cache)</span>
+          <code>make derivations</code><span>the derivations PDF</span>
+          <code>make -C presentation</code><span>the slides (LuaLaTeX); <code>handout</code> for one page per frame</span>
+        </div>
+      </div>
+      <div>
+        <h3>Downloads</h3>
+        <ul>
+          <li><a href="pdf/ch5103-handout.pdf">Slides, one page per frame</a> (PDF)</li>
+          <li><a href="pdf/ch5103-presentation.pdf">Slides with step-by-step builds</a> (PDF, for presenting)</li>
+          <li><a href="pdf/derivations.pdf">Derivations</a> (PDF) · <a href="pdf/formulae.pdf">Formula sheet</a> (PDF)</li>
+          <li><a href="https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper/blob/main/docs/VERIFICATION.md">Test matrix and how to run it</a></li>
+          <li><a href="https://doi.org/10.1002/wcms.1233">The review itself</a> (publisher, open access)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Shuvam Banerji Seal · CH5103 term paper</span>
+    <span>The review and its figures: © 2015 The Authors, published by Wiley under CC BY-NC-ND.</span>
+  </div>
+</footer>
+<div class="progress" aria-hidden="true"><i></i></div>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+<dialog class="lightbox" id="lightbox" aria-labelledby="lb-title">
+  <button class="close" type="button" aria-label="Close">×</button>
+  <div class="img"><img id="lb-img" alt=""></div>
+  <div class="body"><h3 id="lb-title"></h3><p id="lb-cap" class="muted" style="margin:0"></p></div>
+</dialog>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script defer src="js/main.js"></script>
+</body>
+</html>

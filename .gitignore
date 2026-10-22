@@ -27,3 +27,6 @@ qce.log
 # secrets
 .env
 .env.*
+
+# assembled GitHub Pages site (scripts/build_site.sh)
+_site/
