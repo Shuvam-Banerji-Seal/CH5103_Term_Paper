@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2 (no moving major tag upstream)
       - name: Sync the locked environment (uv.lock)
         run: make sync
       - name: Run T1, T1b, T2-T10, T9b, T12-T15 and the T11c log check
