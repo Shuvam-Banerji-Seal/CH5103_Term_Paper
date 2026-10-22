@@ -46,21 +46,24 @@ oxidising a distonic radical anion) is only partly reproduced by our model calcu
   range (A* ≈ 1.04) (T11a).
 - **Janak/Koopmans statement.** The sign convention is not stated in the review; the derivation fixes it.
 
-## Partly reproduced: SOMO–HOMO conversion in distonic radical anions
+## Reproduced, but functional-dependent: SOMO–HOMO conversion in distonic radical anions
 
-Model: •ON(Me)CH₂CH₂COO⁻ and its conjugate acid, UB3LYP/6-31+G*, vertical oxidation (T11b).
+Model: •ON(Me)CH₂CH₂COO⁻ and its conjugate acid, plus TEMPO-4-carboxylate. Vertical oxidation from the
+radical geometry to the triplet diradical (T) or the closed-shell singlet (CS). Tests T11b and T11c.
 
-| radical | α-SOMO | IE → triplet | IE → closed shell | Δ(T − CS) |
-|---|---|---|---|---|
-| acid | is the HOMO | 9.489 eV | 8.179 eV | +1.31 eV |
-| anion | 3 levels below the α-HOMO | 4.008 eV | 3.946 eV | +0.06 eV |
+| radical | functional | α-SOMO | Δ(T − CS) |
+|---|---|---|---|
+| short acid | B3LYP / CAM-B3LYP | is the HOMO | +1.41 / +1.42 eV |
+| short anion | B3LYP | 3 levels below α-HOMO | +0.07 eV |
+| short anion | **CAM-B3LYP** | 3 levels below α-HOMO | **−0.36 eV** |
+| TEMPO-4-COO⁻ | B3LYP | 2 levels below α-HOMO | +0.07 eV |
 
-- **Reproduced:** the orbital inversion in the anion, its removal on protonation, and a 1.25 eV shift
-  towards the diradical.
-- **Not reproduced (this model, this functional):** the energetic crossover. The closed-shell product
-  remains 0.06 eV lower.
-- **T11c** (CAM-B3LYP; TEMPO-4-carboxylate) tests whether this depends on the functional or the
-  radical–anion separation. See `verification/logs/t11c.log` once it completes.
+- **Orbital inversion and its removal on protonation:** reproduced with both functionals.
+- **Energetic switch (anion oxidised to a diradical, acid to a closed shell):** reproduced with the
+  range-separated CAM-B3LYP. B3LYP misses it by ~0.07 eV, and lowers the closed-shell product
+  disproportionately (0.61 vs 0.17 eV). Delocalisation error is a plausible cause, but this is untested.
+- **Incomplete:** the TEMPO-4-carboxylate runs at CAM-B3LYP and for the TEMPO acid were stopped by a
+  low-memory condition.
 
 ## Not checked
 

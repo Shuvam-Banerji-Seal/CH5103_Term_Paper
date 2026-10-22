@@ -25,3 +25,4 @@
 ## Reversals
 - REV1: T8 Longuet-Higgins equality -> inequality (N-2T lower bound).
 - REV2: T11a "canonicalisation flips ordering within standard schemes" -> only for weights outside [0,1].
+- DIS14 (resolves DIS13): T11b no-crossover is functional-specific. CAM-B3LYP gives diradical 0.36 eV below CS for the short anion; acid stays CS (1.42 eV). Separation not decisive at B3LYP (TEMPO +0.067). Mechanism (delocalisation error) remains [HYPOTHESIS].

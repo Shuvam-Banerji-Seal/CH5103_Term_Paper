@@ -17,7 +17,7 @@ ordering). This repository contains:
 
 **Verdict:** see [`docs/FINDINGS.md`](docs/FINDINGS.md). In short, the theory is sound wherever it
 could be tested. One sign error and one citation error were found, plus some overstated claims. The
-distonic-radical energetics are only partly reproduced.
+distonic-radical pH switch is reproduced with CAM-B3LYP but not with B3LYP.
 
 ## Contents
 
