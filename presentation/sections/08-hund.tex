@@ -1,0 +1,194 @@
+% ============================================================ Hund's rule, virial theorem, less screening
+\section{Hund's rule}
+
+\begin{frame}{Two explanations of the same rule}
+  \begin{paperclaim}
+    ``Slater's original explanation \dots\ was therefore based upon less electron--electron Coulomb repulsion
+    in the triplet state \dots\ However, it has been later shown that the electron--electron repulsion is
+    actually greater in the high-spin state, and an alternative explanation --- the so-called less screening
+    rule --- has been offered.'' (p.\ 442)
+  \end{paperclaim}
+  \vskip0.2cm
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \onslide<2->{
+    \begin{plainpanel}
+      \cgold{Slater (frozen orbitals)}\\[2pt]
+      $\Delta V_{ee}=-2K<0$,\ $\Delta T=0$,\ $\Delta V_{ne}=0$\\
+      \small\cmuted{triplet wins by lower repulsion}
+    \end{plainpanel}}
+    \column{0.48\textwidth}
+    \onslide<3->{
+    \begin{plainpanel}
+      \cgold{Less screening (relaxed orbitals)}\\[2pt]
+      $\Delta V_{ee}>0$,\ $\Delta V_{ne}\ll0$,\ $\Delta T>0$\\
+      \small\cmuted{triplet wins by stronger nuclear attraction}
+    \end{plainpanel}}
+  \end{columns}
+  \vskip0.2cm
+  \onslide<4->{\centering\cgold{Which one is right? The virial theorem decides.}\par}
+\end{frame}
+
+\begin{frame}{The virial theorem by scaling (1/2)}
+  \begin{assume}
+    an atom (nucleus at the origin); exact eigenstate $\Psi$, or any $\Psi$ optimised with respect to scaling
+  \end{assume}
+  {\large
+  \begin{align*}
+    \stepno{1}\ \Psi_\eta(\mathbf r_1,\ldots,\mathbf r_N)&=\eta^{3N/2}\,\Psi(\eta\mathbf r_1,\ldots,\eta\mathbf r_N)
+      &&\cmuted{\text{squeeze ($\eta>1$) or stretch}}\\
+    \uncover<2->{\stepno{2}\ \braket{\Psi_\eta}{\Psi_\eta}}&\uncover<2->{=\eta^{3N}\!\int|\Psi(\eta\mathbf r)|^2\dd^{3N}r}
+      &&\uncover<2->{\cmuted{\mathbf s=\eta\mathbf r,\ \dd^{3N}r=\eta^{-3N}\dd^{3N}s}}\\
+    &\uncover<3->{=\int|\Psi(\mathbf s)|^2\dd^{3N}s=1}
+  \end{align*}}
+  \onslide<4->{\centering\small the scaled function is still normalised, so it is a legal trial function\par}
+\end{frame}
+
+\begin{frame}{The virial theorem by scaling (2/2)}
+  {\begin{align*}
+    \stepno{3}\ \ev{T}_\eta&=\eta^2\ev T &&\cmuted{\nabla_{\mathbf r}=\eta\,\nabla_{\mathbf s}}\\
+    \uncover<2->{\stepno{4}\ \ev{V}_\eta}&\uncover<2->{=\eta\,\ev V} &&\uncover<2->{\cmuted{-\tfrac{Z}{r}=-\eta\tfrac{Z}{s},\ \tfrac1{r_{12}}=\eta\tfrac1{s_{12}}}}\\
+    \uncover<3->{\stepno{5}\ E(\eta)}&\uncover<3->{=\eta^2\ev T+\eta\ev V}\\
+    \uncover<4->{\stepno{6}\ \left.\frac{\dd E}{\dd\eta}\right|_{\eta=1}}&\uncover<4->{=2\ev T+\ev V=0} &&\uncover<4->{\cmuted{\text{stationary}}}
+  \end{align*}}
+  \onslide<5->{
+  \begin{keyresult}
+    \centering $2\ev T+\ev V=0\quad\Longrightarrow\quad E=-\ev T=\tfrac12\ev V$
+  \end{keyresult}}
+  \onslide<6->{\footnotesize\cmuted{Lean: \texttt{scaling\_derivative}. Molecules: zero at equilibrium geometries.}}
+\end{frame}
+
+\begin{frame}{Frozen orbitals cannot be the mechanism}
+  Apply the virial theorem to \emph{both} exact states and subtract:
+  {\large
+  \[
+    \Delta E\equiv E_T-E_S=-\Delta\ev T=\tfrac12\bigl(\Delta\ev{V_{ne}}+\Delta\ev{V_{ee}}\bigr)
+  \]}
+  \begin{enumerate}
+    \item<2-> Slater: same orbitals $\Rightarrow$ $\Delta\ev T=0$
+    \item<3-> then $\Delta E=-\Delta\ev T=0$ \ \ldots\ but Slater also says $\Delta E=-2K<0$ \ \crose{contradiction}
+  \end{enumerate}
+  \onslide<4->{
+  \begin{keyresult}
+    the frozen-orbital pair violates the virial theorem, so it cannot tell us \emph{which} energy component pays
+  \end{keyresult}}
+  \onslide<5->{\small\cmuted{Hongo et al.\ (2004): ``This assumption leaves the kinetic energy $T$ unchanged for different spin states,
+    which cannot be correct as each eigenstate must satisfy the virial theorem.''}}
+\end{frame}
+
+\begin{frame}{Less screening, as inequalities}
+  \begin{assume}
+    triplet lower ($\Delta E<0$), both states virial, $\Delta V_{ee}>0$ (what the calculations show)
+  \end{assume}
+  {\large
+  \begin{align*}
+    \stepno{1}\ \Delta T&=-\Delta E>0 &&\cmuted{\text{electrons more compressed}}\\
+    \uncover<2->{\stepno{2}\ \Delta V}&\uncover<2->{=2\Delta E<0}\\
+    \uncover<3->{\stepno{3}\ \Delta V_{ne}}&\uncover<3->{=2\Delta E-\Delta V_{ee}<2\Delta E<0}\\
+    \uncover<4->{\stepno{4}\ |\Delta V_{ne}|}&\uncover<4->{>\Delta V_{ee}}
+  \end{align*}}
+  \onslide<5->{\centering\small\cgold{the nucleus wins}: stronger attraction over-compensates stronger repulsion \quad\cmuted{(Lean: \texttt{less\_screening})}\par}
+\end{frame}
+
+\begin{frame}{The physical picture}
+  \centering
+  \begin{tikzpicture}[scale=1.05]
+    \begin{scope}
+      \fill[noirgold] (0,0) circle (0.12);
+      \draw[noircyan!60,dashed] (0,0) circle (1.6);
+      \fill[noircyan] (1.3,0.9) circle (0.08) node[above,font=\scriptsize]{$e_1$};
+      \fill[noircyan] (-1.4,-0.6) circle (0.08) node[below,font=\scriptsize]{$e_2$};
+      \node[font=\small,text=noirblue] at (0,-2.2) {singlet: electrons may overlap,};
+      \node[font=\small,text=noirblue] at (0,-2.6) {each screens the nucleus};
+    \end{scope}
+    \onslide<2->{
+    \begin{scope}[xshift=6.5cm]
+      \fill[noirgold] (0,0) circle (0.12);
+      \draw[noirrose!70,dashed] (0,0) circle (1.25);
+      \shade[inner color=noirbg,outer color=noirrose!25] (0.9,0.85) circle (0.55);
+      \fill[noirrose] (0.9,0.85) circle (0.08) node[above=3pt,font=\scriptsize]{$e_1$};
+      \fill[noirrose] (-1.05,-0.55) circle (0.08) node[below,font=\scriptsize]{$e_2$};
+      \node[font=\scriptsize,text=noirrose] at (1.95,1.4) {Fermi hole};
+      \node[font=\small,text=noirrose] at (0,-2.2) {triplet: kept apart, less screening,};
+      \node[font=\small,text=noirrose] at (0,-2.6) {both contract towards the nucleus};
+    \end{scope}}
+  \end{tikzpicture}
+  \vskip0.2cm
+  \onslide<3->{\small contraction lowers $V_{ne}$ \ \textbullet\ raises $T$ \ \textbullet\ also raises $V_{ee}$ (closer on average)}
+\end{frame}
+
+\begin{frame}{Test 1: helium $1s2s$, solved exactly}{T4 --- $2\,^3S$ vs $2\,^1S$, 16s7p4d basis, scaled to satisfy the virial theorem}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[noirplot,ybar,bar shift=0pt,width=7.2cm,height=5.6cm,bar width=16pt,ymin=-0.09,ymax=0.045,
+          symbolic x coords={dE,dT,dVne,dVee},xmin=dE,xmax=dVee,enlarge x limits=0.18,xtick={dE,dT,dVne,dVee},scaled y ticks=false,
+          xticklabels={$\Delta E$,$\Delta T$,$\Delta V_{ne}$,$\Delta V_{ee}$},
+          ylabel={triplet $-$ singlet ($\Eh$)},yticklabel style={/pgf/number format/fixed},
+          nodes near coords,every node near coord/.append style={font=\tiny,text=noirfg,/pgf/number format/fixed,/pgf/number format/precision=4},
+          axis x line=bottom,axis y line=left,ymajorgrids]
+        \addplot[fill=noirgold,draw=none] coordinates {(dE,-0.029347)};
+        \only<2->{\addplot[fill=noircyan,draw=none] coordinates {(dT,0.029347)};}
+        \only<3->{\addplot[fill=noirgreen,draw=none] coordinates {(dVne,-0.077168)};}
+        \only<4->{\addplot[fill=noirrose,draw=none] coordinates {(dVee,0.018473)};}
+      \end{axis}
+    \end{tikzpicture}
+    \column{0.42\textwidth}
+    \small
+    \begin{tabular}{lrr}
+      \toprule & $2\,^3S$ & $2\,^1S$\\\midrule
+      $E$ (ours) & $-2.175212$ & $-2.145865$\\
+      $E$ (exact) & $-2.175229$ & $-2.145974$\\
+      $-\ev V/\ev T$ & 2.000000 & 2.000000\\\bottomrule
+    \end{tabular}
+    \vskip0.3cm
+    \onslide<4->{\crose{$\Delta V_{ee}>0$}: Slater's mechanism fails;\\
+      \cgreen{$\Delta V_{ne}$} pays for everything.\\[3pt]
+      check: $\tfrac12(-0.0772+0.0185)=-0.0293=\Delta E$}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Test 2: the carbon atom (literature)}{Hongo et al., J.\ Chem.\ Phys.\ 121, 7144 (2004), Table I --- read from the arXiv full text}
+  \centering
+  \begin{tabular}{lrrr}
+    \toprule
+    $^3P-{}^1D$ ($\Eh$) & $\Delta V_{ee}$ & $\Delta V_{en}$ & $\Delta T$\\
+    \midrule
+    Hartree--Fock & \crose{$+0.032$} & \cgreen{$-0.145$} & $+0.057$\\
+    DMC (linear estimator) & \crose{$+0.074$} & \cgreen{$-0.169$} & $+0.048$\\
+    \bottomrule
+  \end{tabular}
+  \vskip0.4cm
+  \onslide<2->{same pattern as helium: higher repulsion, much stronger attraction, higher kinetic energy}
+  \vskip0.3cm
+  \onslide<3->{
+  \begin{keyresult}
+    The review's account (less screening, $V_{ee}$ \emph{greater} in the high-spin state) is right.\hfill\okpill
+  \end{keyresult}}
+\end{frame}
+
+\begin{frame}{A side claim: same-spin correlation}
+  \begin{paperclaim}
+    ``the absolute value of the correlation energy is approximately an order of magnitude lower for a pair of
+    two same-spin electrons compared to that of opposite-spin electrons'' (p.\ 442, citing Krylov 2001)
+  \end{paperclaim}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[noirplot,xbar,width=6.6cm,height=3.9cm,bar width=8pt,xmin=0,xmax=0.5,
+          symbolic y coords={He,C2H4,N2,H2O},ytick=data,
+          yticklabels={He ($2^3S$/$1^1S$),C$_2$H$_4$ MP2,N$_2$ MP2,H$_2$O MP2},
+          xlabel={same-spin / opposite-spin, per pair},
+          nodes near coords,every node near coord/.append style={font=\tiny,text=noirfg},
+          axis x line=bottom,axis y line=left]
+        \addplot[fill=noircyan,draw=none] coordinates {(0.023,He) (0.32,C2H4) (0.43,N2) (0.43,H2O)};
+        \draw[noirrose,dashed] (axis cs:0.1,He) -- (axis cs:0.1,H2O);
+      \end{axis}
+    \end{tikzpicture}
+    \column{0.45\textwidth}
+    \onslide<2->{\small dashed: ``order of magnitude'' ($0.1$)}\\[4pt]
+    \onslide<3->{\small He: $0.023$, the claim holds}\\[2pt]
+    \onslide<4->{\small molecular valence shells: $\approx0.3$--$0.4$ per pair (cf.\ SCS-MP2 scaling $\tfrac13$ vs $\tfrac65$)}\\[6pt]
+    \onslide<5->{\warnpill\ \small true for compact two-electron systems, overstated in general (T15)}
+  \end{columns}
+\end{frame}

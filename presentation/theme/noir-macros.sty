@@ -1,0 +1,110 @@
+% noir-macros.sty — notation, animation helpers and boxes for the CH5103 talk.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{noir-macros}[2026/10/22 notation and animation helpers]
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing,shapes.geometric,backgrounds}
+\RequirePackage{cancel}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins}
+\RequirePackage{booktabs}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ------------------------------------------------------------------ notation
+\newcommand{\pa}{\varphi_a}
+\newcommand{\pb}{\varphi_b}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\braket}[2]{\langle #1\vert #2\rangle}
+\newcommand{\mel}[3]{\langle #1\vert #2\vert #3\rangle}
+\newcommand{\ev}[1]{\langle #1\rangle}
+\newcommand{\eri}[4]{(#1#2\vert #3#4)}
+\newcommand{\Hop}{\hat H}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Eh}{E_{\mathrm h}}
+\newcommand{\OSS}{\mathrm{OSS}}
+\newcommand{\up}{\textcolor{noirrose}{\uparrow}}
+\newcommand{\dn}{\textcolor{noirblue}{\downarrow}}
+
+% ------------------------------------------------------------------ colour shortcuts
+\newcommand{\cgold}[1]{\textcolor{noirgold}{#1}}
+\newcommand{\ccyan}[1]{\textcolor{noircyan}{#1}}
+\newcommand{\crose}[1]{\textcolor{noirrose}{#1}}
+\newcommand{\cgreen}[1]{\textcolor{noirgreen}{#1}}
+\newcommand{\cviolet}[1]{\textcolor{noirviolet}{#1}}
+\newcommand{\cblue}[1]{\textcolor{noirblue}{#1}}
+\newcommand{\cmuted}[1]{\textcolor{noirmuted}{#1}}
+
+% ------------------------------------------------------------------ overlay-aware animation helpers
+% \hl<n>{x}    : x turns cyan on overlay n
+% \hlr<n>{x}   : x turns rose on overlay n
+% \canc<n>{x}  : x is struck through (cancel) from overlay n on
+% \gone<n>{x}  : x is cancelled on overlay n and greyed afterwards
+\renewcommand{\CancelColor}{\color{noirrose}}
+\newcommand<>{\hl}[1]{\alt#2{\textcolor{noircyan}{#1}}{#1}}
+\newcommand<>{\hlr}[1]{\alt#2{\textcolor{noirrose}{#1}}{#1}}
+\newcommand<>{\hlg}[1]{\alt#2{\textcolor{noirgreen}{#1}}{#1}}
+\newcommand<>{\canc}[1]{\alt#2{\cancel{#1}}{#1}}
+
+% step label shown at the left of a derivation line
+\newcommand{\stepno}[1]{\makebox[1.4em][l]{\textcolor{noirmuted}{\scriptsize\noirgaramond(#1)}}}
+
+% ------------------------------------------------------------------ boxes
+\tcbset{noirbase/.style={enhanced,colback=noirpanel,colframe=noirpanel,coltext=noirfg,
+    boxrule=0pt,arc=2pt,left=6pt,right=6pt,top=7pt,bottom=4pt,before upper=\raggedright,
+    fonttitle=\noirgaramond\scshape\small,coltitle=noirbg,attach boxed title to top left={yshift=-2mm,xshift=3mm},
+    boxed title style={arc=1pt,boxrule=0pt}}}
+\newtcolorbox{assume}[1][Assumptions]{noirbase,colbacktitle=noirviolet,title=#1,
+    borderline west={2pt}{0pt}{noirviolet}}
+\newtcolorbox{keyresult}[1][Result]{noirbase,colbacktitle=noirgreen,title=#1,
+    borderline west={2pt}{0pt}{noirgreen}}
+\newtcolorbox{paperclaim}[1][The paper says]{noirbase,colbacktitle=noirgold,title=#1,
+    borderline west={2pt}{0pt}{noirgold}}
+\newtcolorbox{erratum}[1][Erratum]{noirbase,colbacktitle=noirrose,title=#1,
+    borderline west={2pt}{0pt}{noirrose}}
+\newtcolorbox{checked}[1][Verified]{noirbase,colbacktitle=noircyan,title=#1,
+    borderline west={2pt}{0pt}{noircyan}}
+\newtcolorbox{plainpanel}{noirbase}
+
+% drawn check mark (the text fonts have no U+2713)
+\newcommand{\tick}{\tikz[baseline=-0.4ex]\draw[noirgreen,line width=1.1pt,line cap=round,line join=round] (0,0.02) -- (0.07,-0.06) -- (0.22,0.13);}
+
+% verdict pills
+\newcommand{\pill}[2]{\tikz[baseline=(p.base)]\node[fill=#1,text=noirbg,rounded corners=2pt,inner sep=2pt,
+    font=\noirgaramond\scriptsize\scshape](p){#2};}
+\newcommand{\okpill}{\pill{noirgreen}{verified}}
+\newcommand{\badpill}{\pill{noirrose}{error}}
+\newcommand{\warnpill}{\pill{noirorange}{overstated}}
+\newcommand{\partpill}{\pill{noirgold}{partial}}
+
+% ------------------------------------------------------------------ orbital-level drawing (TikZ)
+% \orblevel{x}{y}{label}  draws a level; \elup{x}{y} / \eldn{x}{y} draw spin arrows on it
+\tikzset{
+  level/.style={line width=1.1pt,noirfg},
+  eup/.style={-{Stealth[length=3pt]},line width=0.9pt,noirrose},
+  edn/.style={-{Stealth[length=3pt]},line width=0.9pt,noirblue},
+}
+\newcommand{\orblevel}[3]{\draw[level] (#1-0.35,#2) -- (#1+0.35,#2) node[right,font=\scriptsize,text=noirmuted]{#3};}
+\newcommand{\elup}[2]{\draw[eup] (#1-0.08,#2-0.18) -- (#1-0.08,#2+0.2);}
+\newcommand{\eldn}[2]{\draw[edn] (#1+0.08,#2+0.2) -- (#1+0.08,#2-0.18);}
+
+% ------------------------------------------------------------------ reusable node styles
+% (parametrised styles must live here: '#1' cannot appear inside a frame body)
+\tikzset{
+  noirbox/.style={draw=#1,fill=noirpanel,rounded corners=3pt,minimum width=2.4cm,minimum height=1.25cm,
+                  align=center,font=\noirgaramond\small,text=noirfg},
+  noirarr/.style={-{Stealth[length=5pt]},noirmuted,line width=0.8pt},
+}
+
+% ------------------------------------------------------------------ pgfplots dark style
+\pgfplotsset{noirplot/.style={
+    axis line style={noirmuted},tick style={noirmuted},
+    tick label style={font=\scriptsize,text=noirmuted},
+    label style={font=\small,text=noirfg},
+    grid style={noirtrack},
+    legend style={fill=noirpanel,draw=none,text=noirfg,font=\scriptsize},
+    every axis title/.style={font=\small,text=noirgold,at={(0.5,1)},above},
+}}
+
+\endinput

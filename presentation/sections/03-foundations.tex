@@ -1,0 +1,116 @@
+% ============================================================ foundations
+\section{Foundations}
+
+\begin{frame}{Where everything starts}{the molecular Schr\"odinger equation}
+  \[
+    \Hop_{\text{mol}}\,\Psi=E\,\Psi
+  \]
+  \vskip-0.2cm
+  \[
+    \Hop_{\text{mol}}=
+    \underbrace{-\sum_A\frac{\nabla_A^2}{2M_A}}_{\onslide<2->{\cmuted{\text{nuclear KE}}}}
+    \underbrace{-\sum_i\frac{\nabla_i^2}{2}}_{\onslide<3->{\ccyan{\text{electron KE}}}}
+    \underbrace{-\sum_{i,A}\frac{Z_A}{r_{iA}}}_{\onslide<4->{\cgold{\text{e--n attraction}}}}
+    \underbrace{+\sum_{i<j}\frac{1}{r_{ij}}}_{\onslide<5->{\crose{\text{e--e repulsion}}}}
+    \underbrace{+\sum_{A<B}\frac{Z_AZ_B}{R_{AB}}}_{\onslide<6->{\cmuted{\text{n--n repulsion}}}}
+  \]
+  \vskip0.2cm
+  \begin{center}
+  \begin{tikzpicture}[scale=1.15]
+    \fill[noirgold] (0,0) circle (0.13) node[below=3pt,font=\scriptsize,text=noirgold]{$A$};
+    \fill[noirgold] (4,0) circle (0.13) node[below=3pt,font=\scriptsize,text=noirgold]{$B$};
+    \fill[noircyan] (1.3,1.2) circle (0.07) node[above,font=\scriptsize,text=noircyan]{$i$};
+    \fill[noircyan] (2.9,1.0) circle (0.07) node[above,font=\scriptsize,text=noircyan]{$j$};
+    \onslide<4->{\draw[noirgold,dashed] (0,0) -- (1.3,1.2) node[midway,left,font=\tiny]{$r_{iA}$};}
+    \onslide<5->{\draw[noirrose] (1.3,1.2) -- (2.9,1.0) node[midway,above,font=\tiny]{$r_{ij}$};}
+    \onslide<6->{\draw[noirmuted,dashed] (0,0) -- (4,0) node[midway,below,font=\tiny]{$R_{AB}$};}
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Born--Oppenheimer: freeze the nuclei}
+  \begin{assume}
+    $M_A\gg m_e=1$: electrons adjust instantly to nuclear positions; treat $\{\mathbf R_A\}$ as parameters.
+  \end{assume}
+  \begin{enumerate}
+    \item<2-> drop the nuclear kinetic energy \hfill $-\sum_A\nabla_A^2/2M_A\to0$
+    \item<3-> nuclear repulsion becomes a constant \hfill $V_{nn}(\mathbf R)$
+    \item<4-> what is left is the \cgold{electronic Hamiltonian}
+  \end{enumerate}
+  \onslide<4->{
+  \[
+    \boxed{\;\Hop=\sum_{i=1}^{N}\hat h(i)+\sum_{i<j}\frac1{r_{ij}},\qquad
+    \hat h(i)=-\tfrac12\nabla_i^2-\sum_A\frac{Z_A}{r_{iA}}\;}
+  \]}
+  \onslide<5->{\centering\small $\hat h$ acts on one electron at a time;
+    \crose{$1/r_{ij}$ couples every pair}: that coupling is what this whole paper is about.\par}
+  \onslide<6->{\centering\small \cmuted{Note: $\Hop$ contains no spin. Spin will enter only through the Pauli principle.}\par}
+\end{frame}
+
+\begin{frame}{The variational principle}{why ``lower energy'' means ``better wavefunction''}
+  {\small\cviolet{Assume:} exact eigenstates $\Hop\Psi_n=E_n\Psi_n$, orthonormal, complete, $E_0\le E_1\le\cdots$}
+  {\large\begin{align*}
+    \stepno{1}\ \tilde\Psi&=\textstyle\sum_n c_n\Psi_n,\qquad \sum_n|c_n|^2=1 &&\cmuted{\text{expand any trial function}}\\
+    \uncover<2->{\stepno{2}\ \langle\tilde\Psi|\Hop|\tilde\Psi\rangle}&\uncover<2->{=\textstyle\sum_{m,n}c_m^*c_n\,E_n\langle\Psi_m|\Psi_n\rangle}
+      &&\uncover<2->{\cmuted{\text{$\Hop$ acts on $\Psi_n$}}}\\
+    &\uncover<3->{=\textstyle\sum_n|c_n|^2E_n} &&\uncover<3->{\cmuted{\langle\Psi_m|\Psi_n\rangle=\delta_{mn}}}\\
+    \uncover<4->{\stepno{3}}&\uncover<4->{\ge\textstyle\sum_n|c_n|^2E_0=E_0} &&\uncover<4->{\cmuted{E_n\ge E_0}}
+  \end{align*}}
+  \onslide<5->{
+  \begin{keyresult}
+    $E[\tilde\Psi]\ge E_0$ for every normalised $\tilde\Psi$; Hartree--Fock and CI rest on it.
+  \end{keyresult}}
+\end{frame}
+
+\begin{frame}{Orbitals: the independent-electron picture}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{assume}[Independent-particle model]
+      replace $\sum_{i<j}1/r_{ij}$ by an \emph{average} field felt by each electron
+    \end{assume}
+    \onslide<2->{\[
+      \hat f\,\varphi_p=\varepsilon_p\,\varphi_p\qquad\text{(one-electron problem)}
+    \]}
+    \onslide<3->{LCAO: expand in atom-centred functions
+    \[
+      \varphi_p(\mathbf r)=\sum_\mu c_{\mu p}\,\chi_\mu(\mathbf r)
+    \]}
+    \onslide<4->{\small orbital = one-electron wavefunction; its \emph{energy} $\varepsilon_p$ and its \emph{occupation} build the configuration.}
+    \column{0.42\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=1.25]
+      \draw[-{Stealth[length=4pt]},noirmuted] (-0.2,-0.1) -- (-0.2,3.2) node[above,font=\scriptsize]{$\varepsilon$};
+      \orblevel{0.8}{0.2}{$\varphi_1$}\orblevel{0.8}{0.9}{$\varphi_2$}\orblevel{0.8}{1.6}{$\varphi_3$}\orblevel{0.8}{2.5}{$\varphi_4$}
+      \onslide<4->{\elup{0.8}{0.2}\eldn{0.8}{0.2}\elup{0.8}{0.9}\eldn{0.8}{0.9}\elup{0.8}{1.6}}
+      \onslide<4->{\node[font=\tiny,text=noirgold,anchor=west] at (1.6,1.6) {SOMO};}
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Box 1: ``Much ado about orbitals''}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+    \begin{paperclaim}
+      ``The reality is that an orbital is a mathematical construct, an approximate, non-unique solution
+      to the Schr\"odinger equation.''
+    \end{paperclaim}
+    \onslide<2->{
+    \begin{plainpanel}
+      \small
+      \cgold{Non-unique:} any unitary mixing of occupied orbitals leaves the determinant (and every
+      observable) unchanged. \\[3pt]
+      \cgold{Approximate:} orbitals exist only inside the independent-particle model.
+    \end{plainpanel}}
+    \column{0.4\textwidth}
+    \raggedright
+    \onslide<3->{
+    \begin{plainpanel}
+      \small
+      The 1999 \emph{Nature} report of ``direct observation of d-orbital holes'' in Cu$_2$O started a debate:
+      \emph{can an orbital be observed?}\par\smallskip
+      \cmuted{What is observable is the density $\rho(\mathbf r)$, and orbital \emph{occupations}.}
+    \end{plainpanel}}
+  \end{columns}
+  \vskip0.2cm
+  \onslide<4->{\centering\small\cgold{Keep this in mind: it returns when ROHF orbital energies turn out to be arbitrary.}\par}
+\end{frame}

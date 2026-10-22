@@ -1,0 +1,159 @@
+% ============================================================ energies of the 2e/2o states
+\section{Energies: \texorpdfstring{$J$}{J} and \texorpdfstring{$K$}{K}}
+
+\begin{frame}{The integrals we need}
+  \begin{columns}[c]
+    \column{0.58\textwidth}
+    {\large
+    \begin{align*}
+      h_{pq}&=\int\varphi_p(\mathbf r)\,\hat h\,\varphi_q(\mathbf r)\,\dd\mathbf r\\
+      \uncover<2->{\eri pqrs}&\uncover<2->{=\iint\frac{\varphi_p(1)\varphi_q(1)\,\varphi_r(2)\varphi_s(2)}{r_{12}}\,\dd\mathbf r_1\dd\mathbf r_2}\\
+      \uncover<3->{J_{pq}}&\uncover<3->{=\eri ppqq}\qquad \uncover<4->{K_{pq}=\eri pqpq}
+    \end{align*}}
+    \onslide<5->{\small chemists' notation; real orbitals $\Rightarrow$ $\eri pqrs=\eri qprs=\eri rspq=\cdots$ (8-fold)}
+    \column{0.38\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=1.0]
+      \onslide<3->{
+      \shade[inner color=noircyan!70,outer color=noirbg] (0,1.6) circle (0.7);
+      \shade[inner color=noirrose!70,outer color=noirbg] (2.2,1.6) circle (0.7);
+      \draw[noirgold,{Stealth[length=4pt]}-{Stealth[length=4pt]}] (0.5,1.6) -- (1.7,1.6);
+      \node[font=\scriptsize,text=noirfg] at (1.1,2.55) {$J$: cloud $|\pa|^2$ repels cloud $|\pb|^2$};}
+      \onslide<4->{
+      \shade[inner color=noirviolet!80,outer color=noirbg] (1.1,-0.2) ellipse (1.1 and 0.45);
+      \node[font=\scriptsize,text=noirfg,align=center] at (1.1,-1.0) {$K$: overlap density $\pa\pb$\\repels itself};}
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Two elementary integrals}{orthonormality does most of the work}
+  \begin{assume}
+    real orthonormal orbitals $\braket{\varphi_p}{\varphi_q}=\delta_{pq}$; \ $\hat h(1)$ acts only on electron 1
+  \end{assume}
+  {\large
+  \begin{align*}
+    \mel{\varphi_p(1)\varphi_q(2)}{\hat h(1)}{\varphi_r(1)\varphi_s(2)}
+      &=\underbrace{\mel{\varphi_p}{\hat h}{\varphi_r}}_{h_{pr}}\ \underbrace{\braket{\varphi_q}{\varphi_s}}_{\delta_{qs}}\\
+    \uncover<2->{\mel{\varphi_p(1)\varphi_q(2)}{\hat h(2)}{\varphi_r(1)\varphi_s(2)}}
+      &\uncover<2->{=\delta_{pr}\,h_{qs}}\\
+    \uncover<3->{\mel{\varphi_p(1)\varphi_q(2)}{r_{12}^{-1}}{\varphi_r(1)\varphi_s(2)}}
+      &\uncover<3->{=\eri prqs}
+  \end{align*}}
+  \onslide<4->{\centering\small\cmuted{electron 1 carries $p,r$; electron 2 carries $q,s$}\par}
+\end{frame}
+
+\begin{frame}{Triplet energy, step by step (1/2)}
+  $\Phi_T=\tfrac1{\sqrt2}(\ccyan A-\crose B)$, \quad $\Hop=\hat h(1)+\hat h(2)+r_{12}^{-1}$, \quad spin part normalised $\Rightarrow$ integrates to 1
+  \vskip0.2cm
+  \cgold{One-electron part}
+  {\large
+  \begin{align*}
+    \mel{A}{\hat h(1)+\hat h(2)}{A}&=h_{aa}\cdot1+1\cdot h_{bb}=h_a+h_b\\
+    \uncover<2->{\mel{B}{\hat h(1)+\hat h(2)}{B}}&\uncover<2->{=h_{bb}+h_{aa}}\\
+    \uncover<3->{\mel{A}{\hat h(1)+\hat h(2)}{B}}&\uncover<3->{=h_{ab}\underbrace{\delta_{ba}}_{0}+\underbrace{\delta_{ab}}_{0}h_{ba}=0}\\
+    \uncover<4->{\tfrac12\bigl[(h_a+h_b)+(h_a+h_b)-0-0\bigr]}&\uncover<4->{=\boxed{h_a+h_b}}
+  \end{align*}}
+\end{frame}
+
+\begin{frame}{Triplet energy, step by step (2/2)}
+  \cgold{Two-electron part}
+  {\large
+  \begin{align*}
+    \mel{A}{r_{12}^{-1}}{A}&=\eri aabb=J_{ab} &&\cmuted{p,r=a;\ q,s=b}\\
+    \uncover<2->{\mel{B}{r_{12}^{-1}}{B}}&\uncover<2->{=\eri bbaa=J_{ab}}\\
+    \uncover<3->{\mel{A}{r_{12}^{-1}}{B}}&\uncover<3->{=\eri abba=K_{ab}} &&\uncover<3->{\cmuted{p=a,r=b;\ q=b,s=a}}\\
+    \uncover<4->{\tfrac12\bigl[J+J-K-K\bigr]}&\uncover<4->{=J_{ab}-K_{ab}}
+  \end{align*}}
+  \onslide<5->{
+  \begin{keyresult}
+    \centering $\displaystyle E_T=h_a+h_b+J_{ab}-K_{ab}$
+  \end{keyresult}}
+\end{frame}
+
+\begin{frame}{Open-shell singlet and the gap}
+  $\Phi_{\OSS}=\tfrac1{\sqrt2}(\ccyan A+\crose B)$: identical steps, but the cross terms enter with $+$
+  {\large
+  \begin{align*}
+    \uncover<2->{E_{\OSS}}&\uncover<2->{=h_a+h_b+\tfrac12\bigl[J+J\hlg<3>{+K+K}\bigr]}\\
+    &\uncover<3->{=h_a+h_b+J_{ab}+K_{ab}}\\[4pt]
+    \uncover<4->{E_{\OSS}-E_T}&\uncover<4->{=(J_{ab}+K_{ab})-(J_{ab}-K_{ab})=\boxed{2K_{ab}}}
+  \end{align*}}
+  \onslide<5->{
+  \centering
+  \begin{tikzpicture}[scale=1.0]
+    \draw[level,noirrose] (0,0) -- (1.4,0) node[right,font=\small,text=noirrose]{$E_T=h_a+h_b+J-K$};
+    \draw[level,noirblue] (0,1.2) -- (1.4,1.2) node[right,font=\small,text=noirblue]{$E_{\OSS}=h_a+h_b+J+K$};
+    \draw[{Stealth[length=4pt]}-{Stealth[length=4pt]},noirgold] (0.7,0.08) -- (0.7,1.12) node[midway,left,font=\small,text=noirgold]{$2K$};
+  \end{tikzpicture}\par}
+\end{frame}
+
+\begin{frame}{The closed shells and their couplings}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \cgold{Diagonal}
+    {\large
+    \begin{align*}
+      E_{\text i}&=2h_a+J_{aa}\\
+      \uncover<2->{E_{\text{ii}}}&\uncover<2->{=2h_b+J_{bb}}
+    \end{align*}}
+    \onslide<3->{\cgold{i\,--\,ii}: one-electron terms die ($\delta_{ab}=0$)
+    \[
+      \mel{\pa\pa}{r_{12}^{-1}}{\pb\pb}=\eri abab=K_{ab}
+    \]}
+    \column{0.5\textwidth}
+    \onslide<4->{\cgold{i\,--\,OSS}}
+    {\small
+    \begin{align*}
+      \uncover<4->{\mel{\Phi_{\text i}}{\Hop}{\Phi_{\OSS}}}&\uncover<4->{=\tfrac1{\sqrt2}\bigl[\mel{\pa\pa}{\Hop}{A}+\mel{\pa\pa}{\Hop}{B}\bigr]}\\
+      \uncover<5->{\mel{\pa\pa}{\hat h(1)+\hat h(2)}{A}}&\uncover<5->{=0+h_{ab}}\\
+      \uncover<6->{\mel{\pa\pa}{r_{12}^{-1}}{A}}&\uncover<6->{=\eri aaab=\mel{\pa\pa}{r_{12}^{-1}}{B}}\\
+      \uncover<7->{\Rightarrow}&\uncover<7->{=\sqrt2\,\bigl(h_{ab}+\eri aaab\bigr)}
+    \end{align*}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The full two-electron, two-orbital Hamiltonian}
+  \centering
+  basis $\{\Phi_{\text i},\Phi_{\text{ii}},\Phi_{\OSS}\}$ (singlets) \quad $+$ \quad the triplet on its own
+  {\large
+  \[
+    \mathbf H_S=\begin{pmatrix}
+      2h_a+J_{aa} & K_{ab} & \sqrt2\,(h_{ab}+\eri aaab)\\
+      K_{ab} & 2h_b+J_{bb} & \sqrt2\,(h_{ab}+\eri bbba)\\
+      \cdot & \cdot & h_a+h_b+J_{ab}+K_{ab}
+    \end{pmatrix},\qquad E_T=h_a+h_b+J_{ab}-K_{ab}
+  \]}
+  \onslide<2->{\small orbitals of different symmetry ($\sigma_g/\sigma_u$, a symmetric diradical's NBMOs) $\Rightarrow$
+    $h_{ab}=\eri aaab=\eri bbba=0$: the OSS decouples}
+  \vskip0.2cm
+  \onslide<3->{
+  \begin{checked}[T2: brute force]
+    5 random integral sets (positive-definite kernel) $\to$ PySCF full CI: singlet and triplet roots
+    reproduce these closed forms to $2\times10^{-14}\,\Eh$.
+  \end{checked}}
+\end{frame}
+
+\begin{frame}{Hund's rule at frozen orbitals}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+    \begin{paperclaim}
+      Hund (1925): ``of the different multiplets resulting from different configurations of electrons in
+      degenerate orbitals of an atom those with greatest multiplicity have the lowest energy''
+    \end{paperclaim}
+    \onslide<2->{With the \emph{same} orbitals in both states:
+    \[
+      E_T-E_{\OSS}=-2K_{ab}<0\quad\text{if }K_{ab}>0
+    \]}
+    \onslide<3->{\small\cgold{Two things to prove:} $K\ge0$ \ (next section), and whether ``same orbitals'' is legitimate (it is not).}
+    \column{0.4\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=1.3]
+      \draw[level] (-0.4,0) -- (0.4,0); \draw[level] (0.8,0) -- (1.6,0);
+      \elup{0}{0}\elup{1.2}{0}
+      \node[font=\scriptsize,text=noirrose] at (0.6,-0.45) {lower: $J-K$};
+      \draw[level] (-0.4,1.3) -- (0.4,1.3); \draw[level] (0.8,1.3) -- (1.6,1.3);
+      \elup{0}{1.3}\eldn{1.2}{1.3}
+      \node[font=\scriptsize,text=noirblue] at (0.6,0.85) {higher: $J+K$};
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}

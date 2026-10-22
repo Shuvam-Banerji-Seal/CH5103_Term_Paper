@@ -1,0 +1,169 @@
+% beamerthemeNoir.sty — black, high-contrast beamer theme for the CH5103 talk.
+%   * pure-black canvas, off-white text, gold / cyan / rose / green accents
+%   * calligraphic titles (TeX Gyre Chorus), Libertinus Serif body + Libertinus Math,
+%     EB Garamond small caps for labels, JetBrains Mono for code
+%   * footline = "loading" progress bar that advances on every overlay step
+%     (page / total pages), with a glowing head, plus section name and frame counter
+% Requires LuaLaTeX (fontspec, unicode-math).
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeNoir}[2026/10/22 Noir beamer theme]
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc,fadings,shadows.blur}
+\RequirePackage{mathtools}
+\RequirePackage{fontspec}
+\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
+\mode<presentation>
+
+% ------------------------------------------------------------------ colours
+\definecolor{noirbg}{HTML}{000000}
+\definecolor{noirpanel}{HTML}{111116}
+\definecolor{noirpanelhi}{HTML}{1A1A22}
+\definecolor{noirtrack}{HTML}{24242C}
+\definecolor{noirfg}{HTML}{ECE8E1}
+\definecolor{noirmuted}{HTML}{9C9AA6}
+\definecolor{noirgold}{HTML}{E9B95B}
+\definecolor{noircyan}{HTML}{5FD4D0}
+\definecolor{noirrose}{HTML}{FF5D8F}
+\definecolor{noirgreen}{HTML}{72DD8F}
+\definecolor{noirviolet}{HTML}{AE8FFF}
+\definecolor{noirblue}{HTML}{7DB9FF}
+\definecolor{noirorange}{HTML}{FF9F55}
+
+\setbeamercolor{background canvas}{bg=noirbg}
+\setbeamercolor{normal text}{fg=noirfg,bg=noirbg}
+\setbeamercolor{structure}{fg=noirgold}
+\setbeamercolor{alerted text}{fg=noirrose}
+\setbeamercolor{example text}{fg=noirgreen}
+\setbeamercolor{frametitle}{fg=noirgold}
+\setbeamercolor{framesubtitle}{fg=noirmuted}
+\setbeamercolor{title}{fg=noirgold}
+\setbeamercolor{subtitle}{fg=noirfg}
+\setbeamercolor{author}{fg=noirfg}
+\setbeamercolor{institute}{fg=noirmuted}
+\setbeamercolor{date}{fg=noirmuted}
+\setbeamercolor{item}{fg=noirgold}
+\setbeamercolor{subitem}{fg=noircyan}
+\setbeamercolor{enumerate item}{fg=noirgold}
+\setbeamercolor{caption name}{fg=noirgold}
+\setbeamercolor{block title}{fg=noirgold,bg=noirpanelhi}
+\setbeamercolor{block body}{fg=noirfg,bg=noirpanel}
+\setbeamercolor{block title alerted}{fg=noirrose,bg=noirpanelhi}
+\setbeamercolor{block body alerted}{fg=noirfg,bg=noirpanel}
+\setbeamercolor{block title example}{fg=noirgreen,bg=noirpanelhi}
+\setbeamercolor{block body example}{fg=noirfg,bg=noirpanel}
+
+% ------------------------------------------------------------------ fonts
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\setmainfont{Libertinus Serif}
+\setsansfont{Libertinus Serif}
+\setmonofont{JetBrains Mono}[Scale=0.82]
+\setmathfont{Libertinus Math}
+\newfontfamily\noircalli{texgyrechorus-mediumitalic.otf}
+\newfontfamily\noirgaramond{EB Garamond}
+\newcommand\calli[1]{{\noircalli #1}}
+\newcommand\gsc[1]{{\noirgaramond\scshape #1}}
+
+\setbeamerfont{frametitle}{size=\LARGE}
+\setbeamerfont{framesubtitle}{size=\small,shape=\itshape}
+\setbeamerfont{title}{size=\Huge}
+\setbeamerfont{subtitle}{size=\large,shape=\itshape}
+\setbeamerfont{footline}{size=\tiny}
+\setbeamerfont{block title}{size=\small,series=\bfseries}
+\setbeamerfont{caption}{size=\scriptsize}
+
+% ------------------------------------------------------------------ inner elements
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\raisebox{0.15ex}{\tikz\fill[noirgold] (0,0.5ex) -- (0.5ex,0) -- (0,-0.5ex) -- (-0.5ex,0) -- cycle;}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.2ex}{\tikz\fill[noircyan] (0,0) circle (0.35ex);}}
+\setbeamertemplate{enumerate item}{\noirgaramond\insertenumlabel.}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{caption}{\insertcaption}
+\setbeamersize{text margin left=0.7cm,text margin right=0.7cm}
+
+% ------------------------------------------------------------------ frame title
+\setbeamertemplate{frametitle}{%
+  \vskip0.18cm%
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.55cm,rightskip=0.55cm]{frametitle}%
+    {\usebeamerfont{frametitle}\noircalli\insertframetitle}%
+    \ifx\insertframesubtitle\@empty\else%
+      \par\vskip1pt{\usebeamerfont{framesubtitle}\color{noirmuted}\noirgaramond\itshape\insertframesubtitle}%
+    \fi%
+    \par\vskip1pt%
+    \begin{tikzpicture}
+      \shade[left color=noirgold,right color=noirbg] (0,0) rectangle (0.62\paperwidth,0.6pt);
+    \end{tikzpicture}%
+  \end{beamercolorbox}%
+}
+
+% ------------------------------------------------------------------ footline: loading bar
+% fraction = current page / last page; recomputed on every overlay page.
+\def\noir@progressfraction{%
+  \pgfmathsetmacro\noir@frac{min(1,max(0,(\the\c@page-1)/max(1,\beamer@endpageofdocument-1)))}%
+}
+\setbeamertemplate{footline}{%
+  \noir@progressfraction%
+  \begin{tikzpicture}[x=\paperwidth,y=1pt]
+    \useasboundingbox (0,0) rectangle (1,15);
+    % labels
+    \node[anchor=west,inner sep=0,text=noirmuted,font=\noirgaramond\tiny\scshape]
+      at (0.018,9) {\insertsection};
+    \node[anchor=east,inner sep=0,text=noirmuted,font=\noirgaramond\tiny]
+      at (0.982,9) {\insertframenumber\,/\,\inserttotalframenumber};
+    % track
+    \fill[noirtrack] (0,0) rectangle (1,2.2);
+    % filled part (gradient cyan -> gold)
+    \ifdim\noir@frac pt>0pt
+      \shade[left color=noircyan,right color=noirgold] (0,0) rectangle (\noir@frac,2.2);
+    \fi
+    % glowing head
+    \fill[noirgold,opacity=0.18] (\noir@frac,1.1) circle (4.2pt);
+    \fill[noirgold,opacity=0.35] (\noir@frac,1.1) circle (2.6pt);
+    \fill[white] (\noir@frac,1.1) circle (1.3pt);
+  \end{tikzpicture}%
+}
+
+% ------------------------------------------------------------------ title page
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % faint orbital ornament
+    \begin{scope}[shift={($(current page.center)+(3.6,0.3)$)},opacity=0.16,line width=0.5pt]
+      \foreach \a in {0,30,...,150}{\draw[noircyan,rotate=\a] (0,0) ellipse (3.0 and 0.9);}
+      \fill[noirgold] (0,0) circle (0.12);
+    \end{scope}
+  \end{tikzpicture}%
+  \vskip1.2cm%
+  {\usebeamercolor[fg]{title}\usebeamerfont{title}\noircalli\inserttitle\par}%
+  \vskip0.25cm%
+  {\usebeamercolor[fg]{subtitle}\usebeamerfont{subtitle}\noirgaramond\insertsubtitle\par}%
+  \vskip0.6cm%
+  {\usebeamercolor[fg]{author}\noirgaramond\large\insertauthor\par}%
+  \vskip0.15cm%
+  {\usebeamercolor[fg]{institute}\noirgaramond\small\insertinstitute\par}%
+  \vskip0.1cm%
+  {\usebeamercolor[fg]{date}\noirgaramond\small\insertdate\par}%
+}
+
+% ------------------------------------------------------------------ section divider
+\newcounter{noirpart}
+\AtBeginSection[]{%
+  \stepcounter{noirpart}%
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=south west,text=noirgold!30!noirbg,font=\noircalli\fontsize{96}{96}\selectfont]
+        at ($(current page.south west)+(0.5,0.3)$) {\Roman{noirpart}};
+      \shade[left color=noirgold,right color=noirbg]
+        ($(current page.west)+(0.7,-0.55)$) rectangle ++(8,0.02);
+    \end{tikzpicture}%
+    \vfill
+    {\noirgaramond\scshape\color{noirmuted}\small Part \Roman{noirpart}\par}
+    \vskip0.2cm
+    {\noircalli\Huge\color{noirgold}\insertsectionhead\par}
+    \vfill\vfill
+  \end{frame}
+}
+
+\mode<all>
+\endinput

@@ -1,0 +1,81 @@
+% ============================================================ Fermi holes, K >= 0, J >= K
+\section{Fermi holes}
+
+\begin{frame}{Where can the two electrons be?}{the pair density}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    {\small $P(\mathbf r_1,\mathbf r_2)=N(N-1)\sum_{\sigma_1\sigma_2}\int|\Psi|^2\,\dd x_3\cdots\dd x_N$}\par\smallskip
+    \onslide<2->{two electrons, spin integrated:}
+    {\begin{align*}
+      \uncover<2->{P_T}&\uncover<2->{=\bigl[\pa(1)\pb(2)-\pb(1)\pa(2)\bigr]^2}\\
+      \uncover<3->{P_{\OSS}}&\uncover<3->{=\bigl[\pa(1)\pb(2)+\pb(1)\pa(2)\bigr]^2}
+    \end{align*}}
+    \onslide<4->{set $\mathbf r_1=\mathbf r_2=\mathbf r$:
+    \[
+      P_T(\mathbf r,\mathbf r)=\hlr<5->{0},\qquad P_{\OSS}(\mathbf r,\mathbf r)=4\pa^2\pb^2
+    \]}
+    \column{0.45\textwidth}
+    \onslide<5->{
+    \begin{keyresult}[Fermi hole]
+      same-spin electrons are \emph{never} at the same point, exactly; no approximation beyond the form of $\Psi$
+    \end{keyresult}}
+    \onslide<6->{\small\cmuted{The \emph{Coulomb} hole (from $1/r_{12}$ itself) is absent here: it needs configuration mixing, i.e.\ correlation.}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Seeing the Fermi hole}{two electrons in a 1-D box, orbitals $\sin\pi x$ and $\sin2\pi x$}
+  \centering
+  \pgfplotsset{colormap={noirmap}{rgb255(0cm)=(0,0,0); rgb255(1cm)=(30,60,110); rgb255(2cm)=(95,212,208); rgb255(3cm)=(233,185,91); rgb255(4cm)=(255,255,255)}}
+  \begin{tikzpicture}
+    \begin{axis}[noirplot,name=trip,width=5.5cm,height=5.5cm,view={0}{90},colormap name=noirmap,
+        xlabel={$x_1$},ylabel={$x_2$},domain=0:1,y domain=0:1,samples=46,title={\crose{triplet} $P_T(x_1,x_2)$},
+        xtick={0,0.5,1},ytick={0,0.5,1},enlargelimits=false]
+      \addplot3[surf,shader=interp] {4*(sin(deg(pi*x))*sin(deg(2*pi*y)) - sin(deg(2*pi*x))*sin(deg(pi*y)))^2};
+      \draw[noirrose,dashed,line width=0.8pt] (axis cs:0,0) -- (axis cs:1,1);
+    \end{axis}
+    \onslide<2->{
+    \begin{axis}[noirplot,at={(trip.east)},anchor=west,xshift=1.4cm,width=5.5cm,height=5.5cm,view={0}{90},colormap name=noirmap,
+        xlabel={$x_1$},domain=0:1,y domain=0:1,samples=46,title={\cblue{singlet} $P_{\OSS}(x_1,x_2)$},
+        xtick={0,0.5,1},ytick={0,0.5,1},enlargelimits=false]
+      \addplot3[surf,shader=interp] {4*(sin(deg(pi*x))*sin(deg(2*pi*y)) + sin(deg(2*pi*x))*sin(deg(pi*y)))^2};
+      \draw[noirmuted,dashed,line width=0.8pt] (axis cs:0,0) -- (axis cs:1,1);
+    \end{axis}}
+  \end{tikzpicture}
+  \vskip-0.1cm
+  {\small dashed line $x_1=x_2$: \crose{dark all along for the triplet}\onslide<2->{, bright for the singlet}}
+\end{frame}
+
+\begin{frame}{$K_{ab}\ge0$: a three-line proof}
+  overlap density \ $\rho(\mathbf r)=\pa(\mathbf r)\pb(\mathbf r)$ \ (real) \quad$\Rightarrow$\quad
+  $K_{ab}=\displaystyle\iint\frac{\rho(1)\rho(2)}{r_{12}}$
+  {\large
+  \begin{align*}
+    \stepno{1}\ \frac1{|\mathbf r|}&=\int\frac{\dd^3k}{(2\pi)^3}\,\frac{4\pi}{k^2}\,e^{i\mathbf k\cdot\mathbf r}
+      &&\cmuted{\text{Fourier form of Coulomb}}\\
+    \uncover<2->{\stepno{2}\ K_{ab}}&\uncover<2->{=\int\frac{\dd^3k}{(2\pi)^3}\frac{4\pi}{k^2}
+      \underbrace{\Bigl(\int\rho\,e^{i\mathbf k\cdot\mathbf r_1}\Bigr)}_{\tilde\rho(\mathbf k)^*}
+      \underbrace{\Bigl(\int\rho\,e^{-i\mathbf k\cdot\mathbf r_2}\Bigr)}_{\tilde\rho(\mathbf k)}}\\
+    \uncover<3->{\stepno{3}\ }&\uncover<3->{=\int\frac{\dd^3k}{(2\pi)^3}\,\frac{4\pi}{k^2}\,|\tilde\rho(\mathbf k)|^2\ \hlg<4->{\ge0}}
+  \end{align*}}
+  \onslide<5->{\centering\small equality iff $\pa\pb\equiv0$ \ (no common region of space) \ --- this returns as \emph{disjointness}\par}
+\end{frame}
+
+\begin{frame}{$J_{ab}\ge K_{ab}$}
+  \begin{columns}[c]
+    \column{0.6\textwidth}
+    {\large
+    \begin{align*}
+      \stepno{1}\ f&=\pa(1)\pb(2)-\pb(1)\pa(2)\\
+      \uncover<2->{\stepno{2}\ 0}&\uncover<2->{\le\iint\frac{f^2}{r_{12}}}\\
+      &\uncover<3->{=J_{ab}+J_{ab}-K_{ab}-K_{ab}}\\
+      &\uncover<4->{=2(J_{ab}-K_{ab})}
+    \end{align*}}
+    \onslide<5->{\[\boxed{\,J_{ab}\ge K_{ab}\ge0\,}\]}
+    \column{0.36\textwidth}
+    \onslide<6->{
+    \begin{checked}[T3]
+      all canonical RHF/6-31G orbitals of H$_2$O: $\min K_{pq}=1.1\times10^{-3}\,\Eh>0$ and $J_{pq}\ge K_{pq}$ for every pair
+    \end{checked}}
+    \onslide<7->{\small so $E_T=h_a+h_b+J-K$ really is the lower of the two.}
+  \end{columns}
+\end{frame}

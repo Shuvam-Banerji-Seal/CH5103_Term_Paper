@@ -1,0 +1,25 @@
+% CH5103 term-paper presentation (LuaLaTeX). Build: make  (or latexmk main.tex)
+\documentclass[aspectratio=169,11pt]{beamer}
+\usetheme{Noir}
+\usepackage{noir-macros}
+\usepackage{minted}
+\setminted{fontsize=\scriptsize,style=monokai,breaklines,tabsize=2}
+\graphicspath{{figures/}{../assets/figures/}}
+
+\title{Uncommon Molecular Electronic Configurations}
+\subtitle{Theory, derivations and verification of Gryn'ova, Coote \& Corminboeuf (2015)}
+\author{Shuvam Banerji Seal}
+\institute{CH5103 Term Paper}
+\date{\today}
+
+\begin{document}
+\input{sections/00-title}
+\input{sections/01-roadmap}
+\input{sections/02-paper}
+\input{sections/03-foundations}
+\input{sections/04-spin}
+\input{sections/05-two-electrons}
+\input{sections/06-energies}
+\input{sections/07-holes}
+\input{sections/08-hund}
+\end{document}

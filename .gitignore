@@ -23,3 +23,7 @@ build/
 *.tmp
 qce.log
 *_optim.xyz
+
+# secrets
+.env
+.env.*

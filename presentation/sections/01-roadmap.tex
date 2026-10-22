@@ -1,0 +1,55 @@
+% ============================================================ roadmap + reading guide
+\begin{frame}{The journey}{from the Schr\"odinger equation to a sign error in print}
+  \centering
+  \begin{tikzpicture}[
+      stop/.style={draw=noirgold,fill=noirpanel,rounded corners=3pt,minimum width=2.45cm,minimum height=0.72cm,
+                   font=\noirgaramond\footnotesize,text=noirfg,align=center},
+      path/.style={-{Stealth[length=4pt]},noirmuted,line width=0.7pt}]
+    \node[stop] (a) at (0,2.4) {Foundations};
+    \node[stop] (b) at (3,2.4) {Spin \&\\antisymmetry};
+    \node[stop] (c) at (6,2.4) {Two electrons,\\two orbitals};
+    \node[stop] (d) at (9,2.4) {Energies, $J$ \& $K$};
+    \node[stop] (e) at (12,2.4) {Hund's rule};
+    \node[stop] (f) at (12,0.9) {Static\\correlation};
+    \node[stop] (g) at (9,0.9) {Kinetic\\exchange};
+    \node[stop] (h) at (6,0.9) {NBMOs \&\\disjointness};
+    \node[stop] (i) at (3,0.9) {Spin\\polarisation};
+    \node[stop] (j) at (0,0.9) {Exciting\\cases};
+    \node[stop] (k) at (0,-0.6) {Koopmans\\\& Janak};
+    \node[stop] (l) at (3,-0.6) {Aufbau\\on trial};
+    \node[stop] (m) at (6,-0.6) {Quasi-closed\\shells};
+    \node[stop,draw=noircyan] (n) at (9,-0.6) {Our\\verification};
+    \node[stop,draw=noirgreen] (o) at (12,-0.6) {Verdict};
+    \foreach \x/\y in {a/b,b/c,c/d,d/e,e/f,f/g,g/h,h/i,i/j,j/k,k/l,l/m,m/n,n/o}
+      \draw[path] (\x) -- (\y);
+  \end{tikzpicture}
+  \vskip0.3cm
+  {\small\cmuted{Every equation is derived step by step; every step was checked by SymPy, PySCF or Lean.}}
+\end{frame}
+
+\begin{frame}{How to read these slides}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{paperclaim}
+      a statement quoted from the review
+    \end{paperclaim}
+    \begin{assume}
+      what a derivation takes for granted
+    \end{assume}
+    \begin{keyresult}
+      what the derivation proves
+    \end{keyresult}
+    \column{0.48\textwidth}
+    \begin{checked}
+      how we tested it (script / proof)
+    \end{checked}
+    \begin{erratum}
+      where the paper got it wrong
+    \end{erratum}
+    \vskip0.2cm
+    \centering
+    \okpill\ \badpill\ \warnpill\ \partpill
+  \end{columns}
+  \vskip0.25cm
+  \centering{\small Atomic units throughout: $\hbar=m_e=e=4\pi\varepsilon_0=1$, energies in hartree ($\Eh$).}
+\end{frame}

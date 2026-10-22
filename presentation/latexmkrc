@@ -1,0 +1,5 @@
+# latexmk configuration for the Noir beamer deck (LuaLaTeX, out-of-tree build)
+$pdf_mode = 4;                       # lualatex
+$lualatex = 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error %O %S';
+$out_dir = 'build';
+$ENV{'TEXINPUTS'} = './theme//:' . ($ENV{'TEXINPUTS'} // '');

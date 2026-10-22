@@ -1,0 +1,149 @@
+% ============================================================ antisymmetry and spin
+\section{Spin \& antisymmetry}
+
+\begin{frame}{Swapping two electrons}{why the exchange eigenvalue is $\pm1$}
+  \begin{columns}[c]
+    \column{0.58\textwidth}
+    Define $\hat P_{12}\Psi(x_1,x_2)=\Psi(x_2,x_1)$, \quad $x=(\mathbf r,\sigma)$.
+    {\begin{align*}
+      \stepno{1}\ &\hat P_{12}^2=\hat 1 &&\cmuted{\text{swap twice}}\\
+      \uncover<2->{\stepno{2}\ }&\uncover<2->{\hat P_{12}\Psi=\lambda\Psi\ \Rightarrow\ \Psi=\lambda^2\Psi} &&\uncover<2->{\cmuted{\text{apply twice}}}\\
+      \uncover<3->{\stepno{3}\ }&\uncover<3->{\lambda=\pm1} &&\\
+      \uncover<4->{\stepno{4}\ }&\uncover<4->{[\Hop,\hat P_{12}]=0} &&\uncover<4->{\cmuted{\Hop\text{ symmetric in labels}}}
+    \end{align*}}
+    \column{0.38\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=1.1]
+      \fill[noircyan] (0,0) circle (0.12) node[below=3pt,font=\scriptsize]{1};
+      \fill[noirrose] (2,0) circle (0.12) node[below=3pt,font=\scriptsize]{2};
+      \draw[-{Stealth[length=5pt]},noirgold,line width=0.8pt] (0.2,0.15) to[bend left=50] (1.8,0.15);
+      \draw[-{Stealth[length=5pt]},noirgold,line width=0.8pt] (1.8,-0.15) to[bend left=50] (0.2,-0.15);
+      \node[font=\small,text=noirgold] at (1,0.95) {$\hat P_{12}$};
+      \onslide<5->{\node[font=\large,text=noirrose] at (1,-1.2) {$\lambda=-1$};}
+      \onslide<5->{\node[font=\scriptsize,text=noirmuted] at (1,-1.65) {electrons (fermions)};}
+    \end{tikzpicture}
+  \end{columns}
+  \onslide<5->{
+  \begin{paperclaim}
+    ``the wavefunction for a system of fermions must be antisymmetric with respect to the interchange
+    of any two particles'' (p.\ 441)
+  \end{paperclaim}}
+\end{frame}
+
+\begin{frame}{Slater determinants}{antisymmetry built in}
+  \[
+    D[\chi_1,\chi_2]=\begin{vmatrix}\chi_1(1)&\chi_2(1)\\\chi_1(2)&\chi_2(2)\end{vmatrix}
+    =\chi_1(1)\chi_2(2)-\chi_2(1)\chi_1(2)
+  \]
+  \begin{itemize}
+    \item<2-> swap electrons $\Leftrightarrow$ swap two \emph{rows} $\Rightarrow$ $D\to-D$ \hfill\cgreen{antisymmetric}
+    \item<3-> two equal spin orbitals $\Leftrightarrow$ two equal \emph{columns} $\Rightarrow$ $D=0$ \hfill\cgold{Pauli exclusion}
+    \item<4-> normalised: $\ket{\chi_1\chi_2}=\tfrac1{\sqrt2}D[\chi_1,\chi_2]$
+  \end{itemize}
+  \onslide<5->{
+  \begin{keyresult}
+    ``No two electrons with the same four quantum numbers'' is a \emph{consequence} of antisymmetry
+    inside the orbital model, not a separate law.
+  \end{keyresult}}
+\end{frame}
+
+\begin{frame}{Spin operators for two electrons}
+  \begin{columns}[T]
+    \column{0.47\textwidth}
+    \cgold{One electron} ($s=\tfrac12$):
+    {\large\begin{align*}
+      \hat s_z\alpha&=+\tfrac12\alpha, & \hat s_z\beta&=-\tfrac12\beta\\
+      \hat s_+\beta&=\alpha, & \hat s_+\alpha&=0\\
+      \hat s_-\alpha&=\beta, & \hat s_-\beta&=0
+    \end{align*}}
+    \onslide<2->{\cgold{Two electrons:}
+    \[
+      \hat S_z=\hat s_{z}(1)+\hat s_{z}(2),\quad \hat S_\pm=\hat s_\pm(1)+\hat s_\pm(2)
+    \]}
+    \column{0.5\textwidth}
+    \onslide<3->{\cgold{A useful identity:}}
+    {\large\begin{align*}
+      \uncover<3->{\hat S_-\hat S_+}&\uncover<3->{=(\hat S_x-i\hat S_y)(\hat S_x+i\hat S_y)}\\
+      &\uncover<4->{=\hat S_x^2+\hat S_y^2+i[\hat S_x,\hat S_y]}\\
+      &\uncover<5->{=\hat S^2-\hat S_z^2+i(i\hat S_z)}\\
+      &\uncover<6->{=\hat S^2-\hat S_z^2-\hat S_z}
+    \end{align*}}
+    \onslide<7->{\[
+      \boxed{\hat S^2=\hat S_-\hat S_++\hat S_z^2+\hat S_z}
+    \]}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{$\hat S^2$ on the four spin products (1/2)}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \cgold{$\alpha_1\alpha_2$}
+    {\large\begin{align*}
+      \hat S_+\alpha_1\alpha_2&=0\\
+      \uncover<2->{\hat S_z\alpha_1\alpha_2}&\uncover<2->{=(\tfrac12+\tfrac12)\alpha_1\alpha_2=\alpha_1\alpha_2}\\
+      \uncover<3->{\hat S^2\alpha_1\alpha_2}&\uncover<3->{=(0+1+1)\,\alpha_1\alpha_2}\\
+      &\uncover<4->{=\cgreen{2}\,\alpha_1\alpha_2}
+    \end{align*}}
+    \onslide<4->{\small $S(S+1)=2\Rightarrow S=1,\ M_S=+1$}
+    \column{0.48\textwidth}
+    \onslide<5->{\cgold{$\beta_1\beta_2$}}
+    {\large\begin{align*}
+      \uncover<5->{\hat S_+\beta_1\beta_2}&\uncover<5->{=\alpha_1\beta_2+\beta_1\alpha_2}\\
+      \uncover<6->{\hat S_-(\alpha_1\beta_2+\beta_1\alpha_2)}&\uncover<6->{=\beta_1\beta_2+\beta_1\beta_2}\\
+      \uncover<7->{(\hat S_z^2+\hat S_z)\beta_1\beta_2}&\uncover<7->{=(1-1)\beta_1\beta_2=0}\\
+      \uncover<8->{\hat S^2\beta_1\beta_2}&\uncover<8->{=\cgreen{2}\,\beta_1\beta_2}
+    \end{align*}}
+    \onslide<8->{\small $S=1,\ M_S=-1$}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{$\hat S^2$ on the four spin products (2/2)}
+  \cgold{$\alpha_1\beta_2$ and $\beta_1\alpha_2$} \quad\cmuted{($M_S=0$; neither is an eigenfunction on its own)}
+  {\large\begin{align*}
+    \hat S_+\alpha_1\beta_2&=\alpha_1\alpha_2 &
+    \uncover<2->{\hat S_-\alpha_1\alpha_2}&\uncover<2->{=\beta_1\alpha_2+\alpha_1\beta_2}\\
+    \uncover<3->{\hat S_z\alpha_1\beta_2}&\uncover<3->{=0} &
+    \uncover<4->{\Rightarrow\ \hat S^2\alpha_1\beta_2}&\uncover<4->{=\alpha_1\beta_2+\beta_1\alpha_2}\\
+    &&\uncover<5->{\hat S^2\beta_1\alpha_2}&\uncover<5->{=\alpha_1\beta_2+\beta_1\alpha_2\quad\cmuted{\text{(same steps)}}}
+  \end{align*}}
+  \onslide<6->{Add and subtract:}
+  \[
+    \uncover<6->{\hat S^2(\alpha_1\beta_2\pm\beta_1\alpha_2)=(1\pm1)\,(\alpha_1\beta_2\pm\beta_1\alpha_2)}
+  \]
+  \onslide<7->{\centering
+  \begin{tikzpicture}
+    \node[draw=noirrose,rounded corners,fill=noirpanel,inner sep=5pt] at (0,0) {$+$:\ eigenvalue $2$\ \ $\Rightarrow S=1$};
+    \node[draw=noirblue,rounded corners,fill=noirpanel,inner sep=5pt] at (5.2,0) {$-$:\ eigenvalue $0$\ \ $\Rightarrow S=0$};
+  \end{tikzpicture}\par}
+\end{frame}
+
+\begin{frame}{Triplet and singlet spin functions}
+  \begin{columns}[c]
+    \column{0.6\textwidth}
+    \begin{keyresult}[The four two-electron spin states]
+      \vskip-0.6em
+      {\large\begin{align*}
+        \Theta_{1,+1}&=\alpha_1\alpha_2\\
+        \Theta_{1,0}&=\tfrac1{\sqrt2}(\alpha_1\beta_2+\beta_1\alpha_2)\\
+        \Theta_{1,-1}&=\beta_1\beta_2\\
+        \Theta_{0,0}&=\tfrac1{\sqrt2}(\alpha_1\beta_2-\beta_1\alpha_2)
+      \end{align*}}
+    \end{keyresult}
+    \column{0.36\textwidth}
+    \begin{itemize}
+      \item<2-> triplet spin functions are \cgold{symmetric} under $1\leftrightarrow2$
+      \item<3-> the singlet is \cgold{antisymmetric}
+      \item<4-> total must be antisymmetric, so
+    \end{itemize}
+    \onslide<4->{
+    \begin{center}
+      \small
+      \begin{tabular}{lcc}
+        \toprule & space & spin\\\midrule
+        triplet & \crose{anti} & sym\\
+        singlet & \cblue{sym} & anti\\\bottomrule
+      \end{tabular}
+    \end{center}}
+  \end{columns}
+  \onslide<5->{\centering\small\tick\ \cmuted{T1: $\hat S^2,\hat S_z$ built as $4\times4$ matrices in SymPy; all eigen-relations exact.}\par}
+\end{frame}
