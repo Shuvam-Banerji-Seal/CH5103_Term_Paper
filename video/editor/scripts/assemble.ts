@@ -28,10 +28,12 @@ const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer
 const CRF = opt('crf', '12')!, PRESET = opt('preset', 'slow')!;
 // segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores.
 // Each peaks at ~1.7 GB (frame-threaded decode ~0.9 GB, overlay, x264 lookahead with 6 threads), so three at a time.
-// at 4K, one: the GPU has one video encoder, and two ffmpegs sharing it each fall behind their own frame producer, so
-// the frames waiting for it pile up in GPU buffers (GTT, in system RAM): 5 GB in one encoder, 0.4 GB left free. One
-// alone keeps up (its GTT stays at ~0.2 GB) and costs ~15% of the throughput (50 fps against 60).
-const JOBS = Math.max(1, +opt('jobs', K4 ? '1' : '3')!);
+// At 4K the GPU's one video encoder takes ~60 fps in all. Two ffmpegs, each producing frames faster than its share,
+// piled the waiting frames up in GPU buffers (GTT, in system RAM: 5 GB in one, 0.4 GB of RAM left); one alone holds
+// ~0.2 GB but its producer manages only ~28 fps. So two, each held to 0.8 x real time (48 fps together): below what
+// the encoder takes, so nothing waits.
+const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '3')!);
+const RT = K4 && JOBS > 1 ? 1.6 / JOBS : 0;
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
@@ -98,7 +100,7 @@ const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
 // the HUD is drawn only in the top strip (progress bar and part label; the rest of the image is fully transparent), so
 // only that strip is overlaid: the same frames, without blending a whole transparent 4K image into every frame
 const HUD_H = K4 ? 120 : 60;
-const UP = K4 ? ',format=nv12,hwupload' : '';
+const UP = K4 ? `${RT ? `,realtime=speed=${RT}` : ''},format=nv12,hwupload` : '';
 // a segment is reused only if it was encoded from the same inputs with the same settings (a stamp beside it)
 const stampOf = (g: Seg) => JSON.stringify({ args: x264, frames: g.frames,
   inputs: [g.src, g.hud].filter(Boolean).map((f) => { const st = statSync(f!); return [f, st.size, st.mtimeMs]; }) });
