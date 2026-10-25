@@ -28,7 +28,7 @@ const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer
 const CRF = opt('crf', '12')!, PRESET = opt('preset', 'slow')!;
 // segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores.
 // Each peaks at ~1.7 GB (frame-threaded decode ~0.9 GB, overlay, x264 lookahead with 6 threads), so three at a time.
-const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '3')!);
+const JOBS = Math.max(1, +opt('jobs', '3')!);
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
@@ -57,7 +57,9 @@ async function runAsync(args: string[]) {
   if (code !== 0) throw new Error(`${args.join(' ')}\n${err}`);
   return out;
 }
-const COUNT = ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-count_frames', '-show_entries', 'stream=nb_read_frames', '-of', 'csv=p=0'];
+// frames counted as packets (one per frame in these constant-rate H.264/HEVC files): -count_frames would decode every
+// segment again, which at 4K took longer than encoding it
+const COUNT = ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-count_packets', '-show_entries', 'stream=nb_read_packets', '-of', 'csv=p=0'];
 const countFrames = (f: string) => +run([...COUNT, f]).trim();
 const countFramesAsync = async (f: string) => +(await runAsync([...COUNT, f])).trim();
 
@@ -89,8 +91,10 @@ const x264 = K4
   ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '20')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
   : ['-c:v', 'libx264', '-threads', '6', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
      '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
-// 4K: fewer decoder threads (each keeps its own 4K reference frames)
-const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128', '-threads', '4'] : [];
+const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
+// the HUD is drawn only in the top strip (progress bar and part label; the rest of the image is fully transparent), so
+// only that strip is overlaid: the same frames, without blending a whole transparent 4K image into every frame
+const HUD_H = K4 ? 120 : 60;
 const UP = K4 ? ',format=nv12,hwupload' : '';
 // a segment is reused only if it was encoded from the same inputs with the same settings (a stamp beside it)
 const stampOf = (g: Seg) => JSON.stringify({ args: x264, frames: g.frames,
@@ -106,7 +110,7 @@ async function encode(g: Seg, k: number) {
   // the HUD is one image that overlay repeats (looped with -loop 1 it runs ahead of a scene's long still frames, and
   // overlay queued every frame it made: 3.6 GB in one encoder)
   else await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-i', g.hud!, '-filter_complex',
-    `[0:v]fps=${FPS}[s];[s][1:v]overlay=0:0:eof_action=repeat:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
+    `[1:v]crop=iw:${HUD_H}:0:0[h];[0:v]fps=${FPS}[s];[s][h]overlay=0:0:eof_action=repeat:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
   const n = await countFramesAsync(out);
   if (n !== g.frames) throw new Error(`${g.label}: encoded ${n} frames, expected ${g.frames}`);
   writeFileSync(stampFile, stamp);
