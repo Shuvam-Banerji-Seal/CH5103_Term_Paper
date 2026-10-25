@@ -1,0 +1,39 @@
+[project]
+name = "ch5103-video-tts"
+version = "0.1.0"
+description = "Breeze-TTS-2 narration and forced alignment for the CH5103 explainer video"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  # pinned to breeze-tts's requirements.txt (commit 6eba901), CPU builds of torch
+  "torch==2.9.1",
+  "torchaudio==2.9.1",
+  "qwen-tts==0.1.1",
+  "transformers==4.57.3",
+  "huggingface-hub>=0.34",
+  "numpy>=2.0",
+  "soundfile>=0.13",
+  "numba>=0.61",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchaudio = { index = "pytorch-cpu" }
+
+# qwen-tts lists gradio (a web UI, only its demo uses it); sox is imported at load time, so it stays.
+[[tool.uv.dependency-metadata]]
+name = "qwen-tts"
+version = "0.1.1"
+requires-dist = ["transformers==4.57.3", "accelerate==1.12.0", "librosa", "torchaudio", "soundfile", "onnxruntime", "einops", "sox"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

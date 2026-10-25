@@ -1,0 +1,24 @@
+The review by Clémence Corminboeuf, Michelle Coote and Ganna Gryn'ova appeared in WIREs.
+Hückel theory treats each carbon with one p pi orbital.
+Hund's rule says the triplet lies lower.
+Koopmans' theorem and Janak's theorem relate orbital energies to ionisation.
+The aufbau principle and its non-aufbau exceptions.
+Longuet-Higgins proved a sharper bound using a maximum matching.
+Trimethylenemethane and tetramethyleneethane are classic diradicals.
+Meta xylylene and trimethylenebenzene are high-spin polyradicals.
+Cyclobutadiene and the pyridinium analog behave differently.
+The zwitterionic configurations are antisymmetric under exchange.
+Antisymmetry of the wavefunction gives the Pauli principle.
+The Heitler London wavefunction is a covalent picture.
+Born Oppenheimer separation comes first, then the Schrödinger equation.
+Hartree Fock theory uses a single Slater determinant.
+The Laplacian and the virial theorem.
+Chi, psi, phi, theta, sigma, rho, eta, epsilon, lambda, mu and nu.
+We checked everything with SymPy, PySCF and Lean's Mathlib.
+The Hubbard model and the Mott insulator.
+Heisenberg's spin Hamiltonian couples neighbouring spins.
+The commutator of the spin operators vanishes.
+Borden and Davidson's classification of disjoint orbitals.
+The bra and the ket form a bracket.
+Hongo's carbon table and the allyl radical.
+Multiconfigurational and multireference methods treat static correlation.

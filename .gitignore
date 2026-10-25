@@ -30,3 +30,12 @@ qce.log
 
 # assembled GitHub Pages site (scripts/build_site.sh)
 _site/
+
+# explainer video: model weights and heavy intermediates (regenerable)
+video/tts/checkpoints/
+video/**/.venv/
+video/build/
+video/editor/node_modules/
+video/scenes/voice/
+video/tts/__pycache__/
+video/scenes/__pycache__/

@@ -5,3 +5,7 @@ algebra symbolically/numerically; output compilable LaTeX in assets/derivations.
 Sub-agents: model haiku (user instruction).
 Cycle: 1 | Phase: COMPLETE (macro-audit passed; see final-report.md) | Open TODOs: 0 (1 blocked sub-item)
 Python: uv project (pyproject.toml + uv.lock, .venv); run `uv run --project . python -I <script>` (global UV_PROJECT and PYTHONPATH leak otherwise). Old verification/.venv used by T11/T11c runs.
+
+---
+## Task 2 (2026-10-25): explainer video
+State lives in [`plans/video/`](video/index.md) (separate from the finished term-paper log above).

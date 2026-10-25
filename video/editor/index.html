@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CH5103 video editor</title>
+  <style>
+    html, body { margin: 0; background: #000; color: #ece8e1; font-family: sans-serif; }
+    canvas { display: block; width: 1920px; height: 1080px; }
+    body.preview canvas { width: 100vw; height: calc(100vw * 9 / 16); background: #333; }
+    #ui { position: fixed; bottom: 8px; left: 8px; font: 13px monospace; background: #0008; padding: 4px 8px; }
+    body.export #ui { display: none; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="1920" height="1080"></canvas>
+  <div id="ui"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

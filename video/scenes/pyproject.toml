@@ -1,0 +1,14 @@
+[project]
+name = "ch5103-video-scenes"
+version = "0.1.0"
+description = "ManimGX scenes for the CH5103 explainer video"
+requires-python = ">=3.14,<3.15"
+dependencies = ["manimgx==0.1.1"]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
