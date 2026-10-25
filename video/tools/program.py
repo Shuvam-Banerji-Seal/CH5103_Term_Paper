@@ -56,15 +56,18 @@ def scene_classes(path: Path) -> list[str]:
 
 
 def probe(mp4: Path) -> tuple[int, float, float]:
-    """(video frames, video seconds, audio seconds) of a render."""
-    def q(stream: str, entry: str, extra: list[str]) -> str:
-        return subprocess.run(["ffprobe", "-v", "error", "-select_streams", stream, *extra, "-show_entries",
+    """(frames on screen at FPS, video seconds, audio seconds) of a render.
+
+    ManimGX writes variable frame rate: a still stretch is stored as one frame lasting until the next change (S00Title
+    stores 543 frames for 35.3 s). The frames on screen are therefore the stream's duration times FPS, not the number
+    stored; the assembler expands every scene to constant FPS before encoding."""
+    def q(stream: str, entry: str) -> str:
+        return subprocess.run(["ffprobe", "-v", "error", "-select_streams", stream, "-show_entries",
                                f"stream={entry}", "-of", "csv=p=0", str(mp4)], capture_output=True, text=True,
                               check=True).stdout.strip().split("\n")[0]
-    frames = int(q("v:0", "nb_read_frames", ["-count_frames"]))
-    vdur = float(q("v:0", "duration", []) or frames / FPS)
-    a = q("a:0", "duration", [])
-    return frames, vdur, float(a) if a else 0.0
+    vdur = float(q("v:0", "duration"))
+    a = q("a:0", "duration")
+    return round(vdur * FPS), vdur, float(a) if a else 0.0
 
 
 def main() -> int:

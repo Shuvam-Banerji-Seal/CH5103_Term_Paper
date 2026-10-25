@@ -81,7 +81,8 @@ const [lo, hi] = (opt('only') ?? `0-${segs.length - 1}`).split('-').map(Number) 
 mkdirSync(WORK, { recursive: true });
 mkdirSync(path.dirname(OUTFILE), { recursive: true });
 
-// 1. video: one encode per segment (scenes get their HUD overlaid on every frame), checked frame by frame count
+// 1. video: one encode per segment (scenes get their HUD overlaid on every frame), checked frame by frame count.
+// The renders are variable frame rate (a still stretch is one long frame), so each is first expanded to constant FPS.
 // 1080p: x264 on the CPU; 4K: HEVC on the GPU (VAAPI; a CPU encode of ~380k 4K frames would take most of a day)
 const x264 = K4
   ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '20')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
@@ -101,7 +102,7 @@ async function encode(g: Seg, k: number) {
   if (g.kind === 'card') await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-vf', `format=yuv420p${UP}`,
     '-frames:v', String(g.frames), ...x264, out]);
   else await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-loop', '1', '-i', g.hud!, '-filter_complex',
-    `[0:v][1:v]overlay=0:0:shortest=1:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
+    `[0:v]fps=${FPS}[s];[s][1:v]overlay=0:0:shortest=1:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
   const n = await countFramesAsync(out);
   if (n !== g.frames) throw new Error(`${g.label}: encoded ${n} frames, expected ${g.frames}`);
   writeFileSync(stampFile, stamp);
