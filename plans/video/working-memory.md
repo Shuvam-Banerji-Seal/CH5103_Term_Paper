@@ -17,6 +17,8 @@
 | V-D11 | Plots use noir.Plot: box axes on the bottom/left edges with numbered ticks (pgfplots style), log axes supported | ManimGX axes cross at zero, which put the x axis across negative-energy plots | ManimGX Axes |
 | V-D12 | Code and recorded output shown in the video are read from the repository at render time (noir.excerpt), never retyped; ranges may not start/end on a blank line | what is shown is what was run | retyped snippets (chapter 3 had one; replaced) |
 
+| V-D13 | A 4K version (3840x2160, HEVC via VAAPI, QP 20) is built after the 1080p one and kept local only; the GitHub release carries the 1080p file | the user asked for 4K "after the 1080p is done" and said "4k video is local only" | uploading 4K (2 GB asset limit) |
+
 ## Discoveries
 | ID | discovery | impact | status |
 |---|---|---|---|

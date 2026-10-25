@@ -73,7 +73,7 @@ mkdirSync(path.dirname(OUTFILE), { recursive: true });
 // 1. video: one encode per segment (scenes get their HUD overlaid on every frame), checked frame by frame count
 // 1080p: x264 on the CPU; 4K: HEVC on the GPU (VAAPI; a CPU encode of ~380k 4K frames would take most of a day)
 const x264 = K4
-  ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '24')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
+  ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '20')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
   : ['-c:v', 'libx264', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
      '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
 const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
