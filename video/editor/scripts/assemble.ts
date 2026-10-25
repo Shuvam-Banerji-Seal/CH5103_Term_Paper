@@ -28,8 +28,10 @@ const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer
 const CRF = opt('crf', '12')!, PRESET = opt('preset', 'slow')!;
 // segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores.
 // Each peaks at ~1.7 GB (frame-threaded decode ~0.9 GB, overlay, x264 lookahead with 6 threads), so three at a time.
-// at 4K each VAAPI encoder also holds ~2.5 GB of GPU buffers in system RAM (GTT; three left 0.7 GB free), so two
-const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '3')!);
+// at 4K, one: the GPU has one video encoder, and two ffmpegs sharing it each fall behind their own frame producer, so
+// the frames waiting for it pile up in GPU buffers (GTT, in system RAM): 5 GB in one encoder, 0.4 GB left free. One
+// alone keeps up (its GTT stays at ~0.2 GB) and costs ~15% of the throughput (50 fps against 60).
+const JOBS = Math.max(1, +opt('jobs', K4 ? '1' : '3')!);
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
