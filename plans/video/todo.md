@@ -5,7 +5,7 @@
 - [x] R2 ManimGX docs: maths (Typst), voice/say, render/inspect (research.md R2)
 - [x] R3 pdoom-video-sbs engine + render pipeline (research.md R3)
 - [x] R4 slide inventory (video/tools/inventory.py → 136 frames)
-- [ ] R5 derivations/ vs slides: list derivation content missing from the slides
+- [x] R5 derivations/ vs slides: every derivation subsection maps to a scene except §17's sources-and-access table (added as Appendix A's last scene) and §7's remark that the Hubbard model cannot be held to the virial theorem (added as a spoken note at the end of S66TwoViews)
 - [x] R6 verification code + Lean inventory: every script and all 17 theorems read line by line (chapters 18, 19)
 - [x] D2 TTS on this laptop: CPU only; RTF 8.5 single line → 1.5–1.9 effective in batches of 24 (int8 backbone + text encoder, bf16 depth decoder, cached prompt audio, stacked/cached CFG depth loop); peak RSS 6–6.5 GB (research.md R5)
 - [x] D3 MathTex compatibility — 1498/1499 typeset (sole failure is a TikZ variable, not maths); texmacros 8/8 tests
@@ -25,3 +25,4 @@
 - [ ] P7 commit + push all code (no AI trailer); docs (video/README.md, main README)
 - [ ] P8 gh release with the final 1080p MP4 (+ .srt captions)
 - [ ] AUD1 slide 08-hund frame 7 subtitle says "within 10^-4 Eh of exact": the singlet is 1.1e-4 off (T4 output; derivations sec05 already says 1.7e-5 and 1.1e-4). Fix the slide and rebuild both PDFs after TTS (memory). Video already corrected.
+- [ ] AUD2 slide 17-bs frame 1 said "(Part III)" for "a single determinant cannot be the open-shell singlet"; the deck's Part III is Spin & antisymmetry, the result is in Part IV (Two electrons, two orbitals). Slide and video fixed; rebuild PDFs with AUD1.

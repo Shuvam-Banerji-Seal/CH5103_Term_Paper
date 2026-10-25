@@ -257,4 +257,7 @@ class S66TwoViews(Frame):
                  m.FadeIn(de), m.FadeIn(lo))
         self.say("[It is the same state with different bookkeeping, so the static-correlation and kinetic-exchange "
                  "descriptions agree.]", m.FadeIn(same))
+        self.say("One remark from the derivations. The Hubbard model has no separate kinetic and potential energy, so it "
+                 "cannot be held to the virial theorem; like the frozen-orbital model of Hund's rule, it cannot say which "
+                 "physical energy component pays for the spin preference.")
         self.wait(0.4)

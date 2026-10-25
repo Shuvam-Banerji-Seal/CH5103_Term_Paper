@@ -31,7 +31,7 @@ class S120Cheap(Frame):
                        rich(r"$s=0$: half singlet, half triplet, $\ev{\hat S^2}=1$", 28)).arrange(m.DOWN, aligned_edge=m.LEFT,
                                                                                                buff=0.2)
         lim.move_to([3.95, 0.3, 0])
-        part = rich("**a single determinant cannot be the open-shell singlet**, Part III", 28, GOLD, width=5.4)
+        part = rich("**a single determinant cannot be the open-shell singlet**, Part IV", 28, GOLD, width=5.4)
         part.next_to(lim, m.DOWN, buff=0.45).align_to(lim, m.LEFT)
         self.say("[Part sixteen: broken symmetry. The review says that relatively cheap methods, such as unrestricted or "
                  "broken-symmetry formalisms, suffer from a number of serious drawbacks, while rigorous methods are too "
@@ -46,7 +46,7 @@ class S120Cheap(Frame):
                  m.AnimationGroup(m.FadeIn(d.rows[1]), m.FadeIn(e)))
         self.say("[If s is one, the two orbitals coincide: a closed shell, with S squared zero. If s is zero, the "
                  "determinant is half singlet and half triplet, with S squared one.]", m.FadeIn(lim))
-        self.say("[As Part three showed, a single determinant cannot be the open-shell singlet.]", m.FadeIn(part))
+        self.say("[As Part four showed, a single determinant cannot be the open-shell singlet.]", m.FadeIn(part))
         self.wait(0.4)
 
 
