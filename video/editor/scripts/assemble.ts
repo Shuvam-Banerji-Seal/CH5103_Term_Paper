@@ -4,7 +4,7 @@
 // sample-exactly alongside: at 30 fps and 48 kHz a frame is exactly 1600 samples, so each segment's audio is cut or
 // padded to frames x 1600 samples and the two tracks cannot drift apart.
 //
-//   bun scripts/assemble.ts [--crf 12] [--preset slow] [--jobs 4] [--only 0-12] [--out ../../video/build/final/ch5103-explainer.mp4]
+//   bun scripts/assemble.ts [--crf 12] [--preset slow] [--jobs 3] [--only 0-12] [--out ../../video/build/final/ch5103-explainer.mp4]
 //   bun scripts/assemble.ts --scale 2     # the 4K version: scenes4k/, editor4k/, program4k.json, HEVC on the GPU (VAAPI)
 //
 // Inputs: video/build/program.json (python3 video/tools/program.py --probe), the scene renders
@@ -26,8 +26,9 @@ const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer
 // CRF 12: the slides are mostly still, so even this costs ~270 kb/s, and on 1080p scenes x264 runs at the same speed
 // at CRF 12 as at 22 (SSIM 0.99994 against the render, vs 0.9995 at 22)
 const CRF = opt('crf', '12')!, PRESET = opt('preset', 'slow')!;
-// segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores
-const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '4')!);
+// segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores.
+// Each peaks at ~1.7 GB (frame-threaded decode ~0.9 GB, overlay, x264 lookahead with 6 threads), so three at a time.
+const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '3')!);
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
@@ -86,9 +87,10 @@ mkdirSync(path.dirname(OUTFILE), { recursive: true });
 // 1080p: x264 on the CPU; 4K: HEVC on the GPU (VAAPI; a CPU encode of ~380k 4K frames would take most of a day)
 const x264 = K4
   ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '20')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
-  : ['-c:v', 'libx264', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
+  : ['-c:v', 'libx264', '-threads', '6', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
      '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
-const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
+// 4K: fewer decoder threads (each keeps its own 4K reference frames)
+const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128', '-threads', '4'] : [];
 const UP = K4 ? ',format=nv12,hwupload' : '';
 // a segment is reused only if it was encoded from the same inputs with the same settings (a stamp beside it)
 const stampOf = (g: Seg) => JSON.stringify({ args: x264, frames: g.frames,
@@ -101,8 +103,10 @@ async function encode(g: Seg, k: number) {
   const t0 = performance.now();
   if (g.kind === 'card') await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-vf', `format=yuv420p${UP}`,
     '-frames:v', String(g.frames), ...x264, out]);
-  else await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-loop', '1', '-i', g.hud!, '-filter_complex',
-    `[0:v]fps=${FPS}[s];[s][1:v]overlay=0:0:shortest=1:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
+  // the HUD is one image that overlay repeats (looped with -loop 1 it runs ahead of a scene's long still frames, and
+  // overlay queued every frame it made: 3.6 GB in one encoder)
+  else await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-i', g.hud!, '-filter_complex',
+    `[0:v]fps=${FPS}[s];[s][1:v]overlay=0:0:eof_action=repeat:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
   const n = await countFramesAsync(out);
   if (n !== g.frames) throw new Error(`${g.label}: encoded ${n} frames, expected ${g.frames}`);
   writeFileSync(stampFile, stamp);
