@@ -28,10 +28,8 @@ const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer
 const CRF = opt('crf', '12')!, PRESET = opt('preset', 'slow')!;
 // segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores.
 // Each peaks at ~1.7 GB (frame-threaded decode ~0.9 GB, overlay, x264 lookahead with 6 threads), so three at a time.
-// At 4K, one encoder. Scenes end on a long still (one stored frame in the VFR render) that fps=30 turns into hundreds
-// of duplicates at once; the GPU's video encoder cannot take them that fast, so they wait in GPU buffers (GTT, in
-// system RAM): ~4.5 GB at the end of a segment. Two encoders whose endings overlapped left 0.4 GB of RAM.
-const JOBS = Math.max(1, +opt('jobs', K4 ? '1' : '3')!);
+// At 4K, two encoders: the GPU has one video engine (~60 fps at 4K), and one producer alone does not keep it busy.
+const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '3')!);
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
@@ -91,7 +89,8 @@ mkdirSync(path.dirname(OUTFILE), { recursive: true });
 // The renders are variable frame rate (a still stretch is one long frame), so each is first expanded to constant FPS.
 // 1080p: x264 on the CPU; 4K: HEVC on the GPU (VAAPI; a CPU encode of ~380k 4K frames would take most of a day)
 const x264 = K4
-  ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '20')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
+  // (no -tag:v hvc1: with FFmpeg 9 + hevc_vaapi it made every frame decode as garbage: 5 dB PSNR against 54 without)
+  ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '20')!, '-r', String(FPS), '-g', String(FPS * 10), '-an']
   : ['-c:v', 'libx264', '-threads', '6', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
      '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
 const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
@@ -102,6 +101,16 @@ const UP = K4 ? ',format=nv12,hwupload' : '';
 // a segment is reused only if it was encoded from the same inputs with the same settings (a stamp beside it)
 const stampOf = (g: Seg) => JSON.stringify({ args: x264, frames: g.frames,
   inputs: [g.src, g.hud].filter(Boolean).map((f) => { const st = statSync(f!); return [f, st.size, st.mtimeMs]; }) });
+async function midPsnr(out: string, src: string, frames: number): Promise<number> {
+  const t = (Math.floor(frames / 2) / FPS).toFixed(4), below = `crop=iw:ih-${HUD_H}:0:${HUD_H},format=yuv420p`;
+  const one = (1.0 / FPS).toFixed(4);  // one frame from each input (with -frames:v the psnr filter never reports)
+  const p = Bun.spawn(['ffmpeg', '-hide_banner', '-ss', t, '-t', one, '-i', out, '-ss', t, '-t', one, '-i', src, '-an', '-lavfi',
+    `[0:v]${below}[a];[1:v]${below}[b];[a][b]psnr`, '-f', 'null', '-'], { stdout: 'pipe', stderr: 'pipe' });
+  const err = await new Response(p.stderr).text();
+  await p.exited;
+  const m = err.match(/average:([0-9.]+|inf)/);
+  return m ? (m[1] === 'inf' ? 99 : +m[1]!) : 0;
+}
 async function encode(g: Seg, k: number) {
   const out = path.join(WORK, `v${String(k).padStart(3, '0')}.mp4`);
   const stampFile = out.replace(/\.mp4$/, '.json'), stamp = stampOf(g);
@@ -111,11 +120,18 @@ async function encode(g: Seg, k: number) {
   if (g.kind === 'card') await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-vf', `format=yuv420p${UP}`,
     '-frames:v', String(g.frames), ...x264, out]);
   // the HUD is one image that overlay repeats (looped with -loop 1 it runs ahead of a scene's long still frames, and
-  // overlay queued every frame it made: 3.6 GB in one encoder)
+  // overlay queued every frame it made: 3.6 GB in one encoder). The overlay is applied to the stored frames, and only
+  // then is the scene expanded to constant FPS (the HUD does not change within a scene, so the frames are the same:
+  // framemd5 identical) - at 4K after the upload, so the duplicates of a long still are references to one GPU frame,
+  // not hundreds of copies waiting for the encoder in GTT.
   else await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-i', g.hud!, '-filter_complex',
-    `[1:v]crop=iw:${HUD_H}:0:0[h];[0:v]fps=${FPS}[s];[s][h]overlay=0:0:eof_action=repeat:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
+    `[1:v]crop=iw:${HUD_H}:0:0[h];[0:v][h]overlay=0:0:eof_action=repeat:format=auto,format=yuv420p${UP},fps=${FPS}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
   const n = await countFramesAsync(out);
   if (n !== g.frames) throw new Error(`${g.label}: encoded ${n} frames, expected ${g.frames}`);
+  if (g.kind === 'scene') {  // the middle frame against the render, below the HUD: a broken encode stops here, not at QA
+    const db = await midPsnr(out, g.src, g.frames);
+    if (!(db > 35)) throw new Error(`${g.label}: middle frame ${db.toFixed(1)} dB against the render`);
+  }
   writeFileSync(stampFile, stamp);
   console.log(`v ${k}/${segs.length - 1} ${g.label}: ${n} frames in ${((performance.now() - t0) / 1000).toFixed(1)} s`);
 }
