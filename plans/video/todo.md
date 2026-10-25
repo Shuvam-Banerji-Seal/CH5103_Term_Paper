@@ -25,6 +25,6 @@
 - [x] P7 commit + push all code (no AI trailer); docs (video/README.md, main README)
 - [x] P8 gh release video-v1.0 with the final 1080p MP4, .srt captions, chapter list, qa.txt
 - [x] P10 background music (user request): original score generated in code (tools/bgm.py), ducked under the voice (median 25 dB below it while it speaks), video stream copied; QA all ok; Whisper on pause-to-pause excerpts 1.7% word difference vs 1.4% for an inaudible-noise control; released as video-v1.1
-- [ ] P9 4K version (local only): render4k, probe4k, editor4k, assemble4k (HEVC VAAPI QP 20), qa4k
+- [x] P9 4K version (local only): 165 scenes at 3840x2160, HEVC VAAPI QP 20, 0.90 GiB; with the score (final-music/ch5103-explainer-4k.mp4, 0.95 GiB); qa4k and the music version's QA all ok (worst PSNR 50.3 dB, lag 0.0 ms)
 - [x] AUD1 slide 08-hund frame 7 subtitle says "within 10^-4 Eh of exact": the singlet is 1.1e-4 off (T4 output; derivations sec05 already says 1.7e-5 and 1.1e-4). Fixed; both PDFs rebuilt (log clean: no warnings or bad boxes).
 - [x] AUD2 slide 17-bs frame 1 said "(Part III)" for "a single determinant cannot be the open-shell singlet"; the deck's Part III is Spin & antisymmetry, the result is in Part IV (Two electrons, two orbitals). Slide and video fixed; rebuild PDFs with AUD1.
