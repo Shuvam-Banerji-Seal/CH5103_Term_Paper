@@ -17,3 +17,8 @@
 | video-9 | narration lint: digits, parentheses, LaTeX, non-Latin letters | video/tools/collect_lines.py | PASS | 786 lines, 0 problems |
 | video-10 | every code excerpt range valid, indices in range (chapters 16, 18, 19) | inline check | PASS | 40 + 10 excerpts |
 | video-11 | independent narration audit vs slides (two read-only reviewers, ch00–ch17), every finding re-checked | review + manual check | PASS after fixes | fixed: He basis accuracy (singlet 1.1e-4, slide also off → AUD1), "matches" SCS-MP2 → "compare", 2³S read as "two cubed S" (twice), spin-polarisation mechanism stated backwards (ch10), T3 "positive" → "never negative"; kept 3 consistent elaborations |
+| video-12 | ASR spans: sentence cuts at aligned word times, pieces <= 24 s, contiguous | pytest video/tts/test_asr.py | PASS (3) | written with the sentence-by-sentence re-check |
+| video-13 | scene renders VFR → CFR: S00Title 543 stored frames for 35.333 s → fps=30 gives exactly 1060; frames at 2.5/5/12/20/30/35.2 s match the source | ffmpeg + PSNR | PASS | 57–61 dB = the test encode's own loss; frame n shows time n/30 |
+| video-14 | HUD as one repeated image (eof_action=repeat) vs looped image: frame count, HUD present on the last frames, peak memory | ffmpeg on S00Title | PASS | 1060 frames, HUD on frame 1000; 1.7 GB vs 3.6 GB |
+| video-15 | x264 settings on two scenes: preset/CRF vs speed, size, SSIM to the render | bench.sh | PASS | speed independent of CRF; CRF 12 slow: ~270 kb/s, SSIM 0.99994 → chosen |
+| video-16 | final 1080p file: format, size, frames, durations, sync (24 scenes), picture (PSNR below HUD), loudness, silences | video/tools/qa.py | PASS | all [ok]: 322637 = programme; lag 0.0 ms; worst PSNR 50.3 dB; −16.0 LUFS, TP −1.2 dBTP; no silence ≥ 8 s |
