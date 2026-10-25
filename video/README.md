@@ -4,8 +4,9 @@ A narrated video of the whole term paper: every one of the 136 slide frames as a
 step shown and spoken, and two appendices that walk through every verification script (T1–T16) and every Lean
 theorem (17), line by line. Narration is synthesised with [Breeze-TTS-2](https://huggingface.co/BreezeBlue/Breeze-TTS-2);
 animation with [ManimGX](https://pypi.org/project/manimgx/); editing with a JavaScript editor adapted from
-[pdoom-video-sbs](https://github.com/Shuvam-Banerji-Seal/pdoom-video-sbs). There is no music and no sound effect:
-every sound is the narrator.
+[pdoom-video-sbs](https://github.com/Shuvam-Banerji-Seal/pdoom-video-sbs). Under the narration runs an original
+ambient score, generated in code (`tools/bgm.py`: additive synthesis, no samples or recordings) and ducked whenever
+the narrator speaks; there are no sound effects.
 
 The finished video (1080p, 30 fps, with captions) is attached to the GitHub release.
 
@@ -16,7 +17,7 @@ The finished video (1080p, 30 fps, with captions) is attached to the GitHub rele
 | `scenes/` | ManimGX scenes, one file per chapter (`ch00_intro.py` … `ch19_lean.py`), one class per slide frame (165 scenes); `noir.py` is the slides' theme (palette, fonts, boxes, derivations, plots, code excerpts); `voice.py` serves the synthesised narration to ManimGX; `texmacros.py` expands the slide macros; `fonts/` are the slide fonts (OFL / GUST licences inside) |
 | `tts/` | Breeze-TTS-2 on the CPU: `synth.py` (batch synthesis, voice design, benchmarks, self-test), `fastcpu.py` (int8 linears, cached CFG depth loop), `lexicon.py` (pronunciation respellings), `align.py` (word timings by CTC forced alignment), `asr.py` (Whisper round-trip check), `voice/` (the narrator's reference recording), `breeze/` (vendored model code, its licence) |
 | `editor/` | the editorial layer: chapter title cards and the progress HUD (`src/engine.ts`, a deterministic function of the programme position), rendered in headless Chromium (`scripts/render.ts`) and assembled with ffmpeg (`scripts/assemble.ts`) |
-| `tools/` | `inventory.py` (parse the deck), `coverage.py` (every frame has its scene), `collect_lines.py` (every narration line, linted), `program.py` (chapters, scenes, exact frame counts), `inspect_all.py` (layout checks and storyboards), `mathtex_sweep.py` |
+| `tools/` | `bgm.py` (the background score: compose, mix under the voice, check), `inventory.py` (parse the deck), `coverage.py` (every frame has its scene), `collect_lines.py` (every narration line, linted), `program.py` (chapters, scenes, exact frame counts), `inspect_all.py` (layout checks and storyboards), `mathtex_sweep.py` |
 | `build/` | everything generated (git-ignored) |
 
 ## Rebuilding
@@ -80,6 +81,17 @@ probe, editor, start4k, assemble, qa, then the 4K ones): every stage is resumabl
 * **In sync.** Each line's words are timed by CTC forced alignment, and ManimGX starts each animation on the word in
   square brackets of the `say()` text. In the final assembly a frame is exactly 1600 audio samples, so the narration
   cannot drift from the picture.
+
+## The background music
+
+`tools/bgm.py compose` writes an original score as long as the programme: one chord every 8 s, all in D major /
+B minor (so chapters cannot clash where their notes overlap), each chapter opening a fresh phrase on its title card
+with its own pair of progressions and its own sparse felt-piano line; warm pads (four soft partials, slow swells, each
+voice panned to its own place), a centred sine bass and a synthetic hall reverb (the only decorrelated part, so the
+music survives a mono phone speaker). `bgm.py mix` sets the score to -26 LUFS, ducks it with
+a sidechain compressor keyed on the narration (about 11 dB down while someone speaks, back up in pauses and on the
+cards), adds it to the voice, normalises to -16 LUFS and muxes it with the video stream copied. `bgm.py check`
+measures how far the music sits under the voice and transcribes the same excerpts with and without it.
 
 ## Credits and licences
 

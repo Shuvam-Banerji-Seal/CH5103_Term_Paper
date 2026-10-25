@@ -2,7 +2,7 @@
 of broken lines) → scene renders → frame counts → cards and HUD → assembly → QA.
 
 usage (from the repo root): python3 video/tools/pipeline.py [--from STAGE] [--to STAGE]
-stages: wait tts align asr render probe editor start4k assemble qa  render4k probe4k editor4k assemble4k qa4k
+stages: wait tts align asr render probe editor start4k assemble qa music  render4k probe4k editor4k assemble4k qa4k music4k
 
 The 4K scene renders start in the background (start4k, at low CPU priority) once the 1080p programme is fixed: they
 are GPU work, and the GPU is otherwise idle while the 1080p assembly encodes on the CPU. render4k waits for them.
@@ -27,8 +27,8 @@ ROOT = Path(__file__).resolve().parents[2]
 LOGS = ROOT / "video" / "build" / "logs"
 STORE = ROOT / "video" / "build" / "tts" / "store"
 STATUS = LOGS / "pipeline.status"
-STAGES = ["wait", "tts", "align", "asr", "render", "probe", "editor", "start4k", "assemble", "qa",
-          "render4k", "probe4k", "editor4k", "assemble4k", "qa4k"]   # 4K reuses the narration and the 1080p programme
+STAGES = ["wait", "tts", "align", "asr", "render", "probe", "editor", "start4k", "assemble", "qa", "music",
+          "render4k", "probe4k", "editor4k", "assemble4k", "qa4k", "music4k"]   # 4K reuses the narration and the 1080p programme
 TTS = ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "-u", "video/tts/synth.py", "batch", "--threads",
        "8", "--cfg", "1"]
 TTS_SETTINGS = [["--batch", "24", "--depth", "bf16"], ["--batch", "8", "--depth", "int8"],
@@ -194,6 +194,25 @@ def stage_start4k() -> bool:
     t.start()
     BACKGROUND["render4k"] = t
     return True
+
+
+BGM = ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "-u", "video/tools/bgm.py"]
+MUSIC_OUT = "video/build/final-music"
+
+
+def stage_music() -> bool:
+    """The score under the narration (video stream copied), then the same QA on the result."""
+    return (run("music", BGM + ["compose"], progress=r"notes,") == 0
+            and run("music", BGM + ["mix", "--out", f"{MUSIC_OUT}/ch5103-explainer.mp4"], progress=r"^score") == 0
+            and run("music", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "video/tools/qa.py", "--final",
+                              f"{MUSIC_OUT}/ch5103-explainer.mp4"], progress=r"^\[(ok|FAIL|info)\]") == 0)
+
+
+def stage_music4k() -> bool:
+    out = f"{MUSIC_OUT}/ch5103-explainer-4k.mp4"
+    return (run("music4k", BGM + ["remux", "--video", "video/build/final/ch5103-explainer-4k.mp4", "--out", out]) == 0
+            and run("music4k", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "video/tools/qa.py", "--k4",
+                                "--final", out], progress=r"^\[(ok|FAIL|info)\]") == 0)
 
 
 def stage_render4k() -> bool:
