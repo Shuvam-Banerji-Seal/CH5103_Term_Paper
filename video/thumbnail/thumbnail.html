@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- YouTube thumbnail, 1280x720. The art (site/img/hero.webp) was made with gpt-image-2.5-sunburst for the website;
+     every word is set here, in the video's own fonts and colours, so nothing in the text is left to the image model.
+     Render: chromium --headless --allow-file-access-from-files --window-size=1280,720 --screenshot=... thumbnail.html -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Chorus; src: url(../scenes/fonts/texgyrechorus-mediumitalic.otf); }
+  @font-face { font-family: Libertinus; font-weight: 700; src: url(../scenes/fonts/LibertinusSerif-Bold.otf); }
+  @font-face { font-family: Garamond; font-style: italic; src: url(../scenes/fonts/EBGaramond-Italic.otf); }
+  @font-face { font-family: GaramondMedium; src: url(../scenes/fonts/EBGaramond-Medium.otf); }
+  :root { --gold: #E9B95B; --cyan: #5FD4D0; --rose: #FF5D8F; --fg: #ECE8E1; --muted: #9C9AA6; }
+  html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; background: #000; }
+  .art {
+    position: absolute; inset: 0;
+    background: url(../../site/img/hero.webp) no-repeat;
+    /* both lobes and both spin arrows in the right half (in the 1536x1024 art they span x 690-1390, y 100-790) */
+    background-size: 1306px auto; background-position: 44px -35px;
+  }
+  .shade { position: absolute; inset: 0; background: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,0) 48%); }
+  .text { position: absolute; left: 64px; top: 92px; width: 760px; }
+  .when { font-family: Chorus; color: var(--gold); font-size: 104px; line-height: 0.9; margin-left: 6px; }
+  .big { font-family: Libertinus; font-weight: 700; color: var(--fg); font-size: 116px; line-height: 0.98; letter-spacing: 1px;
+         text-shadow: 0 0 24px rgba(0,0,0,0.9); }
+  .fails { color: var(--rose); font-size: 150px; letter-spacing: 3px; }
+  .rule { width: 470px; height: 3px; margin: 26px 0 20px 4px; background: linear-gradient(90deg, var(--gold), rgba(233,185,91,0)); }
+  .sub { font-family: Garamond; font-style: italic; color: var(--fg); font-size: 38px; line-height: 1.25; margin-left: 4px; opacity: 0.92; }
+  .tag { position: absolute; left: 68px; top: 46px; font-family: GaramondMedium; color: var(--gold); font-size: 25px;
+         letter-spacing: 7px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="art"></div>
+  <div class="shade"></div>
+  <div class="tag">Diradicals · spin states</div>
+  <div class="text">
+    <div class="when">When</div>
+    <div class="big">HUND’S RULE</div>
+    <div class="big fails">FAILS</div>
+    <div class="rule"></div>
+    <div class="sub">every derivation, checked in Python &amp; Lean</div>
+  </div>
+</body>
+</html>
