@@ -89,7 +89,15 @@ segs.forEach((g, k) => {
   pcm.push(out);
 });
 writeFileSync(path.join(WORK, 'audio.txt'), pcm.map((f) => `file '${f}'`).join('\n') + '\n');
-run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(WORK, 'audio.txt'), '-c:a', 'pcm_s16le', path.join(WORK, 'narration.wav')]);
+run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', path.join(WORK, 'audio.txt'), '-c:a', 'pcm_s16le', path.join(WORK, 'narration_raw.wav')]);
+// two-pass EBU R128 loudness normalisation to -16 LUFS: measure, then apply one linear gain (speech dynamics kept)
+const meas = Bun.spawnSync(['ffmpeg', '-hide_banner', '-i', path.join(WORK, 'narration_raw.wav'), '-af',
+  'loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json', '-f', 'null', '-'], { stdout: 'pipe', stderr: 'pipe' }).stderr.toString();
+const L = JSON.parse(meas.slice(meas.lastIndexOf('{'), meas.lastIndexOf('}') + 1));
+run(['ffmpeg', '-y', '-loglevel', 'error', '-i', path.join(WORK, 'narration_raw.wav'), '-af',
+  `loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=${L.input_i}:measured_TP=${L.input_tp}:measured_LRA=${L.input_lra}:measured_thresh=${L.input_thresh}:offset=${L.target_offset}:linear=true,aresample=${RATE}`,
+  '-c:a', 'pcm_s16le', path.join(WORK, 'narration.wav')]);
+console.log(`narration loudness ${L.input_i} LUFS -> -16 LUFS (true peak ${L.input_tp} dBTP)`);
 
 // 3. join the encoded segments without re-encoding, add the narration as AAC
 const vids = segs.map((_, k) => path.join(WORK, `v${String(k).padStart(3, '0')}.mp4`));

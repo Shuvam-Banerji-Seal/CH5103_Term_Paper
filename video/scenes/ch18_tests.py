@@ -6,16 +6,54 @@ time (noir.excerpt), so the video shows exactly what was run.
 """
 import manimgx as m
 
-from noir import CYAN, GOLD, GREEN, MUTED, ROSE, Box, Frame, boxed, excerpt, pill, rich
+from noir import CYAN, GOLD, GREEN, MUTED, ROSE, ROOT, Box, Frame, boxed, excerpt, pill, rich
 
 V = "verification/"
 R = "verification/results/"
 
 
+MAX_LINES = 18   # a code window taller than this is unreadable at 1080p
+WRAP = 100       # recorded output is wrapped at word boundaries to this many characters
+
+
+def file_lines(path: str) -> list[str]:
+    return (ROOT / path).read_text(encoding="utf-8").splitlines()
+
+
+def window(path: str, first: int, idx: list[int], cur: tuple[int, int] | None) -> tuple[int, int]:
+    """File lines to show for a group of excerpt lines: the group's span, extending the current window when the
+    two fit together in MAX_LINES; blank lines trimmed from both ends (m.Code would drop them)."""
+    lines = file_lines(path)
+    lo, hi = first + min(idx), first + max(idx)
+    if cur is not None and lo >= cur[0] and hi - cur[0] + 1 <= MAX_LINES:
+        lo = cur[0]
+    while lo < hi and not lines[lo - 1].strip():
+        lo += 1
+    while hi > lo and not lines[hi - 1].strip():
+        hi -= 1
+    return lo, hi
+
+
+def wrapped_output(path: str, first: int, last: int) -> str:
+    """Recorded output, lines first..last, long lines broken at spaces (continuations indented)."""
+    import textwrap
+
+    out = []
+    for line in file_lines(path)[first - 1:last]:
+        if len(line) <= WRAP:
+            out.append(line)
+        else:
+            indent = len(line) - len(line.lstrip())
+            out += textwrap.wrap(line, WRAP, subsequent_indent=" " * (indent + 4), break_long_words=False,
+                                 break_on_hyphens=False, drop_whitespace=True)
+    return "\n".join(out)
+
+
 class Walk(Frame):
     """A scene made of steps, shown one at a time in the main area:
-    ("code", file, first, last, [(line indices, narration), ...]) reveals the excerpt group by group;
-    ("out", file, first, last, narration) shows recorded output; ("note", text, narration, kind) a boxed note."""
+    ("code", file, first, last, [(line indices, narration), ...]) shows, for each group, a window of the file around
+    the group's lines (at most MAX_LINES, line numbers as in the file), the group's lines bright and the rest dimmed;
+    ("out", file, first, last, narration) shows recorded output (wrapped); ("note", text, narration, kind) a note."""
 
     STEPS: list = []
 
@@ -25,36 +63,42 @@ class Walk(Frame):
         for step in self.STEPS:
             if current is not None:
                 self.play(m.FadeOut(current), run_time=0.5)
+                current = None
             kind = step[0]
             if kind == "code":
                 _, path, first, last, groups = step
-                c = excerpt(V + path, first, last, width=12.9, height=4.75).move_to([0, -0.15, 0])
-                cap = rich(f"`{V}{path}`, lines {first}–{last}", 22, MUTED).next_to(c, m.UP, buff=0.08)
-                cap.align_to(c, m.LEFT)
-                shown = set()
-                for k, (idx, text) in enumerate(groups):
-                    anims = [m.FadeIn(c.code_lines[i]) for i in idx if i not in shown]
-                    shown.update(idx)
-                    if k == 0:
-                        anims = [m.FadeIn(c.background), m.FadeIn(c.line_numbers), m.FadeIn(cap)] + anims
-                    self.say(f"[{text}]", m.AnimationGroup(*anims))
-                rest = [c.code_lines[i] for i in range(len(c.code_lines)) if i not in shown]
-                if rest:
-                    self.play(*[m.FadeIn(x) for x in rest], run_time=0.4)
-                current = m.Group(c, cap)
+                cur = None
+                for idx, text in groups:
+                    lo, hi = window(V + path, first, idx, cur)
+                    cur = (lo, hi)
+                    c = excerpt(V + path, lo, hi, width=12.9, height=4.75).move_to([0, -0.15, 0])
+                    for i, line in enumerate(c.code_lines):
+                        if (lo + i) - first not in idx:
+                            line.set_opacity(0.38)
+                    cap = rich(f"`{V}{path}`, lines {lo}–{hi} of the excerpt {first}–{last}", 22, MUTED)
+                    cap.next_to(c, m.UP, buff=0.08).align_to(c, m.LEFT)
+                    view = m.Group(c, cap)
+                    anim = m.FadeIn(view) if current is None else m.AnimationGroup(m.FadeOut(current), m.FadeIn(view))
+                    self.say(f"[{text}]", anim)
+                    current = view
             elif kind == "out":
                 _, path, first, last, text = step
-                c = excerpt(R + path, first, last, width=12.9, height=4.4, numbers=False).move_to([0, -0.25, 0])
+                c = m.Code(code_string=wrapped_output(R + path, first, last), language=None, add_line_numbers=False,
+                           background="rectangle")
+                if c.width > 12.9:
+                    c.scale_to_fit_width(12.9)
+                if c.height > 4.6:
+                    c.scale_to_fit_height(4.6)
+                c.move_to([0, -0.25, 0])
                 cap = m.VGroup(pill("pass", size=24) if "FAIL" not in text else pill("fail", size=24),
                                rich(f"recorded output, `{R}{path}`", 22, MUTED)).arrange(m.RIGHT, buff=0.2)
                 cap.next_to(c, m.UP, buff=0.12).align_to(c, m.LEFT)
-                self.say(f"[{text.replace('FAIL', '')}]", m.AnimationGroup(m.FadeIn(c), m.FadeIn(cap)))
                 current = m.Group(c, cap)
+                self.say(f"[{text.replace('FAIL', '')}]", m.FadeIn(current))
             else:
                 _, body, text, box = step
-                b = boxed(body, box, width=12.0, size=30).move_to([0, 0.0, 0])
-                self.say(f"[{text}]", m.FadeIn(b))
-                current = b
+                current = boxed(body, box, width=12.0, size=30).move_to([0, 0.0, 0])
+                self.say(f"[{text}]", m.FadeIn(current))
         self.wait(0.5)
 
 

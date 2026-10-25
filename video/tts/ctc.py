@@ -67,7 +67,7 @@ def ctc_viterbi(logp: np.ndarray, tokens: list[int], blank: int = 0) -> list[tup
     states = np.empty(T, dtype=np.int64)
     for t in range(T - 1, -1, -1):
         states[t] = s
-        s -= back[t, s]
+        s -= int(back[t, s])  # back is int8: keep s a Python int (NumPy 2 would make it int8 and overflow past 127)
     spans: list[tuple[int, int]] = []
     for i in range(L):
         frames = np.flatnonzero(states == 2 * i + 1)

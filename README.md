@@ -18,6 +18,11 @@ ordering). This repository contains:
 **Website:** <https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/> has an overview, the findings, the test
 matrix, the figure gallery and an [in-browser slide viewer](https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/slides.html).
 
+**Video:** a complete narrated explainer (1080p, about three and a half hours, with captions) is attached to the
+[latest release](https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper/releases/latest): every slide frame
+animated and every derivation step spoken, plus appendices that walk through every verification script and every
+Lean proof line by line. How it was made: [`video/README.md`](video/README.md).
+
 **Verdict:** see [`docs/FINDINGS.md`](docs/FINDINGS.md). In short, the theory is sound wherever it
 could be tested. One sign error (confirmed three independent ways) and one citation error were found,
 plus some overstated or imprecise claims. The distonic-radical pH switch is reproduced with CAM-B3LYP
@@ -38,6 +43,7 @@ plus some overstated or imprecise claims. The distonic-radical pH switch is repr
 | [`docs/FINDINGS.md`](docs/FINDINGS.md) | Claim-by-claim assessment of the review |
 | [`docs/VERIFICATION.md`](docs/VERIFICATION.md) | Test matrix and how to run it |
 | [`plans/`](plans) | Working log: plan, decisions, doubts and their resolutions, full test log, slide audit |
+| [`video/`](video) | The explainer video: ManimGX scenes, Breeze-TTS-2 narration on the CPU, a JavaScript editor ([how it was made](video/README.md)) |
 | [`site/`](site) | The GitHub Pages site, assembled by [`scripts/build_site.sh`](scripts/build_site.sh) |
 | [`.github/workflows/pages.yml`](.github/workflows/pages.yml) | On every push to `main`: runs the verification suite, rebuilds every PDF in TeX Live, assembles the site and deploys it (only if all tests pass) |
 

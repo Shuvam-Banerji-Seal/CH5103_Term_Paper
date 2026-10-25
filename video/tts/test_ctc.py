@@ -55,3 +55,22 @@ def test_normalise_words_and_spans():
 
 def test_word_without_letters_is_dropped():
     assert normalise_words("a — b") == ["a", "b"]
+
+
+def test_long_sequence_beyond_int8_states():
+    """More than 127 extended states (a long line): the backtrace index must not overflow (regression)."""
+    rng = np.random.default_rng(3)
+    tokens = list(rng.integers(1, 6, size=150))
+    T = 3 * len(tokens) + 20
+    logp = np.full((T, 6), -20.0)
+    # a clean path: each token held two frames, blanks between
+    t = 0
+    for k in tokens:
+        logp[t:t + 2, k] = 0.0
+        t += 2
+        logp[t, 0] = 0.0
+        t += 1
+    logp[t:, 0] = 0.0
+    spans = ctc_viterbi(logp, tokens)
+    assert len(spans) == len(tokens)
+    assert all(a <= b for a, b in spans) and all(spans[i][1] < spans[i + 1][0] for i in range(len(spans) - 1))
