@@ -16,3 +16,4 @@
 | video-8 | slide coverage: 136 frames ↔ scenes | video/tools/coverage.py | PASS | 136/136, 0 missing/duplicated |
 | video-9 | narration lint: digits, parentheses, LaTeX, non-Latin letters | video/tools/collect_lines.py | PASS | 786 lines, 0 problems |
 | video-10 | every code excerpt range valid, indices in range (chapters 16, 18, 19) | inline check | PASS | 40 + 10 excerpts |
+| video-11 | independent narration audit vs slides (two read-only reviewers, ch00–ch17), every finding re-checked | review + manual check | PASS after fixes | fixed: He basis accuracy (singlet 1.1e-4, slide also off → AUD1), "matches" SCS-MP2 → "compare", 2³S read as "two cubed S" (twice), spin-polarisation mechanism stated backwards (ch10), T3 "positive" → "never negative"; kept 3 consistent elaborations |

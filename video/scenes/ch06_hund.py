@@ -258,7 +258,7 @@ class S49Helium(Frame):
     """08-hund.tex, frame 7: 'Test 1: helium 1s2s, near-exact'."""
 
     TITLE = "Test 1: helium 1s2s, near-exact"
-    SUBTITLE = r"T4: $2\,^3S$ versus $2\,^1S$, 16s7p4d basis within $10^{-4}\,\Eh$ of exact, scaled to satisfy the virial theorem"
+    SUBTITLE = r"T4: $2\,^3S$ versus $2\,^1S$, 16s7p4d basis, within $1.7\times10^{-5}$ and $1.1\times10^{-4}\,\Eh$ of exact, scaled to satisfy the virial theorem"
     SYMBOLS = (r"$2\,^3S$, $2\,^1S$: the $1s2s$ excited states of He, same configuration, triplet and singlet — 16s7p4d: "
                r"Gaussian basis functions of $s$, $p$ and $d$ type — exact energies: Drake's benchmark values")
 
@@ -274,9 +274,10 @@ class S49Helium(Frame):
         tab.move_to([3.6, 1.2, 0])
         verdict = rich(r"$\Delta V_{ee}>0$: Slater's mechanism fails; $\Delta V_{ne}$ pays for everything. Check: "
                        r"$\tfrac12(-0.0772+0.0185)=-0.0293=\Delta E$", 30, width=5.8).move_to([3.6, -1.2, 0])
-        self.say("[Test T four computes this exactly for helium's one s two s states: the triplet two cubed S and the "
-                 "singlet two one S, in a large Gaussian basis, within ten to the minus four hartree of the exact "
-                 "values.]", m.AnimationGroup(m.FadeIn(tab), m.FadeIn(axes)))
+        self.say("[Test T four computes this exactly for helium's one s two s states: the triplet, two three S, and "
+                 "the singlet, two one S, in a large Gaussian basis: the triplet within two hundredths of a "
+                 "millihartree of the exact value, and the singlet within about a tenth of a millihartree.]",
+                 m.AnimationGroup(m.FadeIn(tab), m.FadeIn(axes)))
         self.say("[The triplet is lower by zero point zero two nine three hartree.] Both states satisfy the virial "
                  "theorem to six decimal places.", m.GrowFromEdge(bars[0], m.UP))
         self.say("[The kinetic energy goes up by exactly the same amount, as the virial theorem requires.]",
@@ -360,11 +361,11 @@ class S51SameSpin(Frame):
         self.say("[Test T fifteen measured this ratio per pair.] [The dashed line marks one tenth, an order of "
                  "magnitude.]", m.AnimationGroup(m.FadeIn(labs), m.Create(axis), m.FadeIn(xl)),
                  m.AnimationGroup(m.Create(tenth), m.FadeIn(notes[0])))
-        self.say("[For helium, comparing the triplet two cubed S, with one same-spin pair, to the ground state, with one "
+        self.say("[For helium, comparing the triplet, two three S, with one same-spin pair, to the ground state, with one "
                  "opposite-spin pair, the ratio is zero point zero two three. The claim holds.]",
                  m.AnimationGroup(m.GrowFromEdge(bars[0], m.LEFT), m.FadeIn(nums[0]), m.FadeIn(notes[1])))
         self.say("[But for the valence shells of ethylene, nitrogen and water, second-order perturbation theory gives "
-                 "zero point three to zero point four per pair.] That matches the spin-component-scaled M P two method, "
+                 "zero point three to zero point four per pair.] Compare the spin-component-scaled M P two method, "
                  "which scales the two parts by one third and six fifths.",
                  m.AnimationGroup(m.LaggedStart(*[m.GrowFromEdge(b, m.LEFT) for b in bars[1:]], lag_ratio=0.3),
                                   m.FadeIn(nums[1:]), m.FadeIn(notes[2])))

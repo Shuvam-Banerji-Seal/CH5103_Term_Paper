@@ -117,7 +117,7 @@ class S124Matrix1(Frame):
                  "SymPy. T one b checks the sign erratum again, numerically, by applying S squared to wavefunction "
                  "tensors in NumPy.]", m.AnimationGroup(m.FadeIn(g[1]), m.FadeIn(g[2])))
         self.say("[T two compares the two-electron two-orbital Hamiltonian with PySCF full configuration interaction for "
-                 "five random integral sets. T three checks that every exchange integral is positive and never exceeds "
+                 "five random integral sets. T three checks that no exchange integral is negative and none exceeds "
                  "the Coulomb integral, for water.]", m.AnimationGroup(m.FadeIn(g[3]), m.FadeIn(g[4])))
         self.say("[T four solves helium's one s two s states exactly and checks the virial theorem and less screening. T "
                  "five checks the dissociation limits of H two.]", m.AnimationGroup(m.FadeIn(g[5]), m.FadeIn(g[6])))

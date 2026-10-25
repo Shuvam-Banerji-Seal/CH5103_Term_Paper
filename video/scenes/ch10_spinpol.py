@@ -49,8 +49,9 @@ class S76DynamicSpinPol(Frame):
                  "and sites are atoms.", m.AnimationGroup(m.FadeIn(claim), m.FadeIn(fig), m.FadeIn(cap)))
         self.say("[Here is the mechanism in three steps. First, in Hückel theory the unpaired electron sits in the non-"
                  "bonding orbital, which is exactly zero on the unstarred atoms.]", m.FadeIn(lst[0]))
-        self.say("[Second, switch on the on-site repulsion U. An up-spin electron on an atom repels down-spin density "
-                 "less than up-spin density, so it pushes down-spin density onto its neighbours.]", m.FadeIn(lst[1]))
+        self.say("[Second, switch on the on-site repulsion U, which acts only between an up and a down electron on "
+                 "the same atom. Where the unpaired up-spin electron sits, down-spin density is pushed away, onto the "
+                 "neighbouring atoms.]", m.FadeIn(lst[1]))
         self.say("[Third, negative spin density appears on the unstarred atoms, between the positive ones. Hückel theory "
                  "cannot produce it: it is a correlation effect.]", m.FadeIn(lst[2]))
         self.wait(0.4)

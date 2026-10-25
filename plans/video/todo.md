@@ -24,3 +24,4 @@
 - [ ] P6 QA: coverage, maths audit, A/V sync audit, visual spot checks, audio QA, file checks
 - [ ] P7 commit + push all code (no AI trailer); docs (video/README.md, main README)
 - [ ] P8 gh release with the final 1080p MP4 (+ .srt captions)
+- [ ] AUD1 slide 08-hund frame 7 subtitle says "within 10^-4 Eh of exact": the singlet is 1.1e-4 off (T4 output; derivations sec05 already says 1.7e-5 and 1.1e-4). Fix the slide and rebuild both PDFs after TTS (memory). Video already corrected.

@@ -223,7 +223,7 @@ class S138T2(Walk):
 
 
 class S139T3(Walk):
-    TITLE = "Test T3: exchange integrals are positive, and never exceed Coulomb"
+    TITLE = "Test T3: exchange integrals are never negative, and never exceed Coulomb"
     SUBTITLE = "RHF/6-31G water, every pair of molecular orbitals"
     SYMBOLS = (r"`ao2mo.kernel`: transform the integrals to the molecular-orbital basis — `K[p,q]`$=(pq|pq)$, "
                r"`J[p,q]`$=(pp|qq)$ — Part VI proved $J\ge K\ge0$ for any real orbitals")
@@ -653,4 +653,67 @@ class S152T16(Frame):
                  "nineteen seventy seven, not nineteen seventy five as the review's reference eleven says. And the access "
                  "status of every source is listed in section seventeen of the derivations.]",
                  m.FadeIn(body), m.Indicate(body))
+        self.wait(0.5)
+
+
+SOURCES = [  # derivations/sec17_summary.tex, "Sources and access status"
+    ("Hongo et al., J. Chem. Phys. 121, 7144, 2004", "full text, arXiv cond-mat/0408147; Table I used"),
+    ("Boyd, Nature 310, 480, 1984", "abstract"),
+    ("Katriel & Pauncz, Adv. Quantum Chem. 10, 143, 1977", "bibliographic only"),
+    ("Krylov, Chem. Phys. Lett. 338, 375, 2001", "introduction, preview"),
+    ("Balková & Bartlett, J. Chem. Phys. 101, 8972, 1994", "abstract"),
+    ("Lieb, Phys. Rev. Lett. 62, 1201, 1989", "theorem statement"),
+    ("Ovchinnikov, Theor. Chim. Acta 47, 297, 1978", "as quoted in arXiv:1906.08544"),
+    ("Janak, Phys. Rev. B 18, 7165, 1978", "abstract"),
+    ("Borden & Davidson, J. Am. Chem. Soc. 99, 4587, 1977", "not accessed"),
+    ("Kollmar & Staemmler, Theor. Chim. Acta 48, 223, 1978", "not accessed"),
+    ("Liu & Langenaeker, Theor. Chem. Acc. 110, 338, 2003", "not accessed"),
+    ("Yamanaka et al., Int. J. Quantum Chem. 105, 687, 2005", "not accessed"),
+    ("Glaesemann & Schmidt, J. Phys. Chem. A 114, 8772, 2010", "not accessed"),
+    ("Vanquickenborne et al., Inorg. Chem. 28, 1805, 1989; Melrose & Scerri, 1996", "not accessed"),
+    ("Gryn'ova et al., Nat. Chem. 5, 474, 2013; Gryn'ova & Coote, JACS 135, 15392, 2013", "abstracts, summaries"),
+    ("Westcott et al., J. Am. Chem. Soc. 122, 8083, 2000", "bibliographic + author summary"),
+    ("Scerri, 1991; Ehrenfest, 1917; Pauli, 1925; Slater, 1929", "not accessed"),
+]
+
+
+class S152bSources(Frame):
+    """Derivations §17: the cited sources and what of each we could read (not in the slide deck)."""
+
+    TITLE = "What we could read: sources and access"
+    SUBTITLE = "derivations, section 17"
+
+    def table(self, rows) -> m.VGroup:
+        out = m.VGroup()
+        y = 2.0
+        for ref, status in rows:
+            col = GREEN if status.startswith("full") else ROSE if status == "not accessed" else GOLD
+            a = rich(ref, 25, width=7.6)
+            b = rich(status, 25, col, width=4.6)
+            a.move_to([-6.4 + a.width / 2, y - a.height / 2, 0])
+            b.move_to([1.8 + b.width / 2, y - a.height / 2, 0])
+            out.add(m.VGroup(a, b))
+            y -= max(a.height, b.height) + 0.16
+        return out
+
+    def construct(self) -> None:
+        self.setup_frame()
+        t1, t2 = self.table(SOURCES[:9]), self.table(SOURCES[9:])
+        rule = boxed("where an original was not accessed, nothing is attributed to it beyond what the review itself "
+                     "states; the mathematics was derived independently and verified", "checked", width=12.4, size=28)
+        rule.move_to([0, -0.2, 0])
+        self.say("[Finally, honesty about sources. Of the works the derivations rely on, only one was read in full: "
+                 "Hongo and coworkers' carbon paper, through its arXiv version, whose Table one we used. For others we "
+                 "had the abstract, an introduction, a theorem statement, or a quotation in a later paper: Boyd, "
+                 "Krylov, Balková and Bartlett, Lieb, Ovchinnikov and Janak; and Katriel and Pauncz only as a "
+                 "bibliographic record.]", m.FadeIn(t1))
+        self.play(m.FadeOut(t1), run_time=0.5)
+        self.say("[Several were not accessed at all: Borden and Davidson, Kollmar and Staemmler, Liu and Langenaeker, "
+                 "Yamanaka and coworkers, Glaesemann and Schmidt, Vanquickenborne and coworkers, Melrose and Scerri, and "
+                 "the historical papers of Scerri, Ehrenfest, Pauli and Slater. For Gryn'ova's own related papers and "
+                 "Westcott's, we had abstracts and summaries.]", m.FadeIn(t2))
+        self.play(m.FadeOut(t2), run_time=0.5)
+        self.say("[So the rule we kept: where an original was not accessed, nothing is attributed to it beyond what the "
+                 "review itself states, and the mathematics was derived independently and verified, as this appendix "
+                 "has shown.]", m.FadeIn(rule))
         self.wait(0.5)
