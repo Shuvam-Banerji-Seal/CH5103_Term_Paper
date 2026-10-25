@@ -106,11 +106,18 @@ def main() -> None:
         print("nothing to align")
         return
     al = Aligner(args.threads)
+    failed = []
     for i, (wav, meta, record) in enumerate(todo, 1):
         audio, rate = sf.read(wav, dtype="float32")
-        record["words"] = al.align(audio, rate, record["text"])
+        try:
+            record["words"] = al.align(audio, rate, record["text"])
+        except Exception as e:  # e.g. audio too short for its text: the line is re-synthesised, not the run stopped
+            failed.append(wav.stem)
+            print(f"[{i}/{len(todo)}] FAIL {wav.stem}: {type(e).__name__}: {e}", flush=True)
+            continue
         meta.write_text(json.dumps(record, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         print(f"[{i}/{len(todo)}] {wav.stem}: {len(record['words'])} words, {len(audio) / rate:.2f} s", flush=True)
+    print(f"aligned {len(todo) - len(failed)} lines, {len(failed)} failed: {' '.join(failed)}")
 
 
 if __name__ == "__main__":
