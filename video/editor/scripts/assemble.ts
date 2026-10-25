@@ -4,14 +4,14 @@
 // sample-exactly alongside: at 30 fps and 48 kHz a frame is exactly 1600 samples, so each segment's audio is cut or
 // padded to frames x 1600 samples and the two tracks cannot drift apart.
 //
-//   bun scripts/assemble.ts [--crf 22] [--preset slow] [--only 0-12] [--out ../../video/build/final/ch5103-explainer.mp4]
+//   bun scripts/assemble.ts [--crf 12] [--preset slow] [--jobs 4] [--only 0-12] [--out ../../video/build/final/ch5103-explainer.mp4]
 //   bun scripts/assemble.ts --scale 2     # the 4K version: scenes4k/, editor4k/, program4k.json, HEVC on the GPU (VAAPI)
 //
 // Inputs: video/build/program.json (python3 video/tools/program.py --probe), the scene renders
 // video/build/scenes/<file>/<Scene>.mp4 (+ .srt), the cards and HUD overlays (bun scripts/render.ts cards / hud).
 // Outputs: the MP4, an .srt with every scene's captions shifted to its place in the programme, chapters.txt
 // (YouTube-style chapter list) and a verification report.
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const argv = process.argv.slice(2);
@@ -23,7 +23,11 @@ const K4 = opt('scale', '1') === '2';
 const SFX = K4 ? '4k' : '';
 const WORK = path.join(BUILD, `assemble${SFX}`);
 const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer${K4 ? '-4k' : ''}.mp4`))!);
-const CRF = opt('crf', '22')!, PRESET = opt('preset', 'slow')!;
+// CRF 12: the slides are mostly still, so even this costs ~270 kb/s, and on 1080p scenes x264 runs at the same speed
+// at CRF 12 as at 22 (SSIM 0.99994 against the render, vs 0.9995 at 22)
+const CRF = opt('crf', '12')!, PRESET = opt('preset', 'slow')!;
+// segments encode in parallel: one ffmpeg (decode, HUD overlay, x264 on a mostly still picture) uses only a few cores
+const JOBS = Math.max(1, +opt('jobs', K4 ? '2' : '4')!);
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
@@ -46,8 +50,15 @@ function run(args: string[], quiet = true) {
   if (p.exitCode !== 0) throw new Error(`${args.join(' ')}\n${p.stderr.toString()}`);
   return p.stdout.toString();
 }
-const countFrames = (f: string) => +run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-count_frames', '-show_entries',
-  'stream=nb_read_frames', '-of', 'csv=p=0', f]).trim();
+async function runAsync(args: string[]) {
+  const p = Bun.spawn(args, { stdout: 'pipe', stderr: 'pipe' });
+  const [code, out, err] = await Promise.all([p.exited, new Response(p.stdout).text(), new Response(p.stderr).text()]);
+  if (code !== 0) throw new Error(`${args.join(' ')}\n${err}`);
+  return out;
+}
+const COUNT = ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-count_frames', '-show_entries', 'stream=nb_read_frames', '-of', 'csv=p=0'];
+const countFrames = (f: string) => +run([...COUNT, f]).trim();
+const countFramesAsync = async (f: string) => +(await runAsync([...COUNT, f])).trim();
 
 type Seg = { kind: 'card' | 'scene'; label: string; frames: number; src: string; hud?: string; srt?: string; chapter: number };
 const segs: Seg[] = [];
@@ -78,19 +89,29 @@ const x264 = K4
      '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
 const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
 const UP = K4 ? ',format=nv12,hwupload' : '';
-segs.forEach((g, k) => {
-  if (k < lo || k > hi) return;
+// a segment is reused only if it was encoded from the same inputs with the same settings (a stamp beside it)
+const stampOf = (g: Seg) => JSON.stringify({ args: x264, frames: g.frames,
+  inputs: [g.src, g.hud].filter(Boolean).map((f) => { const st = statSync(f!); return [f, st.size, st.mtimeMs]; }) });
+async function encode(g: Seg, k: number) {
   const out = path.join(WORK, `v${String(k).padStart(3, '0')}.mp4`);
-  if (existsSync(out) && countFrames(out) === g.frames) return; // resumable
+  const stampFile = out.replace(/\.mp4$/, '.json'), stamp = stampOf(g);
+  if (existsSync(out) && existsSync(stampFile) && readFileSync(stampFile, 'utf8') === stamp
+      && await countFramesAsync(out) === g.frames) return; // resumable
   const t0 = performance.now();
-  if (g.kind === 'card') run(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-vf', `format=yuv420p${UP}`,
+  if (g.kind === 'card') await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-vf', `format=yuv420p${UP}`,
     '-frames:v', String(g.frames), ...x264, out]);
-  else run(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-loop', '1', '-i', g.hud!, '-filter_complex',
+  else await runAsync(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-loop', '1', '-i', g.hud!, '-filter_complex',
     `[0:v][1:v]overlay=0:0:shortest=1:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
-  const n = countFrames(out);
+  const n = await countFramesAsync(out);
   if (n !== g.frames) throw new Error(`${g.label}: encoded ${n} frames, expected ${g.frames}`);
+  writeFileSync(stampFile, stamp);
   console.log(`v ${k}/${segs.length - 1} ${g.label}: ${n} frames in ${((performance.now() - t0) / 1000).toFixed(1)} s`);
-});
+}
+const todo = segs.map((g, k) => [g, k] as const).filter(([, k]) => k >= lo && k <= hi);
+let next = 0;
+const tEnc = performance.now();
+await Promise.all(Array.from({ length: JOBS }, async () => { while (next < todo.length) { const [g, k] = todo[next++]!; await encode(g, k); } }));
+console.log(`video: ${todo.length} segments with ${JOBS} encoders in ${((performance.now() - tEnc) / 60000).toFixed(1)} min`);
 if (lo !== 0 || hi !== segs.length - 1) { console.log('partial run: segments encoded, nothing joined'); process.exit(0); }
 
 // 2. audio: each segment's narration as 48 kHz stereo PCM, exactly frames x 1600 samples (cards: silence)

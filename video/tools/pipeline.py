@@ -2,7 +2,10 @@
 of broken lines) → scene renders → frame counts → cards and HUD → assembly → QA.
 
 usage (from the repo root): python3 video/tools/pipeline.py [--from STAGE] [--to STAGE]
-stages: wait tts align asr render probe editor assemble qa  render4k probe4k editor4k assemble4k qa4k
+stages: wait tts align asr render probe editor start4k assemble qa  render4k probe4k editor4k assemble4k qa4k
+
+The 4K scene renders start in the background (start4k, at low CPU priority) once the 1080p programme is fixed: they
+are GPU work, and the GPU is otherwise idle while the 1080p assembly encodes on the CPU. render4k waits for them.
 
 Every stage is resumable (each tool skips finished work), so the pipeline can be restarted at any time; a reboot
 clears /tmp, so logs live in video/build/logs/: <stage>.log per stage, and pipeline.status, one line per event
@@ -16,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -23,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[2]
 LOGS = ROOT / "video" / "build" / "logs"
 STORE = ROOT / "video" / "build" / "tts" / "store"
 STATUS = LOGS / "pipeline.status"
-STAGES = ["wait", "tts", "align", "asr", "render", "probe", "editor", "assemble", "qa",
+STAGES = ["wait", "tts", "align", "asr", "render", "probe", "editor", "start4k", "assemble", "qa",
           "render4k", "probe4k", "editor4k", "assemble4k", "qa4k"]   # 4K reuses the narration and the 1080p programme
 TTS = ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "-u", "video/tts/synth.py", "batch", "--threads",
        "8", "--cfg", "1"]
@@ -71,14 +75,21 @@ def remaining_lines() -> int:
     return missing
 
 
-def stage_wait() -> bool:
-    # a synthesis or alignment started by hand must finish first: two heavy jobs at once get OOM-killed
+def wait_for(pattern: str, exclude: str | None = None) -> None:
+    """Wait while a matching job started by hand runs (two writers of the same outputs would collide)."""
     while True:
-        busy = subprocess.run(["pgrep", "-f", "video/tts/(synth|align)\\.py"], capture_output=True, text=True).stdout.split()
-        busy = [b for b in busy if int(b) != os.getpid()]
+        out = subprocess.run(["pgrep", "-af", pattern], capture_output=True, text=True).stdout.splitlines()
+        busy = [l for l in out if int(l.split()[0]) != os.getpid() and "pgrep" not in l
+                and (exclude is None or exclude not in l)]
         if not busy:
-            return True
-        time.sleep(30)
+            return
+        time.sleep(20)
+
+
+def stage_wait() -> bool:
+    # a synthesis, alignment or Whisper check started by hand must finish first: two heavy jobs at once get OOM-killed
+    wait_for("video/tts/(synth|align|asr)\\.py")
+    return True
 
 
 def stage_tts(seed: int = 42) -> bool:
@@ -109,7 +120,7 @@ def records() -> list[tuple[Path, dict]]:
 
 def stage_asr() -> bool:
     for rnd in range(REGEN_ROUNDS + 1):
-        rc = run("asr", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "-u", "video/tts/asr.py"],
+        rc = run("asr", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "-u", "video/tts/asr.py", "--recheck"],
                  env={"OMP_NUM_THREADS": "8"}, progress=r"lines over WER")
         if rc != 0:
             return False
@@ -131,9 +142,17 @@ def stage_asr() -> bool:
     return True
 
 
+RENDER4K = ["--res", "3840x2160", "--out", "video/build/scenes4k", "--preset", "superfast", "--crf", "14"]
+BACKGROUND: dict[str, threading.Thread] = {}
+
+
 def stage_render(k4: bool = False) -> bool:
     name = "render4k" if k4 else "render"
-    extra = ["--res", "3840x2160", "--out", "video/build/scenes4k", "--preset", "superfast", "--crf", "14"] if k4 else []
+    extra = RENDER4K if k4 else []
+    if k4 and "render4k" in BACKGROUND:
+        BACKGROUND.pop("render4k").join()   # the background pass started by start4k; this pass checks and retries
+    # (one renderer at a time: scene renders are GPU-bound, a second process gains nothing and would collide)
+    wait_for("video/tools/render_all\\.py", exclude=None if k4 else "scenes4k")
     for attempt in range(2):
         rc = run(name, ["uv", "run", "--project", "video/scenes", "python", "-I", "video/tools/render_all.py", *extra],
                  progress=r"^(ok|FAIL) |scenes rendered")
@@ -167,6 +186,14 @@ def stage_assemble(k4: bool = False) -> bool:
 def stage_qa(k4: bool = False) -> bool:
     return run("qa4k" if k4 else "qa", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "video/tools/qa.py",
                                         *(["--k4"] if k4 else [])], progress=r"^\[(ok|FAIL|info)\]") == 0
+
+
+def stage_start4k() -> bool:
+    cmd = ["nice", "-n", "10", "uv", "run", "--project", "video/scenes", "python", "-I", "video/tools/render_all.py", *RENDER4K]
+    t = threading.Thread(target=run, args=("render4k", cmd), kwargs={"progress": r"^(ok|FAIL) |scenes rendered"}, daemon=True)
+    t.start()
+    BACKGROUND["render4k"] = t
+    return True
 
 
 def stage_render4k() -> bool:

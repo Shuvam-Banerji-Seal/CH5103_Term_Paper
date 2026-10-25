@@ -3,6 +3,7 @@ text it should say, word by word.
 
 usage (from the repo root):
   uv run --project video/tts python -E -s video/tts/asr.py [--all]        # store/<key>.wav lines not yet checked
+  uv run --project video/tts python -E -s video/tts/asr.py --recheck      # + failed lines heard whole, now by sentence
   uv run --project video/tts python -E -s video/tts/asr.py --files a.wav b.wav --texts "..." "..."
 
 A line passes when its word error rate is at most MAX_WER after normalisation (lower case, punctuation dropped,
@@ -92,16 +93,43 @@ class Whisper:
         return self.proc.batch_decode(ids, skip_special_tokens=True)[0].strip()
 
 
-def check(w: Whisper, wav: Path, text: str) -> dict:
+def spans(timed: list, seconds: float, longest: float = 24.0) -> list[tuple[float, float]]:
+    """Cut a line at its sentence ends (word timings from align.py) into pieces of at most `longest` seconds.
+    Whisper sees 30 s at a time and often stops at the pause after a colon, so a long line heard in one go can come
+    back truncated although every word was said."""
+    cuts, start = [], 0.0
+    for k, (tok, _, end) in enumerate(timed):
+        last = k == len(timed) - 1
+        nxt = timed[k + 1][1] if not last else seconds
+        if last or (tok[-1] in ".:;?!" and end - start > 1.0) or (tok[-1] == "," and nxt - start > longest * 0.6):
+            cut = seconds if last else (end + nxt) / 2
+            while cut - start > longest:  # one sentence longer than Whisper's window: hard cuts
+                cuts.append((start, start + longest))
+                start += longest
+            cuts.append((start, cut))
+            start = cut
+    return cuts or [(0.0, seconds)]
+
+
+def check(w: Whisper, wav: Path, text: str, timed: list | None = None) -> dict:
     audio, rate = sf.read(wav, dtype="float32")
-    heard = w.transcribe(audio, rate)
+    if timed:
+        parts = [w.transcribe(audio[int(a * rate): int(b * rate)], rate) for a, b in spans(timed, len(audio) / rate)]
+        heard = " ".join(p for p in parts if p)
+    else:
+        heard = w.transcribe(audio, rate)
     return {"heard": heard, "wer": round(wer(words(text), words(heard)), 3), "seconds": round(len(audio) / rate, 2),
-            "words_per_second": round(len(text.split()) / (len(audio) / rate), 2)}
+            "words_per_second": round(len(text.split()) / (len(audio) / rate), 2), "chunked": bool(timed)}
+
+
+def truncated(a: dict, text: str) -> bool:
+    return a["wer"] > 0.5 or len(words(a["heard"])) < 0.8 * len(words(text)) or a["seconds"] > 29
 
 
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--all", action="store_true")
+    p.add_argument("--recheck", action="store_true")
     p.add_argument("--files", nargs="*")
     p.add_argument("--texts", nargs="*")
     p.add_argument("--threads", type=int, default=8)
@@ -117,9 +145,12 @@ def main() -> None:
     bad = []
     for meta in sorted(STORE.glob("*.json")):
         record = json.loads(meta.read_text(encoding="utf-8"))
-        if record.get("asr") and not args.all:
+        a = record.get("asr")
+        # --recheck: lines heard in one go whose transcript looks cut short, heard again sentence by sentence (a full
+        # length transcript over MAX_WER is mostly spelling: "0.077" for "zero point zero seven seven")
+        if a and not args.all and not (args.recheck and a["wer"] > MAX_WER and not a.get("chunked") and truncated(a, record["text"])):
             continue
-        record["asr"] = check(w, meta.with_suffix(".wav"), record["text"])
+        record["asr"] = check(w, meta.with_suffix(".wav"), record["text"], record.get("words"))
         meta.write_text(json.dumps(record, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         if record["asr"]["wer"] > MAX_WER:
             bad.append(meta.stem)
