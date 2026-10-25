@@ -18,7 +18,7 @@ ordering). This repository contains:
 **Website:** <https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/> has an overview, the findings, the test
 matrix, the figure gallery and an [in-browser slide viewer](https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/slides.html).
 
-**Video:** a complete narrated explainer (1080p, about three and a half hours, with captions) is attached to the
+**Video:** a complete narrated explainer (1080p, just under three hours, with captions and chapters) is attached to the
 [latest release](https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper/releases/latest): every slide frame
 animated and every derivation step spoken, plus appendices that walk through every verification script and every
 Lean proof line by line. How it was made: [`video/README.md`](video/README.md).
