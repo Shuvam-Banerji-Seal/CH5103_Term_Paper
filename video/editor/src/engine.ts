@@ -52,8 +52,11 @@ const ease = (x: number) => { x = clamp(x); return x * x * (3 - 2 * x); }; // sm
 export class Editor {
   readonly ctx: CanvasRenderingContext2D;
   readonly lay: ReturnType<typeof layout>;
-  constructor(readonly canvas: HTMLCanvasElement, readonly p: Program) {
+  /** `scale`: physical pixels per layout pixel (2 renders the 1920x1080 layout at 3840x2160). */
+  constructor(readonly canvas: HTMLCanvasElement, readonly p: Program, readonly scale = 1) {
+    canvas.width = p.width * scale; canvas.height = p.height * scale;
     this.ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+    this.ctx.setTransform(scale, 0, 0, scale, 0, 0);
     this.lay = layout(p);
   }
 
@@ -119,5 +122,5 @@ export class Editor {
     this.progressBar(this.lay.chapters[ci]!.start / this.lay.total, ci, 0, 5, a);
   }
 
-  rgba(): Uint8ClampedArray { return this.ctx.getImageData(0, 0, this.p.width, this.p.height).data; }
+  rgba(): Uint8ClampedArray { return this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height).data; }
 }

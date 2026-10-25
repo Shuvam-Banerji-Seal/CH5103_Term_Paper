@@ -3,6 +3,7 @@ import { Editor, loadFonts, type Program } from './engine';
 
 const params = new URLSearchParams(location.search);
 const EXPORT = params.has('export');
+const SCALE = Math.max(1, Math.round(+(params.get('scale') ?? '1')));
 const canvas = document.getElementById('c') as HTMLCanvasElement;
 
 declare global { interface Window { __edit: any } }
@@ -10,8 +11,7 @@ declare global { interface Window { __edit: any } }
 async function boot() {
   await loadFonts();
   const program: Program = await (await fetch('program.json')).json();
-  canvas.width = program.width; canvas.height = program.height;
-  const ed = new Editor(canvas, program);
+  const ed = new Editor(canvas, program, SCALE);
   if (EXPORT) setupExport(ed, program);
   else setupPreview(ed, program);
 }
@@ -19,7 +19,7 @@ async function boot() {
 function setupExport(ed: Editor, program: Program) {
   document.body.classList.add('export');
   window.__edit = {
-    ready: true, program, layout: ed.lay,
+    ready: true, program, layout: ed.lay, width: canvas.width, height: canvas.height,
     card(ci: number, k: number) { ed.card(ci, k); },
     hud(si: number) { ed.hud(si); },
     /** The current canvas as a PNG (with alpha), base64. */

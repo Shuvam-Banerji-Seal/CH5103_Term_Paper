@@ -1,6 +1,7 @@
 """Quality checks of the assembled video (acceptance e and g): format, length, sync, picture and sound.
 
 usage (from the repo root): uv run --project video/tts python -E -s video/tools/qa.py [--final path.mp4] [--n 24]
+                            [--k4]   (the 4K version: scenes4k/, program4k.json, 3840x2160, HEVC)
 
 1. format: 1920x1080, 30 fps, H.264 + AAC 48 kHz, under 2 GiB (a GitHub release asset);
 2. frames: the file has exactly the programme's frame count; audio and video last the same to within a frame;
@@ -40,16 +41,25 @@ def audio(path: Path, start: float, dur: float, rate: int = 8000) -> np.ndarray:
     return np.frombuffer(raw, dtype=np.int16).astype(np.float32)
 
 
+W, H = 1920, 1080
+
+
 def frame(path: Path, t: float) -> np.ndarray:
     raw = ff("-ss", f"{t:.4f}", "-i", str(path), "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-")
-    return np.frombuffer(raw, dtype=np.uint8).reshape(1080, 1920).astype(np.float32)
+    return np.frombuffer(raw, dtype=np.uint8).reshape(H, W).astype(np.float32)
 
 
 def main() -> int:
+    global W, H
     argv = sys.argv[1:]
-    final = Path(argv[argv.index("--final") + 1]) if "--final" in argv else BUILD / "final" / "ch5103-explainer.mp4"
+    k4 = "--k4" in argv
+    sfx = "4k" if k4 else ""
+    if k4:
+        W, H = 3840, 2160
+    final = (Path(argv[argv.index("--final") + 1]) if "--final" in argv
+             else BUILD / "final" / f"ch5103-explainer{'-4k' if k4 else ''}.mp4")
     n = int(argv[argv.index("--n") + 1]) if "--n" in argv else 24
-    prog = json.loads((BUILD / "program.json").read_text())
+    prog = json.loads((BUILD / f"program{sfx}.json").read_text())
     fps = prog["fps"]
     report, fails = [], []
 
@@ -62,10 +72,14 @@ def main() -> int:
     v = next(s for s in info["streams"] if s["codec_type"] == "video")
     a = next(s for s in info["streams"] if s["codec_type"] == "audio")
     size = int(info["format"]["size"])
-    check("format", v["width"] == 1920 and v["height"] == 1080 and v["codec_name"] == "h264" and v["r_frame_rate"] == f"{fps}/1"
+    check("format", v["width"] == W and v["height"] == H and v["codec_name"] == ("hevc" if k4 else "h264")
+          and v["r_frame_rate"] == f"{fps}/1"
           and a["codec_name"] == "aac" and a["sample_rate"] == "48000",
           f"{v['codec_name']} {v['width']}x{v['height']} {v['r_frame_rate']}, {a['codec_name']} {a['sample_rate']} Hz")
-    check("size", size < 2 ** 31, f"{size / 2 ** 30:.2f} GiB")
+    if k4:  # a 4K file over 2 GiB is split at chapter boundaries for the release, so size is not a failure here
+        report.append(f"[info] size: {size / 2 ** 30:.2f} GiB")
+    else:
+        check("size", size < 2 ** 31, f"{size / 2 ** 30:.2f} GiB")
     nframes = int(subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_packets", "-show_entries",
                                   "stream=nb_read_packets", "-of", "csv=p=0", str(final)], capture_output=True, text=True).stdout)
     check("frames", nframes == prog["total_frames"], f"{nframes} in the file, {prog['total_frames']} in the programme")
@@ -82,7 +96,7 @@ def main() -> int:
     picks = [scenes[i] for i in np.linspace(0, len(scenes) - 1, min(n, len(scenes))).round().astype(int)]
     worst_lag, worst_psnr = 0.0, 1e9
     for s, start in picks:
-        src = BUILD / "scenes" / s["file"] / f"{s['id']}.mp4"
+        src = BUILD / f"scenes{sfx}" / s["file"] / f"{s['id']}.mp4"
         t0 = start / fps
         ref = audio(src, 0.0, 6.0)
         if ref.std() < 1:  # a scene that opens with silence: use a later window
@@ -92,8 +106,8 @@ def main() -> int:
         lag = (int(np.argmax(corr)) - int(round((t0 - max(0.0, t0 - 0.5)) * 8000))) / 8000.0
         worst_lag = max(worst_lag, abs(lag))
         mid = s["frames"] // 2
-        A = frame(src, mid / fps)[60:, :]
-        B = frame(final, (start + mid) / fps)[60:, :]
+        A = frame(src, mid / fps)[60 * H // 1080:, :]
+        B = frame(final, (start + mid) / fps)[60 * H // 1080:, :]
         mse = float(np.mean((A - B) ** 2))
         psnr = 99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse)
         worst_psnr = min(worst_psnr, psnr)
@@ -117,7 +131,7 @@ def main() -> int:
           f"{len(long_silences)} stretches of 8 s or more (chapter cards are {card_s:.0f} s)")
 
     text = "\n".join(report)
-    (final.parent / "qa.txt").write_text(text + "\n")
+    (final.parent / f"qa{'-4k' if k4 else ''}.txt").write_text(text + "\n")
     print(text)
     return 1 if fails else 0
 

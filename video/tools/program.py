@@ -4,6 +4,7 @@ usage (from the repo root):
   python3 video/tools/program.py            # list chapters and scenes (no renders needed)
   python3 video/tools/program.py --probe    # read frame counts of video/build/scenes/<file>/<Scene>.mp4, write
                                             # video/build/program.json for the editor and the assembler
+  python3 video/tools/program.py --probe --renders video/build/scenes4k --out video/build/program4k.json
 
 A scene's frame count is the number of video frames ffprobe counts in its render; its audio must last exactly as
 long (checked here: a scene whose narration ran past its last frame would drift the following scenes).
@@ -67,7 +68,12 @@ def probe(mp4: Path) -> tuple[int, float, float]:
 
 
 def main() -> int:
+    global RENDERS, OUT
     do_probe = "--probe" in sys.argv
+    if "--renders" in sys.argv:
+        RENDERS = ROOT / sys.argv[sys.argv.index("--renders") + 1]
+    if "--out" in sys.argv:
+        OUT = ROOT / sys.argv[sys.argv.index("--out") + 1]
     chapters, total, problems = [], 0, []
     for stem, (part, title) in CHAPTERS.items():
         path = SCENES / f"{stem}.py"

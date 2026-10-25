@@ -5,6 +5,7 @@
 // padded to frames x 1600 samples and the two tracks cannot drift apart.
 //
 //   bun scripts/assemble.ts [--crf 22] [--preset slow] [--only 0-12] [--out ../../video/build/final/ch5103-explainer.mp4]
+//   bun scripts/assemble.ts --scale 2     # the 4K version: scenes4k/, editor4k/, program4k.json, HEVC on the GPU (VAAPI)
 //
 // Inputs: video/build/program.json (python3 video/tools/program.py --probe), the scene renders
 // video/build/scenes/<file>/<Scene>.mp4 (+ .srt), the cards and HUD overlays (bun scripts/render.ts cards / hud).
@@ -18,15 +19,23 @@ const opt = (k: string, d?: string) => { const i = argv.indexOf(`--${k}`); retur
 const APP = path.resolve(import.meta.dir, '..');
 const ROOT = path.resolve(APP, '../..');
 const BUILD = path.join(ROOT, 'video/build');
-const WORK = path.join(BUILD, 'assemble');
-const OUTFILE = path.resolve(opt('out', path.join(BUILD, 'final/ch5103-explainer.mp4'))!);
+const K4 = opt('scale', '1') === '2';
+const SFX = K4 ? '4k' : '';
+const WORK = path.join(BUILD, `assemble${SFX}`);
+const OUTFILE = path.resolve(opt('out', path.join(BUILD, `final/ch5103-explainer${K4 ? '-4k' : ''}.mp4`))!);
 const CRF = opt('crf', '22')!, PRESET = opt('preset', 'slow')!;
 const RATE = 48000;
 
 interface Scene { id: string; file: string; frames: number }
 interface Chapter { id: string; part: string; title: string; card_frames: number; scenes: Scene[] }
 const program: { fps: number; width: number; height: number; total_frames: number; chapters: Chapter[] } =
-  JSON.parse(readFileSync(path.join(BUILD, 'program.json'), 'utf8'));
+  JSON.parse(readFileSync(path.join(BUILD, `program${SFX}.json`), 'utf8'));
+if (K4) {  // the cards and HUD were laid out from program.json: the 4K renders must have the same frame counts
+  const p1 = JSON.parse(readFileSync(path.join(BUILD, 'program.json'), 'utf8'));
+  if (JSON.stringify(p1.chapters.map((c: Chapter) => c.scenes.map((s) => s.frames))) !==
+      JSON.stringify(program.chapters.map((c) => c.scenes.map((s) => s.frames))))
+    throw new Error('4K renders differ in frame counts from the 1080p programme');
+}
 if ((program as any).provisional) throw new Error('program.json is provisional: run python3 video/tools/program.py --probe');
 const FPS = program.fps;
 const SPF = RATE / FPS;
@@ -42,13 +51,14 @@ const countFrames = (f: string) => +run(['ffprobe', '-v', 'error', '-select_stre
 
 type Seg = { kind: 'card' | 'scene'; label: string; frames: number; src: string; hud?: string; srt?: string; chapter: number };
 const segs: Seg[] = [];
-const hudFiles = existsSync(path.join(BUILD, 'editor/hud')) ? readdirSync(path.join(BUILD, 'editor/hud')).sort() : [];
+const ED = path.join(BUILD, `editor${SFX}`);
+const hudFiles = existsSync(path.join(ED, 'hud')) ? readdirSync(path.join(ED, 'hud')).sort() : [];
 let si = 0;
 program.chapters.forEach((ch, ci) => {
-  segs.push({ kind: 'card', label: `${ch.part}: ${ch.title}`, frames: ch.card_frames, src: path.join(BUILD, `editor/cards/${ch.id}.mkv`), chapter: ci });
+  segs.push({ kind: 'card', label: `${ch.part}: ${ch.title}`, frames: ch.card_frames, src: path.join(ED, `cards/${ch.id}.mkv`), chapter: ci });
   for (const s of ch.scenes) {
-    const mp4 = path.join(BUILD, `scenes/${s.file}/${s.id}.mp4`);
-    const hud = hudFiles[si] ? path.join(BUILD, 'editor/hud', hudFiles[si]!) : undefined;
+    const mp4 = path.join(BUILD, `scenes${SFX}/${s.file}/${s.id}.mp4`);
+    const hud = hudFiles[si] ? path.join(ED, 'hud', hudFiles[si]!) : undefined;
     if (!hud || !hud.endsWith(`_${s.id}.png`)) throw new Error(`HUD overlay ${si} is not for ${s.id}: run bun scripts/render.ts hud`);
     segs.push({ kind: 'scene', label: `${s.file}:${s.id}`, frames: s.frames, src: mp4, hud, srt: mp4.replace(/\.mp4$/, '.srt'), chapter: ci });
     si++;
@@ -61,16 +71,22 @@ mkdirSync(WORK, { recursive: true });
 mkdirSync(path.dirname(OUTFILE), { recursive: true });
 
 // 1. video: one encode per segment (scenes get their HUD overlaid on every frame), checked frame by frame count
-const x264 = ['-c:v', 'libx264', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
-  '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
+// 1080p: x264 on the CPU; 4K: HEVC on the GPU (VAAPI; a CPU encode of ~380k 4K frames would take most of a day)
+const x264 = K4
+  ? ['-c:v', 'hevc_vaapi', '-rc_mode', 'CQP', '-qp', opt('qp', '24')!, '-r', String(FPS), '-g', String(FPS * 10), '-tag:v', 'hvc1', '-an']
+  : ['-c:v', 'libx264', '-preset', PRESET, '-crf', CRF, '-tune', 'animation', '-pix_fmt', 'yuv420p',
+     '-profile:v', 'high', '-level', '4.1', '-r', String(FPS), '-g', String(FPS * 10), '-bf', '3', '-an'];
+const HW = K4 ? ['-vaapi_device', '/dev/dri/renderD128'] : [];
+const UP = K4 ? ',format=nv12,hwupload' : '';
 segs.forEach((g, k) => {
   if (k < lo || k > hi) return;
   const out = path.join(WORK, `v${String(k).padStart(3, '0')}.mp4`);
   if (existsSync(out) && countFrames(out) === g.frames) return; // resumable
   const t0 = performance.now();
-  if (g.kind === 'card') run(['ffmpeg', '-y', '-loglevel', 'error', '-i', g.src, '-frames:v', String(g.frames), ...x264, out]);
-  else run(['ffmpeg', '-y', '-loglevel', 'error', '-i', g.src, '-loop', '1', '-i', g.hud!, '-filter_complex',
-    `[0:v][1:v]overlay=0:0:shortest=1:format=auto,format=yuv420p[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
+  if (g.kind === 'card') run(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-vf', `format=yuv420p${UP}`,
+    '-frames:v', String(g.frames), ...x264, out]);
+  else run(['ffmpeg', '-y', '-loglevel', 'error', ...HW, '-i', g.src, '-loop', '1', '-i', g.hud!, '-filter_complex',
+    `[0:v][1:v]overlay=0:0:shortest=1:format=auto,format=yuv420p${UP}[v]`, '-map', '[v]', '-frames:v', String(g.frames), ...x264, out]);
   const n = countFrames(out);
   if (n !== g.frames) throw new Error(`${g.label}: encoded ${n} frames, expected ${g.frames}`);
   console.log(`v ${k}/${segs.length - 1} ${g.label}: ${n} frames in ${((performance.now() - t0) / 1000).toFixed(1)} s`);

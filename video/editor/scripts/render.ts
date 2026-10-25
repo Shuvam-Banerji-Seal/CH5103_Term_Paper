@@ -4,6 +4,7 @@
 //   cards:  bun scripts/render.ts cards [--only ch03_two_electrons,...]  -> video/build/editor/cards/<chapter>.mkv
 //   hud:    bun scripts/render.ts hud                                   -> video/build/editor/hud/<NNN>_<Scene>.png
 //   stills: bun scripts/render.ts stills [--cards 0,6] [--k 45]         -> video/build/editor/stills/*.png
+//   --scale 2 (all modes): the same layout at 3840x2160, into video/build/editor4k/
 // Needs video/build/program.json (python3 video/tools/program.py --probe). Uses the Vite dev server at --url
 // (default http://localhost:5174); starts a private one if unreachable.
 import { chromium, type Page } from 'playwright-core';
@@ -15,7 +16,8 @@ const mode = argv[0] ?? 'stills';
 const opt = (k: string, d?: string) => { const i = argv.indexOf(`--${k}`); return i >= 0 ? argv[i + 1] : d; };
 const APP = path.resolve(import.meta.dir, '..');
 const ROOT = path.resolve(APP, '../..');
-const OUT = path.join(ROOT, 'video/build/editor');
+const SCALE = Math.max(1, Math.round(+opt('scale', '1')!));
+const OUT = path.join(ROOT, SCALE === 1 ? 'video/build/editor' : `video/build/editor${SCALE === 2 ? '4k' : `x${SCALE}`}`);
 const CHROMIUM = opt('chromium', process.env.CHROMIUM ?? '/usr/bin/chromium')!;
 
 async function reachable(url: string) {
@@ -43,7 +45,7 @@ async function openPage(url: string) {
   const logs: string[] = [];
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(`[${m.type()}] ${m.text()}`); });
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
-  await page.goto(`${url}/?export=1`);
+  await page.goto(`${url}/?export=1${SCALE !== 1 ? `&scale=${SCALE}` : ''}`);
   await page.waitForFunction(() => (window as any).__edit?.ready || (window as any).__edit?.error, null, { timeout: 120000 });
   const err = await page.evaluate(() => (window as any).__edit.error);
   if (err) throw new Error(`editor failed to boot:\n${err}\n${logs.join('\n')}`);
@@ -56,6 +58,7 @@ async function savePng(page: Page, file: string) {
 
 async function cards(page: Page) {
   const program = await page.evaluate(() => (window as any).__edit.program);
+  const [W, H] = await page.evaluate(() => [(window as any).__edit.width, (window as any).__edit.height]);
   const only = opt('only')?.split(',');
   const dir = path.join(OUT, 'cards');
   mkdirSync(dir, { recursive: true });
@@ -64,7 +67,7 @@ async function cards(page: Page) {
     if (only && !only.includes(ch.id)) continue;
     const out = path.join(dir, `${ch.id}.mkv`);
     // lossless intermediate; the assembler encodes every segment once, with the final settings
-    const ff = Bun.spawn(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', `${program.width}x${program.height}`,
+    const ff = Bun.spawn(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', `${W}x${H}`,
       '-r', String(program.fps), '-i', 'pipe:0', '-c:v', 'libx264rgb', '-qp', '0', '-preset', 'ultrafast', out],
       { stdin: 'pipe', stdout: 'inherit', stderr: 'inherit' });
     let frames = 0;
@@ -72,7 +75,7 @@ async function cards(page: Page) {
       port: 0,
       fetch(req, srv) { return srv.upgrade(req) ? undefined : new Response('ws only', { status: 400 }); },
       websocket: {
-        maxPayloadLength: program.width * program.height * 4 + 1024,
+        maxPayloadLength: W * H * 4 + 1024,
         async message(ws, msg) {
           ff.stdin.write(msg as Uint8Array);
           await ff.stdin.flush();

@@ -2,7 +2,7 @@
 of broken lines) → scene renders → frame counts → cards and HUD → assembly → QA.
 
 usage (from the repo root): python3 video/tools/pipeline.py [--from STAGE] [--to STAGE]
-stages: wait tts align asr render probe editor assemble qa
+stages: wait tts align asr render probe editor assemble qa  render4k probe4k editor4k assemble4k qa4k
 
 Every stage is resumable (each tool skips finished work), so the pipeline can be restarted at any time; a reboot
 clears /tmp, so logs live in video/build/logs/: <stage>.log per stage, and pipeline.status, one line per event
@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[2]
 LOGS = ROOT / "video" / "build" / "logs"
 STORE = ROOT / "video" / "build" / "tts" / "store"
 STATUS = LOGS / "pipeline.status"
-STAGES = ["wait", "tts", "align", "asr", "render", "probe", "editor", "assemble", "qa"]
+STAGES = ["wait", "tts", "align", "asr", "render", "probe", "editor", "assemble", "qa",
+          "render4k", "probe4k", "editor4k", "assemble4k", "qa4k"]   # 4K reuses the narration and the 1080p programme
 TTS = ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "-u", "video/tts/synth.py", "batch", "--threads",
        "8", "--cfg", "1"]
 TTS_SETTINGS = [["--batch", "24", "--depth", "bf16"], ["--batch", "8", "--depth", "int8"],
@@ -130,36 +131,62 @@ def stage_asr() -> bool:
     return True
 
 
-def stage_render() -> bool:
+def stage_render(k4: bool = False) -> bool:
+    name = "render4k" if k4 else "render"
+    extra = ["--res", "3840x2160", "--out", "video/build/scenes4k", "--preset", "superfast", "--crf", "14"] if k4 else []
     for attempt in range(2):
-        rc = run("render", ["uv", "run", "--project", "video/scenes", "python", "-I", "video/tools/render_all.py"],
+        rc = run(name, ["uv", "run", "--project", "video/scenes", "python", "-I", "video/tools/render_all.py", *extra],
                  progress=r"^(ok|FAIL) |scenes rendered")
         if rc == 0:
             return True
-        status("render", "retry", f"attempt {attempt + 1} had failures")
+        status(name, "retry", f"attempt {attempt + 1} had failures")
     return False
 
 
-def stage_probe() -> bool:
-    return run("probe", ["python3", "video/tools/program.py", "--probe"], progress=r"frames = |PROBLEM") == 0
+def stage_probe(k4: bool = False) -> bool:
+    extra = ["--renders", "video/build/scenes4k", "--out", "video/build/program4k.json"] if k4 else []
+    return run("probe4k" if k4 else "probe", ["python3", "video/tools/program.py", "--probe", *extra],
+               progress=r"frames = |PROBLEM") == 0
 
 
-def stage_editor() -> bool:
-    ed = ROOT / "video" / "editor"
-    if not (ed / "node_modules").exists() and run("editor", ["bun", "install"], cwd=ed) != 0:
+def stage_editor(k4: bool = False) -> bool:
+    ed, name = ROOT / "video" / "editor", "editor4k" if k4 else "editor"
+    scale = ["--scale", "2"] if k4 else []
+    if not (ed / "node_modules").exists() and run(name, ["bun", "install"], cwd=ed) != 0:
         return False
-    return (run("editor", ["bun", "scripts/render.ts", "cards"], cwd=ed, progress=r"frames$") == 0
-            and run("editor", ["bun", "scripts/render.ts", "hud"], cwd=ed, progress=r"HUD overlays") == 0)
+    return (run(name, ["bun", "scripts/render.ts", "cards", *scale], cwd=ed, progress=r"frames$") == 0
+            and run(name, ["bun", "scripts/render.ts", "hud", *scale], cwd=ed, progress=r"HUD overlays") == 0)
 
 
-def stage_assemble() -> bool:
-    return run("assemble", ["bun", "scripts/assemble.ts"], cwd=ROOT / "video" / "editor",
-               progress=r"^v \d+/\d+ .*card|narration loudness|^frames |^video |^size ") == 0
+def stage_assemble(k4: bool = False) -> bool:
+    return run("assemble4k" if k4 else "assemble", ["bun", "scripts/assemble.ts", *(["--scale", "2"] if k4 else [])],
+               cwd=ROOT / "video" / "editor",
+               progress=r"^v \d+/\d+ .*(card|Part|Appendix)|narration loudness|^frames |^video |^size ") == 0
 
 
-def stage_qa() -> bool:
-    return run("qa", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "video/tools/qa.py"],
-               progress=r"^\[(ok|FAIL)\]") == 0
+def stage_qa(k4: bool = False) -> bool:
+    return run("qa4k" if k4 else "qa", ["uv", "run", "--project", "video/tts", "python", "-E", "-s", "video/tools/qa.py",
+                                        *(["--k4"] if k4 else [])], progress=r"^\[(ok|FAIL|info)\]") == 0
+
+
+def stage_render4k() -> bool:
+    return stage_render(True)
+
+
+def stage_probe4k() -> bool:
+    return stage_probe(True)
+
+
+def stage_editor4k() -> bool:
+    return stage_editor(True)
+
+
+def stage_assemble4k() -> bool:
+    return stage_assemble(True)
+
+
+def stage_qa4k() -> bool:
+    return stage_qa(True)
 
 
 def main() -> int:
