@@ -8,14 +8,22 @@ review's sign error, then through our verification and a claim-by-claim verdict.
 [`ch5103-handout.pdf`](ch5103-handout.pdf) (one page per frame, for reading). Both can be viewed in the
 browser on the [project site](https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/slides.html).
 
+**Scripts:** [`ch5103-presenter-script.pdf`](ch5103-presenter-script.pdf) is the narration of slides 10–130, word
+for word, as plain text set compactly for printing: key terms in bold, the sentence that lands each point
+highlighted, errors underlined. [`ch5103-script-handout.pdf`](ch5103-script-handout.pdf) is the full narration of
+the explainer video, with each slide's picture, the appendices and the video time of every line. Both are
+generated from the video's scene sources by `video/tools/script_handout.py`, which checks every line against
+the rendered subtitles and every slide against its page and footer number in the handout.
+
 ## Layout
 
 ```
 presentation/
 ├── main.tex                 preamble + \input of every section, in order
 ├── handout.tex              main.tex in beamer's handout mode (overlays collapsed)
+├── script/                  presenter.tex, script.tex + their generated bodies (video/tools/script_handout.py)
 ├── latexmkrc                LuaLaTeX, out-of-tree build/, theme/ on TEXINPUTS
-├── Makefile                 make / make handout / make assets / make check
+├── Makefile                 make / make handout / make presenter / make script / make assets / make check
 ├── theme/
 │   ├── beamerthemeNoir.sty  black theme: calligraphic titles, Libertinus, progress-bar footline
 │   └── noir-macros.sty      notation, overlay helpers (\hl, \canc, ...), boxes, pgfplots style
@@ -36,6 +44,9 @@ The review's own figures are read from `../assets/figures/` through `\graphicspa
 ```bash
 make            # latexmk (LuaLaTeX) -> ch5103-presentation.pdf, then the log check
 make handout    # one page per frame -> ch5103-handout.pdf
+make presenter  # narration of slides 10-130, plain and compact -> ch5103-presenter-script.pdf
+make script     # full narration with slide pictures and times -> ch5103-script-handout.pdf (needs the handout)
+make script-body  # regenerate the scripts' bodies from video/scenes (needs the scenes venv and video/build)
 make assets     # optional: regenerate screenshots, plot data (PySCF) and JS diagrams
 ```
 

@@ -35,7 +35,7 @@ plus some overstated or imprecise claims. The distonic-radical pH switch is repr
 |---|---|
 | [`paper/`](paper) | The review (open access, CC BY-NC-ND; redistributed unmodified) |
 | [`derivations/`](derivations) | LaTeX derivations: 18 sections ([`derivations.pdf`](derivations/derivations.pdf)) |
-| [`presentation/`](presentation) | Beamer deck, 134 numbered frames, every step explained ([with builds](presentation/ch5103-presentation.pdf), [handout](presentation/ch5103-handout.pdf)) |
+| [`presentation/`](presentation) | Beamer deck, 134 numbered frames, every step explained ([with builds](presentation/ch5103-presentation.pdf), [handout](presentation/ch5103-handout.pdf), [presenter script](presentation/ch5103-presenter-script.pdf), [script with slides](presentation/ch5103-script-handout.pdf)) |
 | [`assets/figures/`](assets/figures) | All 17 figures + 5 schemes at 300 dpi |
 | [`assets/figures.jsonl`](assets/figures.jsonl) | Figure/scheme number → file, page, verbatim caption |
 | [`assets/formulae.tex`](assets/formulae.tex) | Key formulae, ready to paste ([PDF](assets/formulae.pdf)) |
